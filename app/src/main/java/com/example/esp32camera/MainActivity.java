@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.esp32camera.bottomSheets.BottomSheetCamSettings;
 import com.google.android.material.slider.Slider;
 
 import org.java_websocket.client.WebSocketClient;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private WebView webview;
     private EditText et_webSocketInput;
     private Button button_send;
-    private Slider sliderBrightness;
+    private Button button_camSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         webview = findViewById(R.id.webViewStream);
         et_webSocketInput = findViewById(R.id.et_webSocketInput);
         button_send = findViewById(R.id.button_send);
-        sliderBrightness = findViewById(R.id.sliderBrightness);
+        button_camSettings = findViewById(R.id.button_camSettings);
 
         setupCameraStream();
 
@@ -57,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // set brightness
-        sliderBrightness.addOnChangeListener((slider, value, fromUser) -> {
-            int intValue = (int) value;
-            webSocketClient.send("camControls/brightness=" + intValue);
+        button_camSettings.setOnClickListener(v -> {
+            // create bottomSheet for camera settings with all actions
+            BottomSheetCamSettings bottomSheetCamSettings = new BottomSheetCamSettings(this, R.style.BottomSheetDialogTheme, webSocketClient);
+            bottomSheetCamSettings.show();
         });
     }
 
