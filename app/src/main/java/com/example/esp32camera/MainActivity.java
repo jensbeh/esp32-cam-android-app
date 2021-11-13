@@ -13,7 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.slider.Slider;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private WebView webview;
     private EditText et_webSocketInput;
     private Button button_send;
+    private Slider sliderBrightness;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +40,27 @@ public class MainActivity extends AppCompatActivity {
         webview = findViewById(R.id.webViewStream);
         et_webSocketInput = findViewById(R.id.et_webSocketInput);
         button_send = findViewById(R.id.button_send);
-
+        sliderBrightness = findViewById(R.id.sliderBrightness);
 
         setupCameraStream();
 
         connectWebSocket();
 
-        button_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!et_webSocketInput.getText().equals("")) {
-                    String message = et_webSocketInput.getText().toString();
-                    webSocketClient.send(message);
-                    et_webSocketInput.setText("");
-                }
+        button_send.setOnClickListener(v -> {
+            if (!et_webSocketInput.getText().toString().equals("")) {
+                /*
+                Brightness -2 to 2: camControls/brightness=1
+                 */
+                String message = et_webSocketInput.getText().toString();
+                webSocketClient.send(message);
+                et_webSocketInput.setText("");
             }
+        });
+
+        // set brightness
+        sliderBrightness.addOnChangeListener((slider, value, fromUser) -> {
+            int intValue = (int) value;
+            webSocketClient.send("camControls/brightness=" + intValue);
         });
     }
 
