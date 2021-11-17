@@ -8,4 +8,8 @@ public class Constants {
     // Paths
     public static final String STREAM_PATH = "/stream";
 
+    // Controls
+    public static final String CAM_CONTROL_PATH = "camControls/";
+    public static final String BRIGHTNESS_PATH = "brightness="; // -2  to 2
+    public static final String CONTRAST_PATH = "contrast="; // -2 to 2
 }

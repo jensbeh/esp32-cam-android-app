@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".camSettings.CamSettingsFragment"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_camSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Camera Settings"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/line_camSettings"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/darkGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_camSettings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_brightness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_brightness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Brightness" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/sliderBrightness"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:stepSize="1"
+                android:valueFrom="-2"
+                android:valueTo="2"
+                app:haloColor="@color/white"
+                app:thumbColor="@color/darkGray"
+                app:tickColor="@color/black"
+                app:trackColor="@color/gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="-15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_min_Brightness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="min" />
+
+                <TextView
+                    android:id="@+id/tv_neutral_Brightness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="118dp"
+                    android:text="0"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/tv_max_Brightness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="110dp"
+                    android:text="max"
+                    android:textAlignment="textEnd" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_contrast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_brightness">
+
+            <TextView
+                android:id="@+id/tv_contrast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contrast" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/sliderContrast"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:stepSize="1"
+                android:valueFrom="-2"
+                android:valueTo="2"
+                app:haloColor="@color/white"
+                app:thumbColor="@color/darkGray"
+                app:tickColor="@color/black"
+                app:trackColor="@color/gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="-15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_min_Contrast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="min" />
+
+                <TextView
+                    android:id="@+id/tv_neutral_Contrast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="118dp"
+                    android:text="0"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/tv_max_Contrast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="110dp"
+                    android:text="max"
+                    android:textAlignment="textEnd" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_toHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Back to Home Fragment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_contrast" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

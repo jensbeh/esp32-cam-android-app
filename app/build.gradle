@@ -6,7 +6,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.example.esp32camera"
+        applicationId 'com.example.esp32camera'
         minSdk 21
         targetSdk 30
         versionCode 1
