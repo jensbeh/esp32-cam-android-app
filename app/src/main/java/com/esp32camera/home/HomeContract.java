@@ -1,0 +1,16 @@
+package com.esp32camera.home;
+
+public interface HomeContract {
+
+    interface View { // from presenter to view
+
+    }
+
+    interface Model { // from presenter to model and back
+
+    }
+
+    interface Presenter { // from view/service to presenter (and back)
+        void setView(HomeFragment homeFragment);
+    }
+}

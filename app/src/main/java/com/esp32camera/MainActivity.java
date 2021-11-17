@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.esp32camera.camSettings.CamSettingsFragment;
 import com.esp32camera.camSettings.CamSettingsPresenter;
 import com.esp32camera.home.HomeFragment;
+import com.esp32camera.home.HomePresenter;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
@@ -20,11 +21,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setContentView(R.layout.activity_main);
 
         // Setup Presenter
+        HomePresenter homePresenter = new HomePresenter(this);
         CamSettingsPresenter camSettingsPresenter = new CamSettingsPresenter(this);
         MainPresenter mainPresenter = new MainPresenter(this, camSettingsPresenter);
 
         // Setup Fragments
-        homeFragment = new HomeFragment(mainPresenter);
+        homeFragment = new HomeFragment(mainPresenter, homePresenter);
         camSettingsFragment = new CamSettingsFragment(mainPresenter, camSettingsPresenter);
 
         // set homeFragment
