@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Width of the nav drawer left -->
+    <dimen name="nav_left_width">350dp</dimen>
+</resources>
