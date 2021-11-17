@@ -1,21 +1,20 @@
-package com.example.esp32camera.camSettings;
+package com.esp32camera.camSettings;
 
-import static com.example.esp32camera.util.Constants.BRIGHTNESS_PATH;
-import static com.example.esp32camera.util.Constants.CAM_CONTROL_PATH;
-import static com.example.esp32camera.util.Constants.CONTRAST_PATH;
+import static com.esp32camera.util.Constants.BRIGHTNESS_PATH;
+import static com.esp32camera.util.Constants.CAM_CONTROL_PATH;
+import static com.esp32camera.util.Constants.CONTRAST_PATH;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.esp32camera.MainPresenter;
-import com.example.esp32camera.R;
+import com.esp32camera.MainPresenter;
+import com.esp32camera.R;
 import com.google.android.material.slider.Slider;
 
 public class CamSettingsFragment extends Fragment implements CamSettingsContract.View {

@@ -1,6 +1,6 @@
-package com.example.esp32camera.model;
+package com.esp32camera.model;
 
-import com.example.esp32camera.camSettings.CamSettingsContract;
+import com.esp32camera.camSettings.CamSettingsContract;
 
 public class EspCamera implements CamSettingsContract.Model {
     int brightness;

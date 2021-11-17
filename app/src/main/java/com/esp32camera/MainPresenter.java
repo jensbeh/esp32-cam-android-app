@@ -1,7 +1,7 @@
-package com.example.esp32camera;
+package com.esp32camera;
 
-import com.example.esp32camera.camSettings.CamSettingsPresenter;
-import com.example.esp32camera.net.WebSocketService;
+import com.esp32camera.camSettings.CamSettingsPresenter;
+import com.esp32camera.net.WebSocketService;
 
 public class MainPresenter implements MainContract.Presenter {
 

@@ -1,7 +1,7 @@
-package com.example.esp32camera.camSettings;
+package com.esp32camera.camSettings;
 
-import com.example.esp32camera.MainActivity;
-import com.example.esp32camera.model.EspCamera;
+import com.esp32camera.MainActivity;
+import com.esp32camera.model.EspCamera;
 
 public class CamSettingsPresenter implements CamSettingsContract.Presenter {
 

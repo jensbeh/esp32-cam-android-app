@@ -1,19 +1,15 @@
-package com.example.esp32camera.net;
+package com.esp32camera.net;
 
-import static com.example.esp32camera.util.Constants.BRIGHTNESS_PATH;
-import static com.example.esp32camera.util.Constants.CAM_CONTROL_PATH;
-import static com.example.esp32camera.util.Constants.CONTRAST_PATH;
-import static com.example.esp32camera.util.Constants.WEBSOCKETS_SERVER_URL;
+import static com.esp32camera.util.Constants.BRIGHTNESS_PATH;
+import static com.esp32camera.util.Constants.CAM_CONTROL_PATH;
+import static com.esp32camera.util.Constants.CONTRAST_PATH;
+import static com.esp32camera.util.Constants.WEBSOCKETS_SERVER_URL;
 
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.esp32camera.MainActivity;
-import com.example.esp32camera.MainPresenter;
-import com.example.esp32camera.camSettings.CamSettingsContract;
-import com.example.esp32camera.camSettings.CamSettingsPresenter;
-import com.example.esp32camera.model.EspCamera;
+import com.esp32camera.MainPresenter;
+import com.esp32camera.camSettings.CamSettingsPresenter;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -79,8 +75,7 @@ public class WebSocketService {
                     camSettingsPresenter.setCameraBrightness(brightness);
 
                 }
-            }
-            else if (message.contains(CONTRAST_PATH)) {
+            } else if (message.contains(CONTRAST_PATH)) {
                 int contrast = Integer.parseInt(message.substring(message.indexOf("=") + 1));
                 if (camSettingsPresenter.getCameraContrast() != contrast) {
                     //espCamera.setContrast(contrast);

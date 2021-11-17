@@ -1,4 +1,4 @@
-package com.example.esp32camera;
+package com.esp32camera;
 
 public interface MainContract {
 

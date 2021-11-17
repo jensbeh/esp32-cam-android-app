@@ -1,4 +1,4 @@
-package com.example.esp32camera.camSettings;
+package com.esp32camera.camSettings;
 public interface CamSettingsContract {
 
     interface View { // from presenter to view

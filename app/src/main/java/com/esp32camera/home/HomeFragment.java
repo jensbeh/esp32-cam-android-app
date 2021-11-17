@@ -1,7 +1,7 @@
-package com.example.esp32camera.home;
+package com.esp32camera.home;
 
-import static com.example.esp32camera.util.Constants.STREAM_PATH;
-import static com.example.esp32camera.util.Constants.WEBSERVER_URL;
+import static com.esp32camera.util.Constants.STREAM_PATH;
+import static com.esp32camera.util.Constants.WEBSERVER_URL;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,9 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.esp32camera.MainActivity;
-import com.example.esp32camera.MainPresenter;
-import com.example.esp32camera.R;
+import com.esp32camera.MainPresenter;
+import com.esp32camera.R;
 
 public class HomeFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package com.example.esp32camera.util;
+package com.esp32camera.util;
 
 public class Constants {
     // Communication

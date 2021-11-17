@@ -1,13 +1,13 @@
-package com.example.esp32camera;
+package com.esp32camera;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.esp32camera.camSettings.CamSettingsFragment;
-import com.example.esp32camera.camSettings.CamSettingsPresenter;
-import com.example.esp32camera.home.HomeFragment;
+import com.esp32camera.camSettings.CamSettingsFragment;
+import com.esp32camera.camSettings.CamSettingsPresenter;
+import com.esp32camera.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
