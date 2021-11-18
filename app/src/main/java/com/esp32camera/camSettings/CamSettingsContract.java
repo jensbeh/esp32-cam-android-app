@@ -4,6 +4,8 @@ public interface CamSettingsContract {
     interface View { // from presenter to view
         void setSliderCameraBrightness(int brightness);
         void setSliderCameraContrast(int contrast);
+
+        void setCameraNameInText(String cameraName);
     }
 
     interface Model { // from presenter to model and back
@@ -12,6 +14,9 @@ public interface CamSettingsContract {
 
         int getContrast();
         void setContrast(int contrast);
+
+        String getName();
+        void setName(String cameraName);
     }
 
     interface Presenter { // from view/service to presenter (and back)
@@ -21,5 +26,8 @@ public interface CamSettingsContract {
         int getCameraBrightness();
         void setCameraContrast(int contrast);
         int getCameraContrast();
+
+        void setCameraName(String cameraName);
+        String getCameraName();
     }
 }

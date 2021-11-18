@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +29,9 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     private Slider sliderBrightness;
     private Slider sliderContrast;
     private View button_toHome;
+    private EditText et_new_camera_name;
+    private Button button_change_camera_name;
+    private TextView tv_camera_name_settings;
 
     public CamSettingsFragment(MainPresenter mainPresenter, CamSettingsPresenter camSettingsPresenter) {
         this.mainPresenter = mainPresenter;
@@ -49,6 +55,13 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         sliderBrightness = view.findViewById(R.id.sliderBrightness);
         sliderContrast = view.findViewById(R.id.sliderContrast);
         button_toHome = view.findViewById(R.id.button_toHome);
+
+        et_new_camera_name = view.findViewById(R.id.et_new_camera_name);
+        button_change_camera_name = view.findViewById(R.id.button_change_camera_name);
+
+        tv_camera_name_settings = view.findViewById(R.id.tv_camera_name_settings);
+
+        tv_camera_name_settings.setText(camSettingsPresenter.getCameraName());
     }
 
     @Override
@@ -84,6 +97,13 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         button_toHome.setOnClickListener(v -> {
             mainPresenter.navigateToHomeFragment();
         });
+
+        button_change_camera_name.setOnClickListener(v -> {
+            if (!et_new_camera_name.getText().toString().equals("")) {
+                camSettingsPresenter.setCameraName(et_new_camera_name.getText().toString());
+                et_new_camera_name.setText("");
+            }
+        });
     }
 
     @Override
@@ -101,5 +121,10 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     @Override
     public void setSliderCameraContrast(int contrast) {
         sliderContrast.setValue(contrast);
+    }
+
+    @Override
+    public void setCameraNameInText(String cameraName) {
+        tv_camera_name_settings.setText(cameraName);
     }
 }

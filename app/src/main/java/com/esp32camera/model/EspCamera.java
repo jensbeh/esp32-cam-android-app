@@ -5,6 +5,7 @@ import com.esp32camera.camSettings.CamSettingsContract;
 public class EspCamera implements CamSettingsContract.Model {
     int brightness;
     int contrast;
+    String name;
 
     @Override
     public int getBrightness() {
@@ -24,5 +25,15 @@ public class EspCamera implements CamSettingsContract.Model {
     @Override
     public void setContrast(int contrast) {
         this.contrast = contrast;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String cameraName) {
+        this.name = cameraName;
     }
 }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.esp32camera.MainPresenter;
 import com.esp32camera.R;
+import com.esp32camera.camSettings.CamSettingsPresenter;
 
 public class HomeFragment extends Fragment {
 
@@ -28,10 +30,13 @@ public class HomeFragment extends Fragment {
     private Button button_camSettings;
     private final MainPresenter mainPresenter;
     private final HomePresenter homePresenter;
+    private CamSettingsPresenter camSettingsPresenter;
+    private TextView tv_camera_name;
 
-    public HomeFragment(MainPresenter mainPresenter, HomePresenter homePresenter) {
+    public HomeFragment(MainPresenter mainPresenter, HomePresenter homePresenter, CamSettingsPresenter camSettingsPresenter) {
         this.mainPresenter = mainPresenter;
         this.homePresenter = homePresenter;
+        this.camSettingsPresenter = camSettingsPresenter;
 
         this.homePresenter.setView(this);
     }
@@ -58,6 +63,10 @@ public class HomeFragment extends Fragment {
         et_webSocketInput = view.findViewById(R.id.et_webSocketInput);
         button_send = view.findViewById(R.id.button_send);
         button_camSettings = view.findViewById(R.id.button_camSettings);
+
+        tv_camera_name = view.findViewById(R.id.tv_camera_name);
+
+        tv_camera_name.setText(camSettingsPresenter.getCameraName());
 
         setupOnListener();
 

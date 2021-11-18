@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mainPresenter = new MainPresenter(this, camSettingsPresenter);
 
         // Setup Fragments
-        homeFragment = new HomeFragment(mainPresenter, homePresenter);
+        homeFragment = new HomeFragment(mainPresenter, homePresenter, camSettingsPresenter);
         galleryFragment = new GalleryFragment(mainPresenter, galleryPresenter);
         notificationFragment = new NotificationFragment(mainPresenter, notificationPresenter);
         camSettingsFragment = new CamSettingsFragment(mainPresenter, camSettingsPresenter);

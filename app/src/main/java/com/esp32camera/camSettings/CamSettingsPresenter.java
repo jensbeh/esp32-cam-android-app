@@ -12,6 +12,8 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     public CamSettingsPresenter(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         this.espCamera = new EspCamera();
+
+        this.espCamera.setName("ESP Camera");
     }
 
     @Override
@@ -45,5 +47,16 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     @Override
     public int getCameraContrast() {
         return espCamera.getContrast();
+    }
+
+    @Override
+    public void setCameraName(String cameraName) {
+        espCamera.setName(cameraName);
+        camSettingsFragment.setCameraNameInText(cameraName);
+    }
+
+    @Override
+    public String getCameraName() {
+        return espCamera.getName();
     }
 }
