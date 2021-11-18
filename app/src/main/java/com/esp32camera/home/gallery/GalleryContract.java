@@ -1,8 +1,6 @@
-package com.esp32camera.home;
+package com.esp32camera.home.gallery;
 
-import android.view.MenuItem;
-
-public interface HomeContract {
+public interface GalleryContract {
 
     interface View { // from presenter to view
 
@@ -13,6 +11,6 @@ public interface HomeContract {
     }
 
     interface Presenter { // from view/service to presenter (and back)
-        void setView(HomeFragment homeFragment);
+        void setView(GalleryFragment galleryFragment);
     }
 }

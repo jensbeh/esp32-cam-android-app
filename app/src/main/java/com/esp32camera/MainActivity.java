@@ -1,6 +1,7 @@
 package com.esp32camera;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -9,10 +10,25 @@ import com.esp32camera.camSettings.CamSettingsFragment;
 import com.esp32camera.camSettings.CamSettingsPresenter;
 import com.esp32camera.home.HomeFragment;
 import com.esp32camera.home.HomePresenter;
+import com.esp32camera.home.gallery.GalleryFragment;
+import com.esp32camera.home.gallery.GalleryPresenter;
+import com.esp32camera.home.notification.NotificationFragment;
+import com.esp32camera.home.notification.NotificationPresenter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
+    private BottomNavigationView bottomNavigationView_home;
+
+    private MainPresenter mainPresenter;
+    private HomePresenter homePresenter;
+    private GalleryPresenter galleryPresenter;
+    private NotificationPresenter notificationPresenter;
+    private CamSettingsPresenter camSettingsPresenter;
+
     private HomeFragment homeFragment;
+    private GalleryFragment galleryFragment;
+    private NotificationFragment notificationFragment;
     private CamSettingsFragment camSettingsFragment;
 
     @Override
@@ -20,13 +36,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Bottom Navigation View
+        bottomNavigationView_home = findViewById(R.id.bottomNavigationView_home);
+        bottomNavigationView_home.setSelectedItemId(R.id.nav_item_home);
+        setupNavigationViewListener();
+
         // Setup Presenter
-        HomePresenter homePresenter = new HomePresenter(this);
-        CamSettingsPresenter camSettingsPresenter = new CamSettingsPresenter(this);
-        MainPresenter mainPresenter = new MainPresenter(this, camSettingsPresenter);
+        homePresenter = new HomePresenter(this);
+        galleryPresenter = new GalleryPresenter(this);
+        notificationPresenter = new NotificationPresenter(this);
+        camSettingsPresenter = new CamSettingsPresenter(this);
+        mainPresenter = new MainPresenter(this, camSettingsPresenter);
 
         // Setup Fragments
         homeFragment = new HomeFragment(mainPresenter, homePresenter);
+        galleryFragment = new GalleryFragment(mainPresenter, galleryPresenter);
+        notificationFragment = new NotificationFragment(mainPresenter, notificationPresenter);
         camSettingsFragment = new CamSettingsFragment(mainPresenter, camSettingsPresenter);
 
         // set homeFragment
@@ -36,8 +61,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
     }
 
+    private void setupNavigationViewListener() {
+        bottomNavigationView_home.setOnNavigationItemSelectedListener(item -> {
+            mainPresenter.changeToSelectedFragment(item);
+            return true;
+        });
+    }
+
     @Override
-    public void navigateToSettingsFragment() {
+    public void navigateToCamSettingsFragment() {
+        bottomNavigationView_home.setVisibility(View.GONE);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -52,5 +86,29 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                 .replace(R.id.fragment_container, homeFragment)
                 .commit();
+
+        bottomNavigationView_home.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void navigateToGalleryFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                .replace(R.id.fragment_container, galleryFragment)
+                .commit();
+
+        bottomNavigationView_home.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void navigateToNotificationFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                .replace(R.id.fragment_container, notificationFragment)
+                .commit();
+
+        bottomNavigationView_home.setVisibility(View.VISIBLE);
     }
 }

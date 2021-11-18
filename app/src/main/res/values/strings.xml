@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ESP32 Camera</string>
+
+    <!-- Bottom Navigation View Strings -->
+    <string name="nav_home">Home</string>
+    <string name="nav_gallery">Gallery</string>
+    <string name="nav_notifications">Notifications</string>
+
 </resources>

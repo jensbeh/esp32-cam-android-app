@@ -13,12 +13,10 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.esp32camera.MainPresenter;
 import com.esp32camera.R;
-import com.google.android.material.navigation.NavigationView;
 
 public class HomeFragment extends Fragment {
 
@@ -30,8 +28,6 @@ public class HomeFragment extends Fragment {
     private Button button_camSettings;
     private final MainPresenter mainPresenter;
     private final HomePresenter homePresenter;
-    private NavigationView navigationViewLeft;
-    private DrawerLayout drawer;
 
     public HomeFragment(MainPresenter mainPresenter, HomePresenter homePresenter) {
         this.mainPresenter = mainPresenter;
@@ -58,16 +54,17 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        drawer = view.findViewById(R.id.drawer_layout);
-        navigationViewLeft = view.findViewById(R.id.nav_view_left);
-
         webViewStream = view.findViewById(R.id.webViewStream);
         et_webSocketInput = view.findViewById(R.id.et_webSocketInput);
         button_send = view.findViewById(R.id.button_send);
         button_camSettings = view.findViewById(R.id.button_camSettings);
 
-        setupCameraStreamWebView();
+        setupOnListener();
 
+        setupCameraStreamWebView();
+    }
+
+    private void setupOnListener() {
         button_send.setOnClickListener(v -> {
             if (!et_webSocketInput.getText().toString().equals("")) {
                 /*
@@ -85,7 +82,7 @@ public class HomeFragment extends Fragment {
             //BottomSheetCamSettings bottomSheetCamSettings = new BottomSheetCamSettings(this, R.style.BottomSheetDialogTheme, webSocketClient, espCamera);
             //bottomSheetCamSettings.show();
 
-            mainPresenter.navigateToSettingsFragment();
+            mainPresenter.navigateToCamSettingsFragment();
         });
     }
 

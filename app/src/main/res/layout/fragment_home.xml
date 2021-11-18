@@ -1,97 +1,83 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Use DrawerLayout as root container for activity -->
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!-- Use DrawerLayout as root container for activity -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/home_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray"
     android:fitsSystemWindows="false"
-    tools:context=".home.HomeFragment"
-    tools:openDrawer="start">
+    tools:context=".home.HomeFragment">
 
-    <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.24000001">
 
-        <WebView
-            android:id="@+id/webViewStream"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.24000001">
+            android:layout_height="match_parent">
 
-        </WebView>
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/webViewStream">
-
-            <EditText
-                android:id="@+id/et_webSocketInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="WebSocket Input..."
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+            <WebView
+                android:id="@+id/webViewStream"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
-                android:id="@+id/button_send"
+                android:id="@+id/button_camSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="Send" />
-        </LinearLayout>
+                android:text="Camera Settings"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/webViewStream" />
 
-        <Button
-            android:id="@+id/button_camSettings"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <EditText
+            android:id="@+id/et_webSocketInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Camera Settings"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:ems="10"
+            android:hint="WebSocket Input..."
+            android:inputType="textPersonName"
+            android:minHeight="48dp" />
 
-    <!-- Container for contents of drawer -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view_left"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true">
+        <Button
+            android:id="@+id/button_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Send" />
+    </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_item_1"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:gravity="center"
-                android:text="Item 1" />
-
-            <TextView
-                android:id="@+id/tv_item_2"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:gravity="center"
-                android:text="Item 2" />
-        </LinearLayout>
-    </com.google.android.material.navigation.NavigationView>
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

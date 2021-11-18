@@ -1,5 +1,9 @@
 package com.esp32camera;
 
+import android.view.MenuItem;
+
+import androidx.fragment.app.Fragment;
+
 import com.esp32camera.camSettings.CamSettingsPresenter;
 import com.esp32camera.net.WebSocketService;
 
@@ -18,8 +22,25 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void navigateToSettingsFragment() {
-        mainView.navigateToSettingsFragment();
+    public void changeToSelectedFragment(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_item_gallery:
+                mainView.navigateToGalleryFragment();
+                break;
+            case R.id.nav_item_home:
+                mainView.navigateToHomeFragment();
+                break;
+            case R.id.nav_item_notifications:
+                mainView.navigateToNotificationFragment();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void navigateToCamSettingsFragment() {
+        mainView.navigateToCamSettingsFragment();
     }
 
     @Override

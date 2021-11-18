@@ -23,7 +23,7 @@ public class BottomSheetCamSettings extends BottomSheetDialog {
         super(context, theme);
 
         this.context = context;
-        this.bottomSheetView = LayoutInflater.from(context).inflate(R.layout.sheet_cam_settings, findViewById(R.id.bottomSheetContainer_createChannel));
+        this.bottomSheetView = LayoutInflater.from(context).inflate(R.layout.sheet_cam_settings, findViewById(R.id.bottomSheetContainer_camSettings));
         this.webSocketClient = webSocketClient;
         this.espCamera = espCamera;
 

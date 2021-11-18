@@ -9,6 +9,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
     public HomePresenter(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+
     }
 
     @Override
