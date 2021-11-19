@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".camSettings.CamSettingsFragment"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".camSettings.CamSettingsFragment">
 
 
     <TextView
@@ -27,9 +27,9 @@
         android:id="@+id/tv_camera_name_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
         android:layout_marginBottom="10dp"
-        android:text="ESP Camera" />
+        android:text="ESP Camera"
+        android:textAlignment="center" />
 
     <View
         android:id="@+id/line_camSettings"
@@ -40,164 +40,954 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <EditText
-                android:id="@+id/et_new_camera_name"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Type in new camera name..."/>
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <Button
-                android:id="@+id/button_change_camera_name"
+                android:id="@+id/button_toHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:text="Change" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_brightness"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-            <TextView
-                android:id="@+id/tv_brightness"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Brightness" />
-
-            <com.google.android.material.slider.Slider
-                android:id="@+id/sliderBrightness"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:stepSize="1"
-                android:valueFrom="-2"
-                android:valueTo="2"
-                app:haloColor="@color/white"
-                app:thumbColor="@color/darkGray"
-                app:tickColor="@color/black"
-                app:trackColor="@color/gray" />
+                android:layout_marginTop="20dp"
+                android:text="Back to Home Fragment" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="-15dp"
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_new_camera_name"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Type in new camera name..."
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/button_change_camera_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Change" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_contrast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_contrast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Contrast"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderContrast"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="-2"
+                    android:valueTo="2"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_Contrast"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_Contrast"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="0"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_Contrast"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_brightness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_brightness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Brightness"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderBrightness"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="-2"
+                    android:valueTo="2"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_Brightness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_Brightness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="0"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_Brightness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_quality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_quality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Quality"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderQuality"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="-2"
+                    android:valueTo="2"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_Quality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_Quality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="0"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_Quality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Saturation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_Saturation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Saturation"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderSaturation"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="-2"
+                    android:valueTo="2"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_Saturation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_Saturation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="0"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_Saturation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Sharpness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_Sharpness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sharpness"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderSharpness"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="-2"
+                    android:valueTo="2"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_Sharpness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_Sharpness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="0"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_Sharpness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Denoise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_Denoise"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Denoise"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_SpecialEffect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_SpecialEffect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Special Effect"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinner_SpecialEffect"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Whitebal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_min_Brightness"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_Whitebal"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="min" />
+                    android:text="Whitebal"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_neutral_Brightness"
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_Whitebal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="118dp"
-                    android:text="0"
-                    android:textAlignment="center" />
+                    android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/tv_max_Brightness"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="110dp"
-                    android:text="max"
-                    android:textAlignment="textEnd" />
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_contrast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_brightness">
-
-            <TextView
-                android:id="@+id/tv_contrast"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Contrast" />
-
-            <com.google.android.material.slider.Slider
-                android:id="@+id/sliderContrast"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:stepSize="1"
-                android:valueFrom="-2"
-                android:valueTo="2"
-                app:haloColor="@color/white"
-                app:thumbColor="@color/darkGray"
-                app:tickColor="@color/black"
-                app:trackColor="@color/gray" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="-15dp"
+                android:id="@+id/ll_AwbGain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_min_Contrast"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_AwbGain"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="min" />
+                    android:text="AwbGain"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_AwbGain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_WbMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_neutral_Contrast"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_WbMode"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="118dp"
-                    android:text="0"
-                    android:textAlignment="center" />
+                    android:text="WbMode"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderWbMode"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="4"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_WbMode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_WbMode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="2"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_WbMode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_ExposureCtrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_max_Contrast"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_ExposureCtrl"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="110dp"
-                    android:text="max"
-                    android:textAlignment="textEnd" />
+                    android:text="ExposureCtrl"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_ExposureCtrl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Aec2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_Aec2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Aec2"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_Aec2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_AeLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_AeLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="AeLevel"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderAeLevel"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="-2"
+                    android:valueTo="2"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_AeLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_AeLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="0"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_AeLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_AecValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_AecValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="AecValue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderAecValue"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="10"
+                    android:valueFrom="0"
+                    android:valueTo="1200"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_AecValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_AecValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="600"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_AecValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="95dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_GainCtrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_GainCtrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GainCtrl"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_GainCtrl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_AgcGain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_AgcGain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="AgcGain"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderAgcGain"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="30"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_AgcGain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_AgcGain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="15"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_AgcGain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_GainCeiling"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_GainCeiling"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GainCeiling"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderGainCeiling"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="6"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_GainCeiling"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_GainCeiling"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="3"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_GainCeiling"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Bpc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_Bpc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bpc"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_Bpc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Wpc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_Wpc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Wpc"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_Wpc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_RawGma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_RawGma"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RawGma"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_RawGma"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Lenc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_Lenc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lenc"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_Lenc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Hmirror"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_Hmirror"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hmirror"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_Hmirror"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Vflip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_Vflip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Vflip"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_Vflip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Dcw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_Dcw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dcw"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_Dcw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Colorbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_Colorbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Colorbar"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_Colorbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/button_toHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Back to Home Fragment"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_contrast" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </LinearLayout>
