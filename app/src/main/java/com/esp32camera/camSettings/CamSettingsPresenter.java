@@ -39,6 +39,9 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     public void setCameraFramesize(int framesize) {
         // set framesize to model
         espCamera.setFramesize(framesize);
+
+        // set to Spinner in settings if opened
+        camSettingsFragment.setSpinnerCameraFramesize(framesize);
     }
 
     @Override
@@ -107,7 +110,7 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
         // set specialEffect to model
         espCamera.setSpecialEffect(specialEffect);
 
-        // set to Slider in settings if opened
+        // set to Spinner in settings if opened
         camSettingsFragment.setSpinnerCameraSpecialEffect(specialEffect);
     }
 
@@ -149,7 +152,7 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
         // set wbMode to model
         espCamera.setWbMode(wbMode);
 
-        // set to Slider in settings if opened
+        // set to Spinner in settings if opened
         camSettingsFragment.setSpinnerCameraWbMode(wbMode);
     }
 

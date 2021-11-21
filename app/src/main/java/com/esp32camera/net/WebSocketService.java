@@ -94,7 +94,6 @@ public class WebSocketService {
                 int framesize = Integer.parseInt(message.substring(message.indexOf("=") + 1));
                 if (camSettingsPresenter.getCameraFramesize() != framesize) {
                     camSettingsPresenter.setCameraFramesize(framesize);
-
                 }
             }
 

@@ -36,7 +36,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -166,12 +165,15 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         super.onStart();
 
         // init ui - need to set here because otherwise the slider wont be updated by values
-        //spinner_FrameSize.setSelection(camSettingsPresenter.getCameraFramesize());
+        setFrameSizeToSpinner(camSettingsPresenter.getCameraFramesize());
+
         sliderQuality.setValue(camSettingsPresenter.getCameraQuality());
         sliderBrightness.setValue(camSettingsPresenter.getCameraBrightness());
         sliderContrast.setValue(camSettingsPresenter.getCameraContrast());
         sliderSaturation.setValue(camSettingsPresenter.getCameraSaturation());
-        //spinner_SpecialEffect.setSelection(camSettingsPresenter.getCameraSpecialEffect());
+
+        spinner_SpecialEffect.setSelection(camSettingsPresenter.getCameraSpecialEffect(), false);
+
         switch_AutoWhiteBalanceState.setChecked(camSettingsPresenter.getCameraAutoWhiteBalanceState() == 1);
         if (camSettingsPresenter.getCameraAutoWbGain() == 1) {
             switch_AutoWbGain.setChecked(true);
@@ -180,7 +182,9 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
             switch_AutoWbGain.setChecked(false);
             ll_WbMode.setVisibility(View.GONE);
         }
-        //spinner_WbMode.setSelection(camSettingsPresenter.getCameraWbMode());
+
+        spinner_WbMode.setSelection(camSettingsPresenter.getCameraWbMode(), false);
+
         if (camSettingsPresenter.getCameraExposureCtrlState() == 1) {
             switch_ExposureCtrlState.setChecked(true);
             ll_AecValue.setVisibility(View.GONE);
@@ -232,7 +236,6 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String value = parent.getItemAtPosition(position).toString();
-                Toast.makeText(getActivity(), value, Toast.LENGTH_SHORT).show();
                 switch (value) {
                     case "UXGA":
                         mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + FRAMESIZE_PATH + 10);
@@ -318,7 +321,6 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String value = parent.getItemAtPosition(position).toString();
-                Toast.makeText(getActivity(), value, Toast.LENGTH_SHORT).show();
 
                 switch (value) {
                     case "No Effect":
@@ -385,8 +387,6 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String value = parent.getItemAtPosition(position).toString();
-                Toast.makeText(getActivity(), value, Toast.LENGTH_SHORT).show();
-
                 switch (value) {
                     case "Auto":
                         mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + WB_MODE_PATH + 0);
@@ -562,8 +562,8 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     }
 
     @Override
-    public void setSpinnerCameraFramesize(int specialEffect) {
-
+    public void setSpinnerCameraFramesize(int framesize) {
+        setFrameSizeToSpinner(framesize);
     }
 
     @Override
@@ -588,7 +588,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
     @Override
     public void setSpinnerCameraSpecialEffect(int specialEffect) {
-
+        spinner_SpecialEffect.setSelection(camSettingsPresenter.getCameraSpecialEffect(), false);
     }
 
     @Override
@@ -613,7 +613,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
     @Override
     public void setSpinnerCameraWbMode(int wbMode) {
-
+        spinner_WbMode.setSelection(wbMode, false);
     }
 
     @Override
@@ -718,5 +718,39 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         getActivity().runOnUiThread(() -> {
             switch_Colorbar.setChecked(colorbar == 1);
         });
+    }
+
+    private void setFrameSizeToSpinner(int frameSize) {
+        switch (frameSize) {
+            case 10:
+                spinner_FrameSize.setSelection(0, false);
+                break;
+            case 9:
+                spinner_FrameSize.setSelection(1, false);
+                break;
+            case 8:
+                spinner_FrameSize.setSelection(2, false);
+                break;
+            case 7:
+                spinner_FrameSize.setSelection(3, false);
+                break;
+            case 6:
+                spinner_FrameSize.setSelection(4, false);
+                break;
+            case 5:
+                spinner_FrameSize.setSelection(5, false);
+                break;
+            case 4:
+                spinner_FrameSize.setSelection(6, false);
+                break;
+            case 3:
+                spinner_FrameSize.setSelection(7, false);
+                break;
+            case 0:
+                spinner_FrameSize.setSelection(8, false);
+                break;
+            default:
+                break;
+        }
     }
 }
