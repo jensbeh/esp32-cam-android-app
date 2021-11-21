@@ -22,6 +22,45 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     }
 
     @Override
+    public void setCameraName(String cameraName) {
+        // set cameraName to model
+        espCamera.setName(cameraName);
+
+        // set to TextView in settings if opened
+        camSettingsFragment.setCameraNameInText(cameraName);
+    }
+
+    @Override
+    public String getCameraName() {
+        return espCamera.getName();
+    }
+
+    @Override
+    public void setCameraFramesize(int framesize) {
+        // set framesize to model
+        espCamera.setFramesize(framesize);
+    }
+
+    @Override
+    public int getCameraFramesize() {
+        return espCamera.getFramesize();
+    }
+
+    @Override
+    public void setCameraQuality(int quality) {
+        // set quality to model
+        espCamera.setQuality(quality);
+
+        // set to Slider in settings if opened
+        camSettingsFragment.setSliderCameraQuality(quality);
+    }
+
+    @Override
+    public int getCameraQuality() {
+        return espCamera.getQuality();
+    }
+
+    @Override
     public void setCameraBrightness(int brightness) {
         // set brightness to model
         espCamera.setBrightness(brightness);
@@ -50,34 +89,6 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     }
 
     @Override
-    public void setCameraName(String cameraName) {
-        // set cameraName to model
-        espCamera.setName(cameraName);
-
-        // set to TextView in settings if opened
-        camSettingsFragment.setCameraNameInText(cameraName);
-    }
-
-    @Override
-    public String getCameraName() {
-        return espCamera.getName();
-    }
-
-    @Override
-    public void setCameraQuality(int quality) {
-        // set quality to model
-        espCamera.setQuality(quality);
-
-        // set to Slider in settings if opened
-        camSettingsFragment.setSliderCameraQuality(quality);
-    }
-
-    @Override
-    public int getCameraQuality() {
-        return espCamera.getQuality();
-    }
-
-    @Override
     public void setCameraSaturation(int saturation) {
         // set saturation to model
         espCamera.setSaturation(saturation);
@@ -89,34 +100,6 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     @Override
     public int getCameraSaturation() {
         return espCamera.getSaturation();
-    }
-
-    @Override
-    public void setCameraSharpness(int sharpness) {
-        // set sharpness to model
-        espCamera.setSharpness(sharpness);
-
-        // set to Slider in settings if opened
-        camSettingsFragment.setSliderCameraSharpness(sharpness);
-    }
-
-    @Override
-    public int getCameraSharpness() {
-        return espCamera.getSharpness();
-    }
-
-    @Override
-    public void setCameraDenoise(int denoise) {
-        // set denoise to model
-        espCamera.setDenoise(denoise);
-
-        // set to View in settings if opened
-        camSettingsFragment.setCameraDenoiseInView(denoise);
-    }
-
-    @Override
-    public int getCameraDenoise() {
-        return espCamera.getDenoise();
     }
 
     @Override
@@ -134,31 +117,31 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     }
 
     @Override
-    public void setCameraWhitebal(int whitebal) {
-        // set whitebal to model
-        espCamera.setWhitebal(whitebal);
+    public void setCameraAutoWhiteBalanceState(int autoWhiteBalanceState) {
+        // set autoWhiteBalanceState to model
+        espCamera.setAutoWhiteBalanceState(autoWhiteBalanceState);
 
         // set to Switch in settings if opened
-        camSettingsFragment.setSwitchCameraWhitebal(whitebal);
+        camSettingsFragment.setSwitchCameraAutoWhiteBalanceState(autoWhiteBalanceState);
     }
 
     @Override
-    public int getCameraWhitebal() {
-        return espCamera.getWhitebal();
+    public int getCameraAutoWhiteBalanceState() {
+        return espCamera.getAutoWhiteBalanceState();
     }
 
     @Override
-    public void setCameraAwbGain(int awbGain) {
-        // set awbGain to model
-        espCamera.setAwbGain(awbGain);
+    public void setCameraAutoWbGain(int autoWbGain) {
+        // set autoWbGain to model
+        espCamera.setAutoWbGain(autoWbGain);
 
         // set to Switch in settings if opened
-        camSettingsFragment.setSwitchCameraAwbGain(awbGain);
+        camSettingsFragment.setSwitchCameraAutoWbGain(autoWbGain);
     }
 
     @Override
-    public int getCameraAwbGain() {
-        return espCamera.getAwbGain();
+    public int getCameraAutoWbGain() {
+        return espCamera.getAutoWbGain();
     }
 
     @Override
@@ -176,17 +159,31 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     }
 
     @Override
-    public void setCameraExposureCtrl(int exposureCtrl) {
-        // set exposureCtrl to model
-        espCamera.setExposureCtrl(exposureCtrl);
+    public void setCameraExposureCtrlState(int exposureCtrlState) {
+        // set exposureCtrlState to model
+        espCamera.setExposureCtrlState(exposureCtrlState);
 
         // set to Switch in settings if opened
-        camSettingsFragment.setSwitchCameraExposureCtrl(exposureCtrl);
+        camSettingsFragment.setSwitchCameraExposureCtrlState(exposureCtrlState);
     }
 
     @Override
-    public int getCameraExposureCtrl() {
-        return espCamera.getExposureCtrl();
+    public int getCameraExposureCtrlState() {
+        return espCamera.getExposureCtrlState();
+    }
+
+    @Override
+    public void setCameraAecValue(int aecValue) {
+        // set aecValue to model
+        espCamera.setAecValue(aecValue);
+
+        // set to Slider in settings if opened
+        camSettingsFragment.setSliderCameraAecValue(aecValue);
+    }
+
+    @Override
+    public int getCameraAecValue() {
+        return espCamera.getAecValue();
     }
 
     @Override
@@ -218,31 +215,17 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     }
 
     @Override
-    public void setCameraAecValue(int aecValue) {
-        // set aecValue to model
-        espCamera.setAecValue(aecValue);
-
-        // set to Slider in settings if opened
-        camSettingsFragment.setSliderCameraAecValue(aecValue);
-    }
-
-    @Override
-    public int getCameraAecValue() {
-        return espCamera.getAecValue();
-    }
-
-    @Override
-    public void setCameraGainCtrl(int gainCtrl) {
-        // set gainCtrl to model
-        espCamera.setGainCtrl(gainCtrl);
+    public void setCameraAgcCtrlState(int agcCtrlState) {
+        // set agcCtrlState to model
+        espCamera.setAgcCtrlState(agcCtrlState);
 
         // set to Switch in settings if opened
-        camSettingsFragment.setSwitchCameraGainCtrl(gainCtrl);
+        camSettingsFragment.setSwitchCameraAgcCtrlState(agcCtrlState);
     }
 
     @Override
-    public int getCameraGainCtrl() {
-        return espCamera.getGainCtrl();
+    public int getCameraAgcCtrlState() {
+        return espCamera.getAgcCtrlState();
     }
 
     @Override
@@ -355,20 +338,6 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     @Override
     public int getCameraVflip() {
         return espCamera.getVflip();
-    }
-
-    @Override
-    public void setCameraDcw(int dcw) {
-        // set dcw to model
-        espCamera.setDcw(dcw);
-
-        // set to Switch in settings if opened
-        camSettingsFragment.setSwitchCameraDcw(dcw);
-    }
-
-    @Override
-    public int getCameraDcw() {
-        return espCamera.getDcw();
     }
 
     @Override

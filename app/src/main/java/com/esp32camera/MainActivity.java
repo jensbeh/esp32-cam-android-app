@@ -31,6 +31,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private NotificationFragment notificationFragment;
     private CamSettingsFragment camSettingsFragment;
 
+    public enum State {
+        HomeFragment,
+        GalleryFragment,
+        NotificationFragment,
+        CamSettingsFragment
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,5 +117,27 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 .commit();
 
         bottomNavigationView_home.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * handle the android back pressed button
+     */
+    @Override
+    public void onBackPressed() {
+        if (mainPresenter.getViewState().equals(State.HomeFragment)) {
+            // Close App
+
+        } else if (mainPresenter.getViewState().equals(State.GalleryFragment)) {
+            // go back to HomeFragment
+            mainPresenter.navigateToHomeFragment();
+        } else if (mainPresenter.getViewState().equals(State.NotificationFragment)) {
+            // go back to HomeFragment
+            mainPresenter.navigateToHomeFragment();
+        } else if (mainPresenter.getViewState().equals(State.CamSettingsFragment)) {
+            // go back to HomeFragment
+            mainPresenter.navigateToHomeFragment();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

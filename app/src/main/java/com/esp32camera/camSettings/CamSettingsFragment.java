@@ -3,22 +3,23 @@ package com.esp32camera.camSettings;
 import static com.esp32camera.util.Constants.AEC_VALUE_PATH;
 import static com.esp32camera.util.Constants.AE_LEVEL_PATH;
 import static com.esp32camera.util.Constants.BRIGHTNESS_PATH;
-import static com.esp32camera.util.Constants.CAM_CONTROL_PATH;
+import static com.esp32camera.util.Constants.CAM_CONTROLS_PATH;
 import static com.esp32camera.util.Constants.CONTRAST_PATH;
 import static com.esp32camera.util.Constants.QUALITY_PATH;
 import static com.esp32camera.util.Constants.SATURATION_PATH;
-import static com.esp32camera.util.Constants.SHARPNESS_PATH;
 import static com.esp32camera.util.Constants.WB_MODE_PATH;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,24 +36,24 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     private MainPresenter mainPresenter;
     private CamSettingsPresenter camSettingsPresenter;
 
-    private Slider sliderBrightness;
-    private Slider sliderContrast;
     private View button_toHome;
     private EditText et_new_camera_name;
     private Button button_change_camera_name;
     private TextView tv_camera_name_settings;
+    private Spinner spinner_FrameSize;
     private Slider sliderQuality;
+    private Slider sliderBrightness;
+    private Slider sliderContrast;
     private Slider sliderSaturation;
-    private Slider sliderSharpness;
     private Spinner spinner_SpecialEffect;
-    private SwitchCompat switch_Whitebal;
-    private SwitchCompat switch_AwbGain;
+    private SwitchCompat switch_AutoWhiteBalanceState;
+    private SwitchCompat switch_AutoWbGain;
     private Slider sliderWbMode;
-    private SwitchCompat switch_ExposureCtrl;
+    private SwitchCompat switch_ExposureCtrlState;
+    private Slider sliderAecValue;
     private SwitchCompat switch_Aec2;
     private Slider sliderAeLevel;
-    private Slider sliderAecValue;
-    private SwitchCompat switch_GainCtrl;
+    private SwitchCompat switch_AgcCtrlState;
     private Slider sliderAgcGain;
     private Slider sliderGainCeiling;
     private SwitchCompat switch_Bpc;
@@ -61,7 +62,6 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     private SwitchCompat switch_Lenc;
     private SwitchCompat switch_Hmirror;
     private SwitchCompat switch_Vflip;
-    private SwitchCompat switch_Dcw;
     private SwitchCompat switch_Colorbar;
 
     public CamSettingsFragment(MainPresenter mainPresenter, CamSettingsPresenter camSettingsPresenter) {
@@ -82,48 +82,50 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // button
-        button_toHome = view.findViewById(R.id.button_toHome);
 
-        sliderBrightness = view.findViewById(R.id.sliderBrightness);
-        sliderContrast = view.findViewById(R.id.sliderContrast);
+        // init ui
+        button_toHome = view.findViewById(R.id.button_toHome);
 
         et_new_camera_name = view.findViewById(R.id.et_new_camera_name);
         button_change_camera_name = view.findViewById(R.id.button_change_camera_name);
         tv_camera_name_settings = view.findViewById(R.id.tv_camera_name_settings);
 
-        sliderQuality = view.findViewById(R.id.sliderQuality);
-        sliderSaturation = view.findViewById(R.id.sliderSaturation);
-        sliderSharpness = view.findViewById(R.id.sliderSharpness);
+        spinner_FrameSize = view.findViewById(R.id.spinner_FrameSize);
+        ArrayAdapter<CharSequence> frameSizeAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.framesize_array, android.R.layout.simple_spinner_item);
+        frameSizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_FrameSize.setAdapter(frameSizeAdapter);
 
-        // Denoise
+        sliderQuality = view.findViewById(R.id.sliderQuality);
+        sliderBrightness = view.findViewById(R.id.sliderBrightness);
+        sliderContrast = view.findViewById(R.id.sliderContrast);
+        sliderSaturation = view.findViewById(R.id.sliderSaturation);
 
         spinner_SpecialEffect = view.findViewById(R.id.spinner_SpecialEffect);
-        switch_Whitebal = view.findViewById(R.id.switch_Whitebal);
-        switch_AwbGain = view.findViewById(R.id.switch_AwbGain);
+        ArrayAdapter<CharSequence> specialEffectAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.specialEffect_array, android.R.layout.simple_spinner_item);
+        specialEffectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_SpecialEffect.setAdapter(specialEffectAdapter);
 
+        switch_AutoWhiteBalanceState = view.findViewById(R.id.switch_AutoWhiteBalanceState);
+        switch_AutoWbGain = view.findViewById(R.id.switch_AutoWbGain);
         sliderWbMode = view.findViewById(R.id.sliderWbMode);
-
-        switch_ExposureCtrl = view.findViewById(R.id.switch_ExposureCtrl);
-        switch_Aec2 = view.findViewById(R.id.switch_Aec2);
-
-        sliderAeLevel = view.findViewById(R.id.sliderAeLevel);
+        switch_ExposureCtrlState = view.findViewById(R.id.switch_ExposureCtrlState);
         sliderAecValue = view.findViewById(R.id.sliderAecValue);
-
-        switch_GainCtrl = view.findViewById(R.id.switch_GainCtrl);
-
+        switch_Aec2 = view.findViewById(R.id.switch_Aec2);
+        sliderAeLevel = view.findViewById(R.id.sliderAeLevel);
+        switch_AgcCtrlState = view.findViewById(R.id.switch_AgcCtrlState);
         sliderAgcGain = view.findViewById(R.id.sliderAgcGain);
         sliderGainCeiling = view.findViewById(R.id.sliderGainCeiling);
-
         switch_Bpc = view.findViewById(R.id.switch_Bpc);
         switch_Wpc = view.findViewById(R.id.switch_Wpc);
         switch_RawGma = view.findViewById(R.id.switch_RawGma);
         switch_Lenc = view.findViewById(R.id.switch_Lenc);
         switch_Hmirror = view.findViewById(R.id.switch_Hmirror);
         switch_Vflip = view.findViewById(R.id.switch_Vflip);
-        switch_Dcw = view.findViewById(R.id.switch_Dcw);
         switch_Colorbar = view.findViewById(R.id.switch_Colorbar);
 
+        // set values
         tv_camera_name_settings.setText(camSettingsPresenter.getCameraName());
     }
 
@@ -146,20 +148,6 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
             mainPresenter.navigateToHomeFragment();
         });
 
-        // set brightness
-        sliderBrightness.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROL_PATH + BRIGHTNESS_PATH + intValue);
-            }
-        });
-        // set contrast
-        sliderContrast.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROL_PATH + CONTRAST_PATH + intValue);
-            }
-        });
         // set name
         button_change_camera_name.setOnClickListener(v -> {
             if (!et_new_camera_name.getText().toString().equals("")) {
@@ -167,113 +155,162 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
                 et_new_camera_name.setText("");
             }
         });
+
+        // set framesize
+        spinner_FrameSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String text = parent.getItemAtPosition(position).toString();
+                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         // set quality
         sliderQuality.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROL_PATH + QUALITY_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + QUALITY_PATH + intValue);
             }
         });
+
+        // set brightness
+        sliderBrightness.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                int intValue = (int) value;
+                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + BRIGHTNESS_PATH + intValue);
+            }
+        });
+
+        // set contrast
+        sliderContrast.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                int intValue = (int) value;
+                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + CONTRAST_PATH + intValue);
+            }
+        });
+
         // set saturation
         sliderSaturation.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROL_PATH + SATURATION_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + SATURATION_PATH + intValue);
             }
         });
-        // set sharpness
-        sliderSharpness.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROL_PATH + SHARPNESS_PATH + intValue);
-            }
-        });
-        // here denoise
+
         // set special effect
-        //spinner_SpecialEffect.setOnItemSelectedListener();
-        // set whitebal
-        switch_Whitebal.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        spinner_SpecialEffect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String text = parent.getItemAtPosition(position).toString();
+                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // set autoWhiteBalanceState
+        switch_AutoWhiteBalanceState.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // stuff
         });
-        // set awbGain
-        switch_AwbGain.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+        // set autoWbGain
+        switch_AutoWbGain.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // stuff
         });
-        // set sharpness
+
+        // set wbMode
         sliderWbMode.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROL_PATH + WB_MODE_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + WB_MODE_PATH + intValue);
             }
         });
-        // set exposureCtrl
-        switch_ExposureCtrl.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+        // set exposureCtrlState
+        switch_ExposureCtrlState.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // stuff
         });
-        // set aec2
-        switch_Aec2.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // stuff
-        });
-        // set aeLevel
-        sliderAeLevel.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROL_PATH + AE_LEVEL_PATH + intValue);
-            }
-        });
+
         // set aecValue
         sliderAecValue.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROL_PATH + AEC_VALUE_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AEC_VALUE_PATH + intValue);
             }
         });
-        // set gainCtrl
-        switch_GainCtrl.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+        // set aec2
+        switch_Aec2.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // stuff
         });
+
+        // set aeLevel
+        sliderAeLevel.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                int intValue = (int) value;
+                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AE_LEVEL_PATH + intValue);
+            }
+        });
+
+        // set agcCtrlState
+        switch_AgcCtrlState.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // stuff
+        });
+
         // set agcGain
         sliderAgcGain.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROL_PATH + AEC_VALUE_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AEC_VALUE_PATH + intValue);
             }
         });
+
         // set gainCeiling
         sliderGainCeiling.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROL_PATH + AEC_VALUE_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AEC_VALUE_PATH + intValue);
             }
         });
+
         // set bpc
         switch_Bpc.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // stuff
         });
+
         // set wpc
         switch_Wpc.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // stuff
         });
+
         // set rawGma
         switch_RawGma.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // stuff
         });
+
         // set lenc
         switch_Lenc.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // stuff
         });
+
         // set hMirror
         switch_Hmirror.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // stuff
         });
+
         // set vFlip
         switch_Vflip.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // stuff
         });
-        // set dcw
-        switch_Dcw.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // stuff
-        });
+
         // set colorbar
         switch_Colorbar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // stuff
@@ -288,6 +325,21 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     }
 
     @Override
+    public void setCameraNameInText(String cameraName) {
+        tv_camera_name_settings.setText(cameraName);
+    }
+
+    @Override
+    public void setSpinnerCameraFramesize(int specialEffect) {
+
+    }
+
+    @Override
+    public void setSliderCameraQuality(int quality) {
+
+    }
+
+    @Override
     public void setSliderCameraBrightness(int brightness) {
         sliderBrightness.setValue(brightness);
     }
@@ -298,27 +350,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     }
 
     @Override
-    public void setCameraNameInText(String cameraName) {
-        tv_camera_name_settings.setText(cameraName);
-    }
-
-    @Override
-    public void setSliderCameraQuality(int quality) {
-
-    }
-
-    @Override
     public void setSliderCameraSaturation(int saturation) {
-
-    }
-
-    @Override
-    public void setSliderCameraSharpness(int sharpness) {
-
-    }
-
-    @Override
-    public void setCameraDenoiseInView(int denoise) {
 
     }
 
@@ -328,12 +360,12 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     }
 
     @Override
-    public void setSwitchCameraWhitebal(int whitebal) {
+    public void setSwitchCameraAutoWhiteBalanceState(int whitebal) {
 
     }
 
     @Override
-    public void setSwitchCameraAwbGain(int awbGain) {
+    public void setSwitchCameraAutoWbGain(int awbGain) {
 
     }
 
@@ -343,7 +375,12 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     }
 
     @Override
-    public void setSwitchCameraExposureCtrl(int exposureCtrl) {
+    public void setSwitchCameraExposureCtrlState(int exposureCtrl) {
+
+    }
+
+    @Override
+    public void setSliderCameraAecValue(int aecValue) {
 
     }
 
@@ -358,12 +395,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     }
 
     @Override
-    public void setSliderCameraAecValue(int aecValue) {
-
-    }
-
-    @Override
-    public void setSwitchCameraGainCtrl(int gainCtrl) {
+    public void setSwitchCameraAgcCtrlState(int gainCtrl) {
 
     }
 
@@ -404,11 +436,6 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
     @Override
     public void setSwitchCameraVflip(int vFlip) {
-
-    }
-
-    @Override
-    public void setSwitchCameraDcw(int dcw) {
 
     }
 

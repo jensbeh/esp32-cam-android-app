@@ -58,7 +58,7 @@
                 android:text="Back to Home Fragment" />
 
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/ll_cameraName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -78,6 +78,144 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="Change" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_FrameSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_FrameSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="FrameSize"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinner_FrameSize"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_quality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_quality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Quality"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderQuality"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="10"
+                    android:valueTo="63"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_Quality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="best" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_Quality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text=""
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_Quality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:text="worst"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_brightness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_brightness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Brightness"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderBrightness"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="-2"
+                    android:valueTo="2"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_Brightness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_Brightness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="0"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_Brightness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -140,122 +278,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_brightness"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_brightness"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Brightness"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/sliderBrightness"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:stepSize="1"
-                    android:valueFrom="-2"
-                    android:valueTo="2"
-                    app:haloColor="@color/white"
-                    app:thumbColor="@color/darkGray"
-                    app:tickColor="@color/black"
-                    app:trackColor="@color/gray" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="-15dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_min_Brightness"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="min" />
-
-                    <TextView
-                        android:id="@+id/tv_neutral_Brightness"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
-                        android:text="0"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/tv_max_Brightness"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
-                        android:text="max"
-                        android:textAlignment="textEnd" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_quality"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_quality"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Quality"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/sliderQuality"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:stepSize="1"
-                    android:valueFrom="-2"
-                    android:valueTo="2"
-                    app:haloColor="@color/white"
-                    app:thumbColor="@color/darkGray"
-                    app:tickColor="@color/black"
-                    app:trackColor="@color/gray" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="-15dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_min_Quality"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="min" />
-
-                    <TextView
-                        android:id="@+id/tv_neutral_Quality"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
-                        android:text="0"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/tv_max_Quality"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
-                        android:text="max"
-                        android:textAlignment="textEnd" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/ll_Saturation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -314,81 +336,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_Sharpness"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_Sharpness"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Sharpness"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/sliderSharpness"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:stepSize="1"
-                    android:valueFrom="-2"
-                    android:valueTo="2"
-                    app:haloColor="@color/white"
-                    app:thumbColor="@color/darkGray"
-                    app:tickColor="@color/black"
-                    app:trackColor="@color/gray" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="-15dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_min_Sharpness"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="min" />
-
-                    <TextView
-                        android:id="@+id/tv_neutral_Sharpness"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
-                        android:text="0"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/tv_max_Sharpness"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
-                        android:text="max"
-                        android:textAlignment="textEnd" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_Denoise"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_Denoise"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Denoise"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/ll_SpecialEffect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -411,7 +358,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_Whitebal"
+                android:id="@+id/ll_AutoWhiteBalanceState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -421,12 +368,12 @@
                     android:id="@+id/tv_Whitebal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Whitebal"
+                    android:text="AutoWhiteBalanceState"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_Whitebal"
+                    android:id="@+id/switch_AutoWhiteBalanceState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -434,7 +381,7 @@
 
 
             <LinearLayout
-                android:id="@+id/ll_AwbGain"
+                android:id="@+id/ll_AutoWbGain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -444,12 +391,12 @@
                     android:id="@+id/tv_AwbGain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="AwbGain"
+                    android:text="AutoWbGain"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_AwbGain"
+                    android:id="@+id/switch_AutoWbGain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -514,7 +461,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_ExposureCtrl"
+                android:id="@+id/ll_ExposureCtrlState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -524,15 +471,73 @@
                     android:id="@+id/tv_ExposureCtrl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="ExposureCtrl"
+                    android:text="ExposureCtrlState"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_ExposureCtrl"
+                    android:id="@+id/switch_ExposureCtrlState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_AecValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_AecValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="AecValue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderAecValue"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="10"
+                    android:valueFrom="0"
+                    android:valueTo="1200"
+                    app:haloColor="@color/white"
+                    app:thumbColor="@color/darkGray"
+                    app:tickColor="@color/black"
+                    app:trackColor="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_min_AecValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="min" />
+
+                    <TextView
+                        android:id="@+id/tv_neutral_AecValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="118dp"
+                        android:text="600"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/tv_max_AecValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="95dp"
+                        android:text="max"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -616,65 +621,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_AecValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_AecValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="AecValue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/sliderAecValue"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:stepSize="10"
-                    android:valueFrom="0"
-                    android:valueTo="1200"
-                    app:haloColor="@color/white"
-                    app:thumbColor="@color/darkGray"
-                    app:tickColor="@color/black"
-                    app:trackColor="@color/gray" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="-15dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_min_AecValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="min" />
-
-                    <TextView
-                        android:id="@+id/tv_neutral_AecValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
-                        android:text="600"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/tv_max_AecValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="95dp"
-                        android:text="max"
-                        android:textAlignment="textEnd" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_GainCtrl"
+                android:id="@+id/ll_AgcCtrlState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -684,12 +631,12 @@
                     android:id="@+id/tv_GainCtrl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="GainCtrl"
+                    android:text="AgcCtrlState"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_GainCtrl"
+                    android:id="@+id/switch_AgcCtrlState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -888,7 +835,7 @@
                     android:id="@+id/tv_Lenc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lenc"
+                    android:text="Lens Correction"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -910,7 +857,7 @@
                     android:id="@+id/tv_Hmirror"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Hmirror"
+                    android:text="H-Mirror"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -932,34 +879,12 @@
                     android:id="@+id/tv_Vflip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Vflip"
+                    android:text="V-Flip"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_Vflip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_Dcw"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_Dcw"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Dcw"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_Dcw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -986,6 +911,13 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/button_resetValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reset Values" />
+
 
         </LinearLayout>
     </ScrollView>

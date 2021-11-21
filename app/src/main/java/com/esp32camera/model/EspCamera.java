@@ -3,22 +3,21 @@ package com.esp32camera.model;
 import com.esp32camera.camSettings.CamSettingsContract;
 
 public class EspCamera implements CamSettingsContract.Model {
+    String name;
+    int framesize;
+    int quality;
     int brightness;
     int contrast;
-    String name;
-    int quality;
     int saturation;
-    int sharpness;
-    int denoise;
     int specialEffect;
-    int whitebal;
-    int awbGain;
+    int autoWhiteBalanceState;
+    int autoWbGain;
     int wbMode;
-    int exposureCtrl;
+    int exposureCtrlState;
+    int aecValue;
     int aec2;
     int aeLevel;
-    int aecValue;
-    int gainCtrl;
+    int agcCtrlState;
     int agcGain;
     int gainCeiling;
     int bpc;
@@ -27,8 +26,34 @@ public class EspCamera implements CamSettingsContract.Model {
     int lenc;
     int hMirror;
     int vFlip;
-    int dcw;
     int colorbar;
+
+    @Override
+    public void setName(String cameraName) {
+        this.name = cameraName;
+    }
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setFramesize(int framesize) {
+        this.framesize = framesize;
+    }
+    @Override
+    public int getFramesize() {
+        return framesize;
+    }
+
+    @Override
+    public void setQuality(int quality) {
+        this.quality = quality;
+    }
+    @Override
+    public int getQuality() {
+        return quality;
+    }
 
     @Override
     public void setBrightness(int brightness) {
@@ -49,109 +74,72 @@ public class EspCamera implements CamSettingsContract.Model {
     }
 
     @Override
-    public void setName(String cameraName) {
-        this.name = cameraName;
-    }
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setQuality(int quality) {
-
-    }
-
-    @Override
-    public int getQuality() {
-        return quality;
-    }
-
-    @Override
     public void setSaturation(int saturation) {
         this.saturation = saturation;
     }
-
     @Override
     public int getSaturation() {
         return saturation;
     }
 
     @Override
-    public void setSharpness(int sharpness) {
-        this.sharpness = sharpness;
-    }
-
-    @Override
-    public int getSharpness() {
-        return sharpness;
-    }
-
-    @Override
-    public void setDenoise(int denoise) {
-        this.denoise = denoise;
-    }
-
-    @Override
-    public int getDenoise() {
-        return denoise;
-    }
-
-    @Override
     public void setSpecialEffect(int specialEffect) {
         this.specialEffect = specialEffect;
     }
-
     @Override
     public int getSpecialEffect() {
         return specialEffect;
     }
 
     @Override
-    public void setWhitebal(int whitebal) {
-        this.whitebal = whitebal;
+    public void setAutoWhiteBalanceState(int autoWhiteBalanceState) {
+        this.autoWhiteBalanceState = autoWhiteBalanceState;
+    }
+    @Override
+    public int getAutoWhiteBalanceState() {
+        return autoWhiteBalanceState;
     }
 
     @Override
-    public int getWhitebal() {
-        return whitebal;
+    public void setAutoWbGain(int autoWbGain) {
+        this.autoWbGain = autoWbGain;
     }
-
     @Override
-    public void setAwbGain(int awbGain) {
-        this.awbGain = awbGain;
-    }
-
-    @Override
-    public int getAwbGain() {
-        return awbGain;
+    public int getAutoWbGain() {
+        return autoWbGain;
     }
 
     @Override
     public void setWbMode(int wbMode) {
         this.wbMode = wbMode;
     }
-
     @Override
     public int getWbMode() {
         return wbMode;
     }
 
     @Override
-    public void setExposureCtrl(int exposureCtrl) {
-        this.exposureCtrl = exposureCtrl;
+    public void setExposureCtrlState(int exposureCtrlState) {
+        this.exposureCtrlState = exposureCtrlState;
+    }
+    @Override
+    public int getExposureCtrlState() {
+        return exposureCtrlState;
     }
 
     @Override
-    public int getExposureCtrl() {
-        return exposureCtrl;
+    public void setAecValue(int aecValue) {
+        this.aecValue = aecValue;
+    }
+    @Override
+    public int getAecValue() {
+        return aecValue;
     }
 
     @Override
     public void setAec2(int aec2) {
         this.aec2 = aec2;
     }
-
     @Override
     public int getAec2() {
         return aec2;
@@ -161,37 +149,24 @@ public class EspCamera implements CamSettingsContract.Model {
     public void setAeLevel(int aeLevel) {
         this.aeLevel = aeLevel;
     }
-
     @Override
     public int getAeLevel() {
         return aeLevel;
     }
 
     @Override
-    public void setAecValue(int aecValue) {
-        this.aecValue = aecValue;
+    public void setAgcCtrlState(int agcCtrlState) {
+        this.agcCtrlState = agcCtrlState;
     }
-
     @Override
-    public int getAecValue() {
-        return aecValue;
-    }
-
-    @Override
-    public void setGainCtrl(int gainCtrl) {
-        this.gainCtrl = gainCtrl;
-    }
-
-    @Override
-    public int getGainCtrl() {
-        return gainCtrl;
+    public int getAgcCtrlState() {
+        return agcCtrlState;
     }
 
     @Override
     public void setAgcGain(int agcGain) {
         this.agcGain = agcGain;
     }
-
     @Override
     public int getAgcGain() {
         return agcGain;
@@ -201,7 +176,6 @@ public class EspCamera implements CamSettingsContract.Model {
     public void setGainCeiling(int gainCeiling) {
         this.gainCeiling = gainCeiling;
     }
-
     @Override
     public int getGainCeiling() {
         return gainCeiling;
@@ -211,7 +185,6 @@ public class EspCamera implements CamSettingsContract.Model {
     public void setBpc(int bpc) {
         this.bpc = bpc;
     }
-
     @Override
     public int getBpc() {
         return bpc;
@@ -221,7 +194,6 @@ public class EspCamera implements CamSettingsContract.Model {
     public void setWpc(int wpc) {
         this.wpc = wpc;
     }
-
     @Override
     public int getWpc() {
         return wpc;
@@ -231,7 +203,6 @@ public class EspCamera implements CamSettingsContract.Model {
     public void setRawGma(int rawGma) {
         this.rawGma = rawGma;
     }
-
     @Override
     public int getRawGma() {
         return rawGma;
@@ -241,7 +212,6 @@ public class EspCamera implements CamSettingsContract.Model {
     public void setLenc(int lenc) {
         this.lenc = lenc;
     }
-
     @Override
     public int getLenc() {
         return lenc;
@@ -251,7 +221,6 @@ public class EspCamera implements CamSettingsContract.Model {
     public void setHmirror(int hMirror) {
         this.hMirror = hMirror;
     }
-
     @Override
     public int getHmirror() {
         return hMirror;
@@ -261,27 +230,15 @@ public class EspCamera implements CamSettingsContract.Model {
     public void setVflip(int vFlip) {
         this.vFlip = vFlip;
     }
-
     @Override
     public int getVflip() {
         return vFlip;
     }
 
     @Override
-    public void setDcw(int dcw) {
-        this.dcw = dcw;
-    }
-
-    @Override
-    public int getDcw() {
-        return dcw;
-    }
-
-    @Override
     public void setColorbar(int colorbar) {
         this.colorbar = colorbar;
     }
-
     @Override
     public int getColorbar() {
         return colorbar;

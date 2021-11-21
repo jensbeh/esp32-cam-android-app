@@ -6,4 +6,26 @@
     <string name="nav_gallery">Gallery</string>
     <string name="nav_notifications">Notifications</string>
 
+
+    <string-array name="framesize_array">
+        <item>UXGA</item>
+        <item>SXGA</item>
+        <item>XGA</item>
+        <item>SVGA</item>
+        <item>VGA</item>
+        <item>CIF</item>
+        <item>QVGA</item>
+        <item>HQVGA</item>
+        <item>QQVGA</item>
+    </string-array>
+
+    <string-array name="specialEffect_array">
+        <item>No Effect</item>
+        <item>Negative</item>
+        <item>Grayscale</item>
+        <item>Red Tint</item>
+        <item>Green Tint</item>
+        <item>Blue Tint</item>
+        <item>Sepia</item>
+    </string-array>
 </resources>
