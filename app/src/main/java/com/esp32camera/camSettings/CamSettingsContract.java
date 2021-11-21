@@ -21,7 +21,7 @@ public interface CamSettingsContract {
 
         void setSwitchCameraAutoWbGain(int autoWbGain);
 
-        void setSliderCameraWbMode(int wbMode);
+        void setSpinnerCameraWbMode(int wbMode);
 
         void setSwitchCameraExposureCtrlState(int exposureCtrlState);
 

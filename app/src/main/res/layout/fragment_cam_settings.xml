@@ -417,47 +417,10 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/sliderWbMode"
+                <Spinner
+                    android:id="@+id/spinner_WbMode"
                     android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:stepSize="1"
-                    android:valueFrom="0"
-                    android:valueTo="4"
-                    app:haloColor="@color/white"
-                    app:thumbColor="@color/darkGray"
-                    app:tickColor="@color/black"
-                    app:trackColor="@color/gray" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="-15dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_min_WbMode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="min" />
-
-                    <TextView
-                        android:id="@+id/tv_neutral_WbMode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
-                        android:text="2"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/tv_max_WbMode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
-                        android:text="max"
-                        android:textAlignment="textEnd" />
-                </LinearLayout>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -501,7 +464,7 @@
                     android:id="@+id/sliderAecValue"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:stepSize="10"
+                    android:stepSize="1"
                     android:valueFrom="0"
                     android:valueTo="1200"
                     app:haloColor="@color/white"
@@ -680,22 +643,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="min" />
+                        android:text="1x" />
 
                     <TextView
                         android:id="@+id/tv_neutral_AgcGain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="118dp"
-                        android:text="15"
+                        android:text=""
                         android:textAlignment="center" />
 
                     <TextView
                         android:id="@+id/tv_max_AgcGain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
-                        android:text="max"
+                        android:layout_marginStart="130dp"
+                        android:text="31x"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
             </LinearLayout>
@@ -738,22 +701,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="min" />
+                        android:text="2x" />
 
                     <TextView
                         android:id="@+id/tv_neutral_GainCeiling"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="118dp"
-                        android:text="3"
+                        android:text=""
                         android:textAlignment="center" />
 
                     <TextView
                         android:id="@+id/tv_max_GainCeiling"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
-                        android:text="max"
+                        android:layout_marginStart="125dp"
+                        android:text="128x"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
             </LinearLayout>

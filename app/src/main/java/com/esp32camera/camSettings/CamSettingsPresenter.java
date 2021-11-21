@@ -150,7 +150,7 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
         espCamera.setWbMode(wbMode);
 
         // set to Slider in settings if opened
-        camSettingsFragment.setSliderCameraWbMode(wbMode);
+        camSettingsFragment.setSpinnerCameraWbMode(wbMode);
     }
 
     @Override
