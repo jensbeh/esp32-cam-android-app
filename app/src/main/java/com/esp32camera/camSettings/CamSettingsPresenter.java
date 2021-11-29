@@ -40,8 +40,12 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
         // set framesize to model
         espCamera.setFramesize(framesize);
 
-        // set to Spinner in settings if opened
-        camSettingsFragment.setSpinnerCameraFramesize(framesize);
+        try {
+            // set to Spinner in settings if opened
+            camSettingsFragment.setSpinnerCameraFramesize(framesize);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
     }
 
     @Override
@@ -355,5 +359,82 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     @Override
     public int getCameraColorbar() {
         return espCamera.getColorbar();
+    }
+
+
+    @Override
+    public int getCameraFramesizeWidth() {
+        /*
+        FRAMESIZE_UXGA (1600 x 1200) -> framesize=10
+        FRAMESIZE_SXGA (1280 x 1024) -> framesize=9
+        FRAMESIZE_XGA (1024 x 768) -> framesize=8
+        FRAMESIZE_SVGA (800 x 600) -> framesize=7
+        FRAMESIZE_VGA (640 x 480) -> framesize=6
+        FRAMESIZE_CIF (352 x 288) -> framesize=5
+        FRAMESIZE_QVGA (320 x 240) -> framesize=4
+        FRAMESIZE_HQVGA (240 x 176) -> framesize=3
+        FRAMESIZE_QQVGA (160 x 120) -> framesize=0
+        */
+
+        switch (getCameraFramesize()) {
+            case 10:
+                return 1600;
+            case 9:
+                return 1280;
+            case 8:
+                return 1024;
+            case 7:
+                return 800;
+            case 6:
+                return 640;
+            case 5:
+                return 352;
+            case 4:
+                return 320;
+            case 3:
+                return 240;
+            case 0:
+                return 160;
+            default:
+                return 0;
+        }
+    }
+
+    @Override
+    public int getCameraFramesizeHeight() {
+        /*
+        FRAMESIZE_UXGA (1600 x 1200) -> framesize=10
+        FRAMESIZE_SXGA (1280 x 1024) -> framesize=9
+        FRAMESIZE_XGA (1024 x 768) -> framesize=8
+        FRAMESIZE_SVGA (800 x 600) -> framesize=7
+        FRAMESIZE_VGA (640 x 480) -> framesize=6
+        FRAMESIZE_CIF (352 x 288) -> framesize=5
+        FRAMESIZE_QVGA (320 x 240) -> framesize=4
+        FRAMESIZE_HQVGA (240 x 176) -> framesize=3
+        FRAMESIZE_QQVGA (160 x 120) -> framesize=0
+        */
+
+        switch (getCameraFramesize()) {
+            case 10:
+                return 1200;
+            case 9:
+                return 1024;
+            case 8:
+                return 768;
+            case 7:
+                return 600;
+            case 6:
+                return 480;
+            case 5:
+                return 288;
+            case 4:
+                return 240;
+            case 3:
+                return 176;
+            case 0:
+                return 120;
+            default:
+                return 0;
+        }
     }
 }

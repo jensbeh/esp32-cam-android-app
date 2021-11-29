@@ -249,5 +249,11 @@ public interface CamSettingsContract {
         void setCameraColorbar(int colorbar);
 
         int getCameraColorbar();
+
+
+
+        int getCameraFramesizeWidth();
+
+        int getCameraFramesizeHeight();
     }
 }
