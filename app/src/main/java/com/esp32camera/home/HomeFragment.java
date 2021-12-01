@@ -3,9 +3,9 @@ package com.esp32camera.home;
 import static com.esp32camera.util.Constants.STREAM_PATH;
 import static com.esp32camera.util.Constants.WEBSERVER_URL;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +28,6 @@ import com.esp32camera.MainPresenter;
 import com.esp32camera.R;
 import com.esp32camera.camSettings.CamSettingsPresenter;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class HomeFragment extends Fragment {
 
     private View view;
@@ -41,8 +38,6 @@ public class HomeFragment extends Fragment {
     private final HomePresenter homePresenter;
     private CamSettingsPresenter camSettingsPresenter;
     private TextView tv_camera_name;
-    private int webViewWidth;
-    private int webViewHeight;
     private ConstraintLayout streamLayout;
     private LinearLayout errorLayout;
     private Button errorReloadButton;
@@ -113,21 +108,24 @@ public class HomeFragment extends Fragment {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 // when page is loading
-                System.err.println("onPageStarted");
+                Log.i("HomeFragment", "onPageStarted");
+
                 streamLayout.setVisibility(View.VISIBLE);
                 errorLayout.setVisibility(View.GONE);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                System.err.println("onPageFinished");
+                Log.i("HomeFragment", "onPageFinished");
+
                 loadingLayout.setVisibility(View.GONE);
             }
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-                System.err.println("onReceivedError");
+                Log.i("HomeFragment", "onReceivedError");
+
                 streamLayout.setVisibility(View.GONE);
                 errorLayout.setVisibility(View.VISIBLE);
             }
@@ -137,7 +135,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                //System.err.println("44444444444");
                 if (newProgress == 100) {
                     streamLayout.setVisibility(View.VISIBLE);
                 }
@@ -150,23 +147,6 @@ public class HomeFragment extends Fragment {
             webViewStream.reload();
         });
 
-//        Timer repeatTask = new Timer();
-//        repeatTask.scheduleAtFixedRate(new TimerTask() {
-//
-//            @Override
-//            public void run() {
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-////                        if (!pd.isShowing() && errorLayout.getVisibility() != View.VISIBLE) {
-////                            System.err.println("RELOAD");
-////                            webViewStream.reload();
-////                        }
-//                    }
-//                });
-//            }
-//        }, 0, 5000);
-
         String html = "<html><body><img src=\"" + WEBSERVER_URL + STREAM_PATH + "\" width=\"100%\" height=\"100%\"\"/></body></html>";
         webViewStream.loadData(html, "text/html", null);
     }
@@ -177,5 +157,21 @@ public class HomeFragment extends Fragment {
 
         // kill webView to kill the stream
         webViewStream.destroy();
+    }
+
+    /**
+     * This method will be called when webSocketConnection get lost / is closed
+     * ErrorLayout will be shown if it isn't already there, because in most cases the stream is also killed
+     */
+    public void notifyOnWebSocketClosed() {
+        if (this.isVisible()) {
+            getActivity().runOnUiThread(() -> {
+                if (errorLayout.getVisibility() != View.VISIBLE) {
+                    Log.i("HomeFragment", "Show ERROR Layout on WebSocket Closed...");
+
+                    errorLayout.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 }

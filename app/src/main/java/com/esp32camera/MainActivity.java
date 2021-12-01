@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private NotificationFragment notificationFragment;
     private CamSettingsFragment camSettingsFragment;
 
+
     public enum State {
         HomeFragment,
         GalleryFragment,
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         galleryPresenter = new GalleryPresenter(this);
         notificationPresenter = new NotificationPresenter(this);
         camSettingsPresenter = new CamSettingsPresenter(this);
-        mainPresenter = new MainPresenter(this, camSettingsPresenter);
+        mainPresenter = new MainPresenter(this, homePresenter, camSettingsPresenter);
 
         // Setup Fragments
         homeFragment = new HomeFragment(mainPresenter, homePresenter, camSettingsPresenter);

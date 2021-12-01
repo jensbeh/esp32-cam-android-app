@@ -9,11 +9,15 @@ public class HomePresenter implements HomeContract.Presenter {
 
     public HomePresenter(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-
     }
 
     @Override
     public void setView(HomeFragment homeFragment) {
         this.homeFragment = homeFragment;
+    }
+
+    @Override
+    public void onWebSocketConnectionClosed() {
+        homeFragment.notifyOnWebSocketClosed();
     }
 }

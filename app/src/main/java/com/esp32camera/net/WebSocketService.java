@@ -27,6 +27,7 @@ import static com.esp32camera.util.Constants.WHITEBALANCE_STATE_PATH;
 import static com.esp32camera.util.Constants.WPC_PATH;
 
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 
 import com.esp32camera.MainPresenter;
@@ -35,19 +36,26 @@ import com.esp32camera.camSettings.CamSettingsPresenter;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WebSocketService {
 
     private WebSocketClient webSocketClient;
     private MainPresenter mainPresenter;
     private CamSettingsPresenter camSettingsPresenter;
+    private WebSocketServiceInterface webSocketServiceInterface;
+    private Timer noopTimer;
 
-    public WebSocketService(MainPresenter mainPresenter, CamSettingsPresenter camSettingsPresenter) {
+    public WebSocketService(MainPresenter mainPresenter, CamSettingsPresenter camSettingsPresenter, WebSocketServiceInterface webSocketServiceInterface) {
         this.mainPresenter = mainPresenter;
         this.camSettingsPresenter = camSettingsPresenter;
+        this.webSocketServiceInterface = webSocketServiceInterface;
+        this.noopTimer = new Timer();
     }
 
     public void startWebSocketService() {
@@ -62,28 +70,51 @@ public class WebSocketService {
         webSocketClient = new WebSocketClient(Objects.requireNonNull(uri)) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
-                Log.i("Websocket", "Opened");
+                webSocketServiceInterface.OnConnectionOpened("WEBSOCKET OPENED");
+                Log.i("WebSocket", "Opened");
                 webSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
+
+//                noopTimer.schedule(new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        // Send NOOP Message
+//                        sendMessage("COM_NOOP");
+//                    }
+//                }, 0, 1000 * 30);
             }
 
             @Override
             public void onMessage(String s) {
                 final String message = s;
-                //Toast.makeText(mainActivity, message, Toast.LENGTH_SHORT).show();
                 handleMessage(message);
-
             }
 
             @Override
             public void onClose(int i, String s, boolean b) {
-                Log.i("Websocket", "Closed " + s);
+                webSocketServiceInterface.OnConnectionClosed("WEBSOCKET CLOSE");
+                Log.i("WebSocket", "Closed " + s);
+
+                // tries to reconnect the webSocket after 5 sec; if not working then there will be an onClose Error again with reconnect etc.
+                mainPresenter.getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.i("WebSocket", "Try to reconnect...");
+                                webSocketClient.reconnect();
+                            }
+                        }, 5000);
+                    }
+                });
             }
 
             @Override
             public void onError(Exception e) {
-                Log.i("Websocket", "Error " + e.getMessage());
+                webSocketServiceInterface.OnConnectionFailed("WEBSOCKET ERROR");
+                Log.i("WebSocket", "Error " + e.getMessage());
             }
         };
+        webSocketClient.setConnectionLostTimeout(3);
         webSocketClient.connect();
     }
 
@@ -277,5 +308,9 @@ public class WebSocketService {
 
     public void sendMessage(String message) {
         webSocketClient.send(message);
+    }
+
+    public boolean isWebSocketConnected() {
+        return webSocketClient.isOpen();
     }
 }

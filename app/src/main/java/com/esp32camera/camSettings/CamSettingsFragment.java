@@ -165,9 +165,22 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         super.onStart();
 
         // init ui - need to set here because otherwise the slider wont be updated by values
+        initUi();
+        if (!mainPresenter.isWebSocketConnected()) {
+            disableCamSettings();
+        }
+
+        setupOnListener();
+    }
+
+    private void initUi() {
         setFrameSizeToSpinner(camSettingsPresenter.getCameraFramesize());
 
-        sliderQuality.setValue(camSettingsPresenter.getCameraQuality());
+        if (camSettingsPresenter.getCameraQuality() == 0) {
+            sliderQuality.setValue(10);
+        } else {
+            sliderQuality.setValue(camSettingsPresenter.getCameraQuality());
+        }
         sliderBrightness.setValue(camSettingsPresenter.getCameraBrightness());
         sliderContrast.setValue(camSettingsPresenter.getCameraContrast());
         sliderSaturation.setValue(camSettingsPresenter.getCameraSaturation());
@@ -213,8 +226,6 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         switch_Hmirror.setChecked(camSettingsPresenter.getCameraHmirror() == 1);
         switch_Vflip.setChecked(camSettingsPresenter.getCameraVflip() == 1);
         switch_Colorbar.setChecked(camSettingsPresenter.getCameraColorbar() == 1);
-
-        setupOnListener();
     }
 
     private void setupOnListener() {
@@ -751,6 +762,88 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void enableCamSettings() {
+        if (this.isVisible()) {
+            getActivity().runOnUiThread(() -> initUi());
+
+            spinner_FrameSize.setEnabled(true);
+
+            sliderQuality.setEnabled(true);
+            sliderBrightness.setEnabled(true);
+            sliderContrast.setEnabled(true);
+            sliderSaturation.setEnabled(true);
+
+            spinner_SpecialEffect.setEnabled(true);
+
+            switch_AutoWhiteBalanceState.setEnabled(true);
+            switch_AutoWbGain.setEnabled(true);
+            switch_AutoWbGain.setEnabled(true);
+
+            spinner_WbMode.setEnabled(true);
+
+            switch_ExposureCtrlState.setEnabled(true);
+            switch_ExposureCtrlState.setEnabled(true);
+
+            sliderAecValue.setEnabled(true);
+            switch_Aec2.setEnabled(true);
+            sliderAeLevel.setEnabled(true);
+
+            switch_AgcCtrlState.setEnabled(true);
+            switch_AgcCtrlState.setEnabled(true);
+
+            sliderAgcGain.setEnabled(true);
+            sliderGainCeiling.setEnabled(true);
+            switch_Bpc.setEnabled(true);
+            switch_Wpc.setEnabled(true);
+            switch_RawGma.setEnabled(true);
+            switch_Lenc.setEnabled(true);
+            switch_Hmirror.setEnabled(true);
+            switch_Vflip.setEnabled(true);
+            switch_Colorbar.setEnabled(true);
+        }
+    }
+
+    @Override
+    public void disableCamSettings() {
+        if (this.isVisible()) {
+            spinner_FrameSize.setEnabled(false);
+
+            sliderQuality.setEnabled(false);
+            sliderBrightness.setEnabled(false);
+            sliderContrast.setEnabled(false);
+            sliderSaturation.setEnabled(false);
+
+            spinner_SpecialEffect.setEnabled(false);
+
+            switch_AutoWhiteBalanceState.setEnabled(false);
+            switch_AutoWbGain.setEnabled(false);
+            switch_AutoWbGain.setEnabled(false);
+
+            spinner_WbMode.setEnabled(false);
+
+            switch_ExposureCtrlState.setEnabled(false);
+            switch_ExposureCtrlState.setEnabled(false);
+
+            sliderAecValue.setEnabled(false);
+            switch_Aec2.setEnabled(false);
+            sliderAeLevel.setEnabled(false);
+
+            switch_AgcCtrlState.setEnabled(false);
+            switch_AgcCtrlState.setEnabled(false);
+
+            sliderAgcGain.setEnabled(false);
+            sliderGainCeiling.setEnabled(false);
+            switch_Bpc.setEnabled(false);
+            switch_Wpc.setEnabled(false);
+            switch_RawGma.setEnabled(false);
+            switch_Lenc.setEnabled(false);
+            switch_Hmirror.setEnabled(false);
+            switch_Vflip.setEnabled(false);
+            switch_Colorbar.setEnabled(false);
         }
     }
 }

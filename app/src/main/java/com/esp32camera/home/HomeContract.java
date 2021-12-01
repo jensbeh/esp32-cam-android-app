@@ -14,5 +14,7 @@ public interface HomeContract {
 
     interface Presenter { // from view/service to presenter (and back)
         void setView(HomeFragment homeFragment);
+
+        void onWebSocketConnectionClosed();
     }
 }

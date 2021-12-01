@@ -22,6 +22,16 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
     }
 
     @Override
+    public void onWebSocketConnectionOpened() {
+        camSettingsFragment.enableCamSettings();
+    }
+
+    @Override
+    public void onWebSocketConnectionClosed() {
+        camSettingsFragment.disableCamSettings();
+    }
+
+    @Override
     public void setCameraName(String cameraName) {
         // set cameraName to model
         espCamera.setName(cameraName);

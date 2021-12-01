@@ -50,6 +50,9 @@ public interface CamSettingsContract {
         void setSwitchCameraVflip(int vFlip);
 
         void setSwitchCameraColorbar(int colorbar);
+
+        void enableCamSettings();
+        void disableCamSettings();
     }
 
     interface Model { // from presenter to model and back
@@ -153,6 +156,9 @@ public interface CamSettingsContract {
 
     interface Presenter { // from view/service to presenter (and back)
         void setView(CamSettingsFragment camSettingsFragment);
+
+        void onWebSocketConnectionOpened();
+        void onWebSocketConnectionClosed();
 
         void setCameraName(String cameraName);
 

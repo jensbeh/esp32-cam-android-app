@@ -1,26 +1,48 @@
 package com.esp32camera;
 
+import android.app.Activity;
+import android.os.Handler;
 import android.view.MenuItem;
 
 import androidx.fragment.app.Fragment;
 
 import com.esp32camera.camSettings.CamSettingsPresenter;
+import com.esp32camera.home.HomePresenter;
 import com.esp32camera.net.WebSocketService;
+import com.esp32camera.net.WebSocketServiceInterface;
 
 public class MainPresenter implements MainContract.Presenter {
 
     private final WebSocketService webSocketService;
-    private MainContract.View mainView;
+    private MainActivity mainActivity;
     private MainActivity.State viewState;
+    private HomePresenter homePresenter;
     private CamSettingsPresenter camSettingsPresenter;
 
-    public MainPresenter(MainContract.View mainView, CamSettingsPresenter camSettingsPresenter) {
-        this.mainView = mainView;
+    public MainPresenter(MainActivity mainActivity, HomePresenter homePresenter, CamSettingsPresenter camSettingsPresenter) {
+        this.mainActivity = mainActivity;
+        this.homePresenter = homePresenter;
         this.camSettingsPresenter = camSettingsPresenter;
 
         viewState = MainActivity.State.HomeFragment;
 
-        webSocketService = new WebSocketService(this, camSettingsPresenter);
+        webSocketService = new WebSocketService(this, camSettingsPresenter, new WebSocketServiceInterface() {
+            @Override
+            public void OnConnectionOpened(String status) {
+                camSettingsPresenter.onWebSocketConnectionOpened();
+            }
+
+            @Override
+            public void OnConnectionClosed(String status) {
+                // here i can show error view of the specific webView
+                homePresenter.onWebSocketConnectionClosed();
+                camSettingsPresenter.onWebSocketConnectionClosed();
+            }
+
+            @Override
+            public void OnConnectionFailed(String status) {
+            }
+        });
         webSocketService.startWebSocketService();
     }
 
@@ -29,15 +51,15 @@ public class MainPresenter implements MainContract.Presenter {
         switch (item.getItemId()) {
             case R.id.nav_item_gallery:
                 viewState = MainActivity.State.GalleryFragment;
-                mainView.navigateToGalleryFragment();
+                mainActivity.navigateToGalleryFragment();
                 break;
             case R.id.nav_item_home:
                 viewState = MainActivity.State.HomeFragment;
-                mainView.navigateToHomeFragment();
+                mainActivity.navigateToHomeFragment();
                 break;
             case R.id.nav_item_notifications:
                 viewState = MainActivity.State.NotificationFragment;
-                mainView.navigateToNotificationFragment();
+                mainActivity.navigateToNotificationFragment();
                 break;
             default:
                 break;
@@ -45,15 +67,25 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
+    public Activity getActivity() {
+        return mainActivity;
+    }
+
+    @Override
+    public boolean isWebSocketConnected() {
+        return webSocketService.isWebSocketConnected();
+    }
+
+    @Override
     public void navigateToCamSettingsFragment() {
         viewState = MainActivity.State.CamSettingsFragment;
-        mainView.navigateToCamSettingsFragment();
+        mainActivity.navigateToCamSettingsFragment();
     }
 
     @Override
     public void navigateToHomeFragment() {
         viewState = MainActivity.State.HomeFragment;
-        mainView.navigateToHomeFragment();
+        mainActivity.navigateToHomeFragment();
     }
 
     @Override

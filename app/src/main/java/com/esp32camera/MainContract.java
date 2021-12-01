@@ -1,5 +1,6 @@
 package com.esp32camera;
 
+import android.app.Activity;
 import android.view.MenuItem;
 
 public interface MainContract {
@@ -24,5 +25,9 @@ public interface MainContract {
 
         // from bottom navigation bar
         void changeToSelectedFragment(MenuItem item);
+
+        Activity getActivity();
+
+        boolean isWebSocketConnected();
     }
 }
