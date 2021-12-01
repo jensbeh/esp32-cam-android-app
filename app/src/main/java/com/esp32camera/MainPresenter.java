@@ -1,10 +1,8 @@
 package com.esp32camera;
 
 import android.app.Activity;
-import android.os.Handler;
 import android.view.MenuItem;
-
-import androidx.fragment.app.Fragment;
+import android.widget.Toast;
 
 import com.esp32camera.camSettings.CamSettingsPresenter;
 import com.esp32camera.home.HomePresenter;
@@ -74,6 +72,17 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public boolean isWebSocketConnected() {
         return webSocketService.isWebSocketConnected();
+    }
+
+    @Override
+    public void onNewEspCameraConnected(String ipAddress) {
+        Toast.makeText(mainActivity, ipAddress, Toast.LENGTH_SHORT).show();
+
+        // create new cardView
+
+        // connect to WebServer
+
+        // connect to WebSocket
     }
 
     @Override

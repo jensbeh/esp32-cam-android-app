@@ -6,6 +6,10 @@
     <string name="nav_gallery">Gallery</string>
     <string name="nav_notifications">Notifications</string>
 
+    <!-- Toolbar Add ESP-Camera Strings -->
+    <string name="nav_add_camera">Add Camera</string>
+    <string name="espCameraIp">EspCamera Ip</string>
+
 
     <string-array name="framesize_array">
         <item>UXGA</item>

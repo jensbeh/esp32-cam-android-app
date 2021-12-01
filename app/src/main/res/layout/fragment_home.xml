@@ -9,6 +9,19 @@
     android:fitsSystemWindows="false"
     tools:context=".home.HomeFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_home"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
+        app:menu="@menu/toolbar_home_add_camera"/>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -126,7 +139,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <ProgressBar
                         android:id="@+id/progressBarStream"

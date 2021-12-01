@@ -7,7 +7,9 @@ public interface MainContract {
 
     interface View { // from presenter to view
         void navigateToHomeFragment();
+
         void navigateToGalleryFragment();
+
         void navigateToNotificationFragment();
 
         void navigateToCamSettingsFragment();
@@ -19,6 +21,7 @@ public interface MainContract {
 
     interface Presenter {
         void navigateToCamSettingsFragment(); // from view to presenter (and back)
+
         void navigateToHomeFragment(); // from view to presenter (and back)
 
         void sendWebSocketMessage(String message);
@@ -29,5 +32,7 @@ public interface MainContract {
         Activity getActivity();
 
         boolean isWebSocketConnected();
+
+        void onNewEspCameraConnected(String s); // from BottomSheetAddEspCamera
     }
 }

@@ -20,15 +20,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.esp32camera.MainPresenter;
 import com.esp32camera.R;
+import com.esp32camera.bottomSheets.BottomSheetAddEspCamera;
 import com.esp32camera.camSettings.CamSettingsPresenter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeContract.View {
 
     private View view;
 
@@ -43,6 +46,8 @@ public class HomeFragment extends Fragment {
     private Button errorReloadButton;
     private CardView cardView;
     private LinearLayout loadingLayout;
+    private FloatingActionButton fab_add_new_camera;
+    private Toolbar toolbarHome;
 
     public HomeFragment(MainPresenter mainPresenter, HomePresenter homePresenter, CamSettingsPresenter camSettingsPresenter) {
         this.mainPresenter = mainPresenter;
@@ -85,15 +90,24 @@ public class HomeFragment extends Fragment {
         loadingLayout = view.findViewById(R.id.loadingLayout);
         errorReloadButton = view.findViewById(R.id.errorReloadButton);
 
+        toolbarHome = view.findViewById(R.id.toolbar_home);
+
         setupOnListener();
 
         setupCameraStreamWebView();
     }
 
     private void setupOnListener() {
-
         button_camSettings.setOnClickListener(v -> {
             mainPresenter.navigateToCamSettingsFragment();
+        });
+
+        toolbarHome.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.nav_add_camera) {
+                BottomSheetAddEspCamera bottomSheetAddEspCamera = new BottomSheetAddEspCamera(mainPresenter.getActivity(), R.style.BottomSheetDialogTheme, mainPresenter);
+                bottomSheetAddEspCamera.show();
+            }
+            return true;
         });
     }
 

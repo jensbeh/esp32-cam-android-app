@@ -1,6 +1,9 @@
 package com.esp32camera;
 
+import android.content.IntentFilter;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private GalleryFragment galleryFragment;
     private NotificationFragment notificationFragment;
     private CamSettingsFragment camSettingsFragment;
-
 
     public enum State {
         HomeFragment,
