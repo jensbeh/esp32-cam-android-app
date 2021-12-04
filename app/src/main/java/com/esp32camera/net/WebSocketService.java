@@ -22,7 +22,8 @@ import static com.esp32camera.util.Constants.SATURATION_PATH;
 import static com.esp32camera.util.Constants.SPECIAL_EFFECT_PATH;
 import static com.esp32camera.util.Constants.VFLIP_PATH;
 import static com.esp32camera.util.Constants.WB_MODE_PATH;
-import static com.esp32camera.util.Constants.WEBSOCKETS_SERVER_URL;
+import static com.esp32camera.util.Constants.WEBSOCKETS_SERVER_PORT;
+import static com.esp32camera.util.Constants.WEBSOCKETS_SERVER_WS;
 import static com.esp32camera.util.Constants.WHITEBALANCE_STATE_PATH;
 import static com.esp32camera.util.Constants.WPC_PATH;
 
@@ -32,27 +33,28 @@ import android.util.Log;
 
 import com.esp32camera.MainPresenter;
 import com.esp32camera.camSettings.CamSettingsPresenter;
+import com.esp32camera.model.EspCamera;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class WebSocketService {
 
     private WebSocketClient webSocketClient;
     private MainPresenter mainPresenter;
+    private EspCamera espCamera;
     private CamSettingsPresenter camSettingsPresenter;
     private WebSocketServiceInterface webSocketServiceInterface;
     private Timer noopTimer;
 
-    public WebSocketService(MainPresenter mainPresenter, CamSettingsPresenter camSettingsPresenter, WebSocketServiceInterface webSocketServiceInterface) {
+    public WebSocketService(MainPresenter mainPresenter, EspCamera espCamera, CamSettingsPresenter camSettingsPresenter, WebSocketServiceInterface webSocketServiceInterface) {
         this.mainPresenter = mainPresenter;
+        this.espCamera = espCamera;
         this.camSettingsPresenter = camSettingsPresenter;
         this.webSocketServiceInterface = webSocketServiceInterface;
         this.noopTimer = new Timer();
@@ -62,7 +64,7 @@ public class WebSocketService {
 
         URI uri = null;
         try {
-            uri = new URI(WEBSOCKETS_SERVER_URL);
+            uri = new URI(WEBSOCKETS_SERVER_WS + espCamera.getIpAddress() + WEBSOCKETS_SERVER_PORT);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -70,7 +72,7 @@ public class WebSocketService {
         webSocketClient = new WebSocketClient(Objects.requireNonNull(uri)) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
-                webSocketServiceInterface.OnConnectionOpened("WEBSOCKET OPENED");
+                webSocketServiceInterface.OnConnectionOpened(espCamera, "WEBSOCKET OPENED");
                 Log.i("WebSocket", "Opened");
                 webSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
 
@@ -91,7 +93,7 @@ public class WebSocketService {
 
             @Override
             public void onClose(int i, String s, boolean b) {
-                webSocketServiceInterface.OnConnectionClosed("WEBSOCKET CLOSE");
+                webSocketServiceInterface.OnConnectionClosed(espCamera, "WEBSOCKET CLOSE");
                 Log.i("WebSocket", "Closed " + s);
 
                 // tries to reconnect the webSocket after 5 sec; if not working then there will be an onClose Error again with reconnect etc.
@@ -110,7 +112,7 @@ public class WebSocketService {
 
             @Override
             public void onError(Exception e) {
-                webSocketServiceInterface.OnConnectionFailed("WEBSOCKET ERROR");
+                webSocketServiceInterface.OnConnectionFailed(espCamera, "WEBSOCKET ERROR");
                 Log.i("WebSocket", "Error " + e.getMessage());
             }
         };
@@ -123,185 +125,138 @@ public class WebSocketService {
             // set framesize
             if (message.contains(FRAMESIZE_PATH)) {
                 int framesize = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraFramesize() != framesize) {
-                    camSettingsPresenter.setCameraFramesize(framesize);
-                }
+                mainPresenter.setCameraFramesize(espCamera, framesize);
             }
 
             // set quality
             else if (message.contains(QUALITY_PATH)) {
                 int quality = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraQuality() != quality) {
-                    camSettingsPresenter.setCameraQuality(quality);
-                }
+                mainPresenter.setCameraQuality(espCamera, quality);
             }
 
             // set brightness
             else if (message.contains(BRIGHTNESS_PATH)) {
                 int brightness = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraBrightness() != brightness) {
-                    camSettingsPresenter.setCameraBrightness(brightness);
-
-                }
+                mainPresenter.setCameraBrightness(espCamera, brightness);
             }
 
             // set contrast
             else if (message.contains(CONTRAST_PATH)) {
                 int contrast = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraContrast() != contrast) {
-                    camSettingsPresenter.setCameraContrast(contrast);
-                }
+                mainPresenter.setCameraContrast(espCamera, contrast);
             }
             // set saturation
             else if (message.contains(SATURATION_PATH)) {
                 int saturation = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraSaturation() != saturation) {
-                    camSettingsPresenter.setCameraSaturation(saturation);
-                }
+                mainPresenter.setCameraSaturation(espCamera, saturation);
             }
 
             // set specialEffect
             else if (message.contains(SPECIAL_EFFECT_PATH)) {
                 int specialEffect = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraSpecialEffect() != specialEffect) {
-                    camSettingsPresenter.setCameraSpecialEffect(specialEffect);
-                }
+                mainPresenter.setCameraSpecialEffect(espCamera, specialEffect);
             }
 
             // set autoWhiteBalanceState
             else if (message.contains(WHITEBALANCE_STATE_PATH)) {
                 int autoWhiteBalanceState = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraAutoWhiteBalanceState() != autoWhiteBalanceState) {
-                    camSettingsPresenter.setCameraAutoWhiteBalanceState(autoWhiteBalanceState);
-                }
+                mainPresenter.setCameraAutoWhiteBalanceState(espCamera, autoWhiteBalanceState);
             }
 
             // set autoWbGain
             else if (message.contains(AUTOWB_GAIN_PATH)) {
                 int autoWbGain = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraAutoWbGain() != autoWbGain) {
-                    camSettingsPresenter.setCameraAutoWbGain(autoWbGain);
-                }
+                mainPresenter.setCameraAutoWbGain(espCamera, autoWbGain);
             }
 
             // set wbMode
             else if (message.contains(WB_MODE_PATH)) {
                 int wbMode = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraWbMode() != wbMode) {
-                    camSettingsPresenter.setCameraWbMode(wbMode);
-                }
+                mainPresenter.setCameraWbMode(espCamera, wbMode);
             }
 
             // set exposureCtrlState
             else if (message.contains(EXPOSURE_CTRL_STATE_PATH)) {
                 int exposureCtrlState = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraExposureCtrlState() != exposureCtrlState) {
-                    camSettingsPresenter.setCameraExposureCtrlState(exposureCtrlState);
-                }
+                mainPresenter.setCameraExposureCtrlState(espCamera, exposureCtrlState);
             }
 
             // set aecValue
             else if (message.contains(AEC_VALUE_PATH)) {
                 int aecValue = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraAecValue() != aecValue) {
-                    camSettingsPresenter.setCameraAecValue(aecValue);
-                }
+                mainPresenter.setCameraAecValue(espCamera, aecValue);
             }
 
             // set aec2
             else if (message.contains(AEC2_PATH)) {
                 int aec2 = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraAec2() != aec2) {
-                    camSettingsPresenter.setCameraAec2(aec2);
-                }
+                mainPresenter.setCameraAec2(espCamera, aec2);
             }
 
             // set aeLevel
             else if (message.contains(AE_LEVEL_PATH)) {
                 int aeLevel = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraAeLevel() != aeLevel) {
-                    camSettingsPresenter.setCameraAeLevel(aeLevel);
-                }
+                mainPresenter.setCameraAeLevel(espCamera, aeLevel);
             }
 
             // set agcCtrlState
             else if (message.contains(AGC_CTRL_STATE_PATH)) {
                 int agcCtrlState = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraAgcCtrlState() != agcCtrlState) {
-                    camSettingsPresenter.setCameraAgcCtrlState(agcCtrlState);
-                }
+                mainPresenter.setCameraAgcCtrlState(espCamera, agcCtrlState);
             }
 
             // set agcGain
             else if (message.contains(AGC_GAIN_PATH)) {
                 int agcGain = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraAgcGain() != agcGain) {
-                    camSettingsPresenter.setCameraAgcGain(agcGain);
-                }
+                mainPresenter.setCameraAgcGain(espCamera, agcGain);
             }
 
             // set gainCeiling
             else if (message.contains(GAINCEILING_PATH)) {
                 int gainCeiling = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraGainCeiling() != gainCeiling) {
-                    camSettingsPresenter.setCameraGainCeiling(gainCeiling);
-                }
+                mainPresenter.setCameraGainCeiling(espCamera, gainCeiling);
             }
 
             // set bpc
             else if (message.contains(BPC_PATH)) {
                 int bpc = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraBpc() != bpc) {
-                    camSettingsPresenter.setCameraBpc(bpc);
-                }
+                mainPresenter.setCameraBpc(espCamera, bpc);
             }
 
             // set wpc
             else if (message.contains(WPC_PATH)) {
                 int wpc = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraWpc() != wpc) {
-                    camSettingsPresenter.setCameraWpc(wpc);
-                }
+                mainPresenter.setCameraWpc(espCamera, wpc);
             }
 
             // set rawGma
             else if (message.contains(RAW_GMA_PATH)) {
                 int rawGma = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraRawGma() != rawGma) {
-                    camSettingsPresenter.setCameraRawGma(rawGma);
-                }
+                mainPresenter.setCameraRawGma(espCamera, rawGma);
             }
 
             // set lenc
             else if (message.contains(LENC_PATH)) {
                 int lenc = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraLenc() != lenc) {
-                    camSettingsPresenter.setCameraLenc(lenc);
-                }
+                mainPresenter.setCameraLenc(espCamera, lenc);
             }
 
             // set hMirror
             else if (message.contains(HMIRROR_PATH)) {
                 int hMirror = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraHmirror() != hMirror) {
-                    camSettingsPresenter.setCameraHmirror(hMirror);
-                }
+                mainPresenter.setCameraHmirror(espCamera, hMirror);
             }
 
             // set vFlip
             else if (message.contains(VFLIP_PATH)) {
                 int vFlip = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraVflip() != vFlip) {
-                    camSettingsPresenter.setCameraVflip(vFlip);
-                }
+                mainPresenter.setCameraVflip(espCamera, vFlip);
             }
 
             // set colorbar
             else if (message.contains(COLORBAR_PATH)) {
                 int colorbar = Integer.parseInt(message.substring(message.indexOf("=") + 1));
-                if (camSettingsPresenter.getCameraColorbar() != colorbar) {
-                    camSettingsPresenter.setCameraColorbar(colorbar);
-                }
+                mainPresenter.setCameraColorbar(espCamera, colorbar);
             }
         }
     }

@@ -1,9 +1,15 @@
 package com.esp32camera.bottomSheets;
 
+import static android.content.Context.WIFI_SERVICE;
+
 import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -35,13 +41,13 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
 
         this.context = context;
         this.bottomSheetView = LayoutInflater.from(context).inflate(R.layout.sheet_add_espcamera, findViewById(R.id.bottomSheetContainer_addEspCamera));
+        this.setContentView(bottomSheetView);
         this.mainPresenter = mainPresenter;
 
         espCamerasIp = new ArrayList<>();
 
         loadingLayout = (LinearLayout) bottomSheetView.findViewById(R.id.loadingLayout);
         loadingLayout.setVisibility(View.VISIBLE);
-
 
         loadAllEspCameras(new ReadyCallback() {
             @Override
@@ -53,9 +59,8 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
                 });
             }
         });
-
-        this.setContentView(bottomSheetView);
     }
+
 
     private interface ReadyCallback {
         void onReady();
@@ -67,29 +72,32 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
      * @param readyCallback to setup RV of cameras and set loadingScreen to Gone
      */
     private void loadAllEspCameras(ReadyCallback readyCallback) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                int timeout = 100;
-                for (int i = 1; i < 50; i++) {
-                    String host = "192.168.188" + "." + i;
-                    try {
-                        if (InetAddress.getByName(host).isReachable(timeout)) {
-                            InetAddress addr = InetAddress.getByName(host);
-                            String hostName = addr.getHostName();
-                            if (hostName.contains("ESP-Camera")) {
-                                System.out.println(host + "isreachable");
-                                System.out.println(hostName);
-                                espCamerasIp.add(host);
-                            }
+        AsyncTask.execute(() -> {
+            WifiManager wifiMgr = (WifiManager) mainPresenter.getActivity().getApplicationContext().getSystemService(WIFI_SERVICE);
+            WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
+            int ip = wifiInfo.getIpAddress();
+            String ipAddress = Formatter.formatIpAddress(ip);
 
+            String currentSubIpAddress = ipAddress.substring(0, ipAddress.lastIndexOf("."));
+            int timeout = 100;
+            for (int i = 1; i < 255; i++) {
+                String host = currentSubIpAddress + "." + i;
+                try {
+                    if (InetAddress.getByName(host).isReachable(timeout)) {
+                        InetAddress addr = InetAddress.getByName(host);
+                        String hostName = addr.getHostName();
+                        if (hostName.contains("ESP-Camera")) {
+                            System.out.println(host + "isreachable");
+                            System.out.println(hostName);
+                            espCamerasIp.add(host);
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
+
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                readyCallback.onReady();
             }
+            readyCallback.onReady();
         });
     }
 
@@ -99,7 +107,7 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
     private void setupAddEspCamerasRecyclerView() {
         rv_add_espCameras.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        AddEspCameraRecyclerViewAdapter addEspCameraRecyclerViewAdapter = new AddEspCameraRecyclerViewAdapter(context, mainPresenter, espCamerasIp);
+        AddEspCameraRecyclerViewAdapter addEspCameraRecyclerViewAdapter = new AddEspCameraRecyclerViewAdapter(context, mainPresenter, espCamerasIp, this);
 
         rv_add_espCameras.setLayoutManager(layoutManager);
         rv_add_espCameras.setAdapter(addEspCameraRecyclerViewAdapter);
@@ -122,7 +130,7 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
         });
     }
 
-    private void closeBottomSheet() {
+    public void closeBottomSheet() {
         this.dismiss();
     }
 }

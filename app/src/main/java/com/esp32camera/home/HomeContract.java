@@ -1,10 +1,12 @@
 package com.esp32camera.home;
 
-import android.view.MenuItem;
+import com.esp32camera.model.CameraCard;
+import com.esp32camera.model.EspCamera;
 
 public interface HomeContract {
 
-    interface View { // from presenter to view
+    interface View {
+        void addNewCameraCard(CameraCard cameraCard); // from presenter to view
 
     }
 
@@ -15,6 +17,8 @@ public interface HomeContract {
     interface Presenter { // from view/service to presenter (and back)
         void setView(HomeFragment homeFragment);
 
-        void onWebSocketConnectionClosed();
+        void addNewCameraCard(CameraCard cameraCard);
+
+        HomeFragment getView();
     }
 }

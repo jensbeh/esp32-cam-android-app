@@ -157,7 +157,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         switch_Colorbar = view.findViewById(R.id.switch_Colorbar);
 
         // set values
-        tv_camera_name_settings.setText(camSettingsPresenter.getCameraName());
+        tv_camera_name_settings.setText(camSettingsPresenter.getEspCamera().getName());
     }
 
     @Override
@@ -174,21 +174,21 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     }
 
     private void initUi() {
-        setFrameSizeToSpinner(camSettingsPresenter.getCameraFramesize());
+        setFrameSizeToSpinner(camSettingsPresenter.getEspCamera().getFramesize());
 
-        if (camSettingsPresenter.getCameraQuality() == 0) {
+        if (camSettingsPresenter.getEspCamera().getQuality() == 0) {
             sliderQuality.setValue(10);
         } else {
-            sliderQuality.setValue(camSettingsPresenter.getCameraQuality());
+            sliderQuality.setValue(camSettingsPresenter.getEspCamera().getQuality());
         }
-        sliderBrightness.setValue(camSettingsPresenter.getCameraBrightness());
-        sliderContrast.setValue(camSettingsPresenter.getCameraContrast());
-        sliderSaturation.setValue(camSettingsPresenter.getCameraSaturation());
+        sliderBrightness.setValue(camSettingsPresenter.getEspCamera().getBrightness());
+        sliderContrast.setValue(camSettingsPresenter.getEspCamera().getContrast());
+        sliderSaturation.setValue(camSettingsPresenter.getEspCamera().getSaturation());
 
-        spinner_SpecialEffect.setSelection(camSettingsPresenter.getCameraSpecialEffect(), false);
+        spinner_SpecialEffect.setSelection(camSettingsPresenter.getEspCamera().getSpecialEffect(), false);
 
-        switch_AutoWhiteBalanceState.setChecked(camSettingsPresenter.getCameraAutoWhiteBalanceState() == 1);
-        if (camSettingsPresenter.getCameraAutoWbGain() == 1) {
+        switch_AutoWhiteBalanceState.setChecked(camSettingsPresenter.getEspCamera().getAutoWhiteBalanceState()== 1);
+        if (camSettingsPresenter.getEspCamera().getAutoWbGain() == 1) {
             switch_AutoWbGain.setChecked(true);
             ll_WbMode.setVisibility(View.VISIBLE);
         } else {
@@ -196,19 +196,19 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
             ll_WbMode.setVisibility(View.GONE);
         }
 
-        spinner_WbMode.setSelection(camSettingsPresenter.getCameraWbMode(), false);
+        spinner_WbMode.setSelection(camSettingsPresenter.getEspCamera().getWbMode(), false);
 
-        if (camSettingsPresenter.getCameraExposureCtrlState() == 1) {
+        if (camSettingsPresenter.getEspCamera().getExposureCtrlState() == 1) {
             switch_ExposureCtrlState.setChecked(true);
             ll_AecValue.setVisibility(View.GONE);
         } else {
             switch_ExposureCtrlState.setChecked(false);
             ll_AecValue.setVisibility(View.VISIBLE);
         }
-        sliderAecValue.setValue(camSettingsPresenter.getCameraAecValue());
-        switch_Aec2.setChecked(camSettingsPresenter.getCameraAec2() == 1);
-        sliderAeLevel.setValue(camSettingsPresenter.getCameraAeLevel());
-        if (camSettingsPresenter.getCameraAgcCtrlState() == 1) {
+        sliderAecValue.setValue(camSettingsPresenter.getEspCamera().getAecValue());
+        switch_Aec2.setChecked(camSettingsPresenter.getEspCamera().getAec2() == 1);
+        sliderAeLevel.setValue(camSettingsPresenter.getEspCamera().getAeLevel());
+        if (camSettingsPresenter.getEspCamera().getAgcCtrlState() == 1) {
             switch_AgcCtrlState.setChecked(true);
             ll_GainCeiling.setVisibility(View.VISIBLE);
             ll_AgcGain.setVisibility(View.GONE);
@@ -217,15 +217,15 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
             ll_GainCeiling.setVisibility(View.GONE);
             ll_AgcGain.setVisibility(View.VISIBLE);
         }
-        sliderAgcGain.setValue(camSettingsPresenter.getCameraAgcGain());
-        sliderGainCeiling.setValue(camSettingsPresenter.getCameraGainCeiling());
-        switch_Bpc.setChecked(camSettingsPresenter.getCameraBpc() == 1);
-        switch_Wpc.setChecked(camSettingsPresenter.getCameraWpc() == 1);
-        switch_RawGma.setChecked(camSettingsPresenter.getCameraRawGma() == 1);
-        switch_Lenc.setChecked(camSettingsPresenter.getCameraLenc() == 1);
-        switch_Hmirror.setChecked(camSettingsPresenter.getCameraHmirror() == 1);
-        switch_Vflip.setChecked(camSettingsPresenter.getCameraVflip() == 1);
-        switch_Colorbar.setChecked(camSettingsPresenter.getCameraColorbar() == 1);
+        sliderAgcGain.setValue(camSettingsPresenter.getEspCamera().getAgcGain());
+        sliderGainCeiling.setValue(camSettingsPresenter.getEspCamera().getGainCeiling());
+        switch_Bpc.setChecked(camSettingsPresenter.getEspCamera().getBpc() == 1);
+        switch_Wpc.setChecked(camSettingsPresenter.getEspCamera().getWpc() == 1);
+        switch_RawGma.setChecked(camSettingsPresenter.getEspCamera().getRawGma() == 1);
+        switch_Lenc.setChecked(camSettingsPresenter.getEspCamera().getLenc() == 1);
+        switch_Hmirror.setChecked(camSettingsPresenter.getEspCamera().getHmirror() == 1);
+        switch_Vflip.setChecked(camSettingsPresenter.getEspCamera().getVflip() == 1);
+        switch_Colorbar.setChecked(camSettingsPresenter.getEspCamera().getColorbar() == 1);
     }
 
     private void setupOnListener() {
@@ -237,7 +237,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         // set name
         button_change_camera_name.setOnClickListener(v -> {
             if (!et_new_camera_name.getText().toString().equals("")) {
-                camSettingsPresenter.setCameraName(et_new_camera_name.getText().toString());
+                mainPresenter.setCameraName(et_new_camera_name.getText().toString());
                 et_new_camera_name.setText("");
             }
         });
@@ -565,6 +565,8 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         super.onStop();
         sliderBrightness.addOnChangeListener(null);
         sliderContrast.addOnChangeListener(null);
+
+        camSettingsPresenter.setSelectedEspCamera(null);
     }
 
     @Override
@@ -599,7 +601,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
     @Override
     public void setSpinnerCameraSpecialEffect(int specialEffect) {
-        spinner_SpecialEffect.setSelection(camSettingsPresenter.getCameraSpecialEffect(), false);
+        spinner_SpecialEffect.setSelection(camSettingsPresenter.getEspCamera().getSpecialEffect(), false);
     }
 
     @Override

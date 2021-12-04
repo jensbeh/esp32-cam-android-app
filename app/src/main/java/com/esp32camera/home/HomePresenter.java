@@ -1,6 +1,7 @@
 package com.esp32camera.home;
 
 import com.esp32camera.MainActivity;
+import com.esp32camera.model.CameraCard;
 
 public class HomePresenter implements HomeContract.Presenter {
 
@@ -17,7 +18,13 @@ public class HomePresenter implements HomeContract.Presenter {
     }
 
     @Override
-    public void onWebSocketConnectionClosed() {
-        homeFragment.notifyOnWebSocketClosed();
+    public void addNewCameraCard(CameraCard cameraCard) {
+        // add new cardView with WebView/WebServer
+        homeFragment.addNewCameraCard(cameraCard);
+    }
+
+    @Override
+    public HomeFragment getView() {
+        return homeFragment;
     }
 }

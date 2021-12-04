@@ -1,9 +1,6 @@
 package com.esp32camera;
 
-import android.content.IntentFilter;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +14,7 @@ import com.esp32camera.home.gallery.GalleryFragment;
 import com.esp32camera.home.gallery.GalleryPresenter;
 import com.esp32camera.home.notification.NotificationFragment;
 import com.esp32camera.home.notification.NotificationPresenter;
+import com.esp32camera.model.CameraCard;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mainPresenter = new MainPresenter(this, homePresenter, camSettingsPresenter);
 
         // Setup Fragments
-        homeFragment = new HomeFragment(mainPresenter, homePresenter, camSettingsPresenter);
+        homeFragment = new HomeFragment(mainPresenter, homePresenter);
         galleryFragment = new GalleryFragment(mainPresenter, galleryPresenter);
         notificationFragment = new NotificationFragment(mainPresenter, notificationPresenter);
         camSettingsFragment = new CamSettingsFragment(mainPresenter, camSettingsPresenter);

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.esp32camera.MainPresenter;
 import com.esp32camera.R;
+import com.esp32camera.bottomSheets.BottomSheetAddEspCamera;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +21,7 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
     private Context context;
     private MainPresenter mainPresenter;
     private List<String> espCamerasIp;
+    private BottomSheetAddEspCamera bottomSheetAddEspCamera;
     private OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
@@ -38,7 +40,7 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
      */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private final TextView tv_rv_ipAddress;
-        private final Button button_rv_connect;
+        private final Button button_rv_connectCamera;
         private boolean longClick;
 
         public ViewHolder(View view) {
@@ -47,7 +49,7 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
             tv_rv_ipAddress = (TextView) view.findViewById(R.id.tv_rv_ipAddress);
-            button_rv_connect = (Button) view.findViewById(R.id.button_rv_connect);
+            button_rv_connectCamera = (Button) view.findViewById(R.id.button_rv_connectCamera);
         }
 
         @Override
@@ -70,10 +72,11 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
     /**
      * Initialize the data which the Adapter need.
      */
-    public AddEspCameraRecyclerViewAdapter(Context context, MainPresenter mainPresenter, List<String> espCamerasIp) {
+    public AddEspCameraRecyclerViewAdapter(Context context, MainPresenter mainPresenter, List<String> espCamerasIp, BottomSheetAddEspCamera bottomSheetAddEspCamera) {
         this.context = context;
         this.mainPresenter = mainPresenter;
         this.espCamerasIp = espCamerasIp;
+        this.bottomSheetAddEspCamera = bottomSheetAddEspCamera;
     }
 
     // Create new views (invoked by the layout manager)
@@ -92,10 +95,11 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
         // contents of the view with that element
         int pos = position;
         viewHolder.tv_rv_ipAddress.setText(espCamerasIp.get(position));
-        viewHolder.button_rv_connect.setOnClickListener(new View.OnClickListener() {
+        viewHolder.button_rv_connectCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainPresenter.onNewEspCameraConnected(espCamerasIp.get(pos));
+                mainPresenter.setupNewEspCamera(espCamerasIp.get(pos));
+                bottomSheetAddEspCamera.closeBottomSheet();
             }
         });
     }
