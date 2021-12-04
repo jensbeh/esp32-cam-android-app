@@ -10,6 +10,8 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="gray">#A0A0A0</color>
     <color name="darkGray">#464646</color>
+    <color name="blue">#0037FF</color>
+    <color name="veryLightBlue">#8BA5FF</color>
 
     <!-- Bottom Navigation View Colors -->
     <color name="selectedItemBar">#FF0000</color>

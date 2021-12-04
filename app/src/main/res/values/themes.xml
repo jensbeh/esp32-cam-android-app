@@ -22,4 +22,10 @@
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@color/transparent</item>
     </style>
+
+    <!-- Progress Circle BottomSheetDialog -->
+    <style name="CircularDeterminateProgressBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/circle</item>
+    </style>
 </resources>
