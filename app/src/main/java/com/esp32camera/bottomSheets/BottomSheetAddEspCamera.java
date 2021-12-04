@@ -84,13 +84,15 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
      * @param readyCallback to setup RV of cameras and set loadingScreen to Gone
      */
     private void loadAllEspCameras(ReadyCallback readyCallback) {
+        // set pulsing animation for searching text
         Animation anim = new AlphaAnimation(0.3f, 1.0f);
-        anim.setDuration(500); //You can manage the blinking time with this parameter
+        anim.setDuration(500);
         anim.setStartOffset(100);
         anim.setRepeatMode(Animation.REVERSE);
         anim.setRepeatCount(Animation.INFINITE);
         tv_searching.startAnimation(anim);
 
+        // load all available espCameras
         AsyncTask.execute(() -> {
             WifiManager wifiMgr = (WifiManager) mainPresenter.getActivity().getApplicationContext().getSystemService(WIFI_SERVICE);
             WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
@@ -99,7 +101,7 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
 
             String currentSubIpAddress = ipAddress.substring(0, ipAddress.lastIndexOf("."));
             int timeout = 100;
-            int ipAddressMaxCount = 255;
+            int ipAddressMaxCount = 46;
             for (int i = 1; i < ipAddressMaxCount; i++) {
                 String host = currentSubIpAddress + "." + i;
                 try {
@@ -116,8 +118,10 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                // set progress to progressBar
                 progressBarLoading.setProgress((int)(round(i * (100.0 / ipAddressMaxCount))));
             }
+            // call callback after read all available espCameras
             readyCallback.onReady();
         });
     }
