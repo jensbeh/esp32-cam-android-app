@@ -1,6 +1,9 @@
 package com.esp32camera;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -10,7 +13,11 @@ import com.esp32camera.model.CameraCard;
 import com.esp32camera.model.EspCamera;
 import com.esp32camera.net.WebSocketService;
 import com.esp32camera.net.WebSocketServiceInterface;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +36,7 @@ public class MainPresenter implements MainContract.Presenter {
         this.homePresenter = homePresenter;
         this.camSettingsPresenter = camSettingsPresenter;
 
-        viewState = MainActivity.State.HomeFragment;
+        viewState = MainActivity.State.StartUp;
         webSocketServiceMap = new HashMap<>();
         espCameraMap = new HashMap<>();
         cameraCardMap = new HashMap<>();
@@ -56,16 +63,18 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void setupNewEspCamera(String ipAddress) {
+    public void setupNewEspCamera(String ipAddress, String name) {
         Toast.makeText(mainActivity, ipAddress, Toast.LENGTH_SHORT).show();
 
         // create new EspCamera
-        EspCamera newEspCamera = new EspCamera(ipAddress);
+        EspCamera newEspCamera = new EspCamera(ipAddress, name);
         espCameraMap.put(ipAddress, newEspCamera);
 
         // create and add new cardView
         CameraCard cameraCard = new CameraCard(this, newEspCamera);
-        homePresenter.addNewCameraCard(cameraCard);
+        if (viewState != MainActivity.State.StartUp) { // if app is started view is not visible - only when a new espCamera is manually creating it will be directly added
+            homePresenter.addNewCameraCard(cameraCard);
+        }
         cameraCardMap.put(ipAddress, cameraCard);
 
         // connect to WebSocket
@@ -341,6 +350,72 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public Map<String, CameraCard> getCameraCardMap() {
         return cameraCardMap;
+    }
+
+    @Override
+    public boolean ifCameraExisting(String ipAddress) {
+        return espCameraMap.containsKey(ipAddress);
+    }
+
+    @Override
+    public void resetCameraValues(EspCamera espCamera) {
+
+    }
+
+    @Override
+    public void removeCamera(EspCamera espCamera) {
+        // close and remove webSocket
+        webSocketServiceMap.get(espCamera.getIpAddress()).close();
+        webSocketServiceMap.remove(espCamera.getIpAddress());
+
+        // stop and remove cameraCard
+        if (viewState == MainActivity.State.HomeFragment) {
+            cameraCardMap.get(espCamera.getIpAddress()).stop();
+            homePresenter.removeCameraCard(cameraCardMap.get(espCamera.getIpAddress()));
+        }
+        cameraCardMap.remove(espCamera.getIpAddress());
+
+        // remove espCamera
+        espCameraMap.remove(espCamera.getIpAddress());
+
+        // save all available cameras
+        saveEspCameras();
+    }
+
+    /**
+     * loads the data from sharedPreferences
+     */
+    @Override
+    public void loadEspCameras() {
+        SharedPreferences sharedPreferences = mainActivity.getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("EspCameras", null);
+        Type type = new TypeToken<ArrayList<EspCamera>>() {
+        }.getType();
+        ArrayList<EspCamera> mExampleList = gson.fromJson(json, type);
+        if (mExampleList != null) {
+            for (EspCamera espCamera : mExampleList) {
+                setupNewEspCamera(espCamera.getIpAddress(), espCamera.getName());
+            }
+        }
+    }
+
+    /**
+     * saves the data to sharedPreferences
+     */
+    @Override
+    public void saveEspCameras() {
+        SharedPreferences sharedPreferences = mainActivity.getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        ArrayList<EspCamera> espCamerasArrayList = new ArrayList<>();
+        for (EspCamera espCamera : espCameraMap.values()) {
+            EspCamera newEspCamera = new EspCamera(espCamera.getIpAddress(), espCamera.getName());
+            espCamerasArrayList.add(newEspCamera);
+        }
+        String json = gson.toJson(espCamerasArrayList);
+        editor.putString("EspCameras", json);
+        editor.apply();
     }
 
 

@@ -142,4 +142,9 @@ public class CameraCard {
             }
         });
     }
+
+    public void stop() {
+        // kill webView
+        webViewStream.destroy();
+    }
 }

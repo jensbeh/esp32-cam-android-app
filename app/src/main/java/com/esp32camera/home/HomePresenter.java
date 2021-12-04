@@ -27,4 +27,9 @@ public class HomePresenter implements HomeContract.Presenter {
     public HomeFragment getView() {
         return homeFragment;
     }
+
+    @Override
+    public void removeCameraCard(CameraCard cameraCard) {
+        homeFragment.removeCameraCard(cameraCard);
+    }
 }

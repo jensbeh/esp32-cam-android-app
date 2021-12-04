@@ -1,28 +1,20 @@
 package com.esp32camera.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.esp32camera.MainPresenter;
 import com.esp32camera.R;
 import com.esp32camera.bottomSheets.BottomSheetAddEspCamera;
-import com.esp32camera.camSettings.CamSettingsPresenter;
 import com.esp32camera.model.CameraCard;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomeFragment extends Fragment implements HomeContract.View {
 
@@ -93,9 +85,14 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void addNewCameraCard(CameraCard cameraCard) {
-        if(cameraCard.getView().getParent() != null) {
+        if (cameraCard.getView().getParent() != null) {
             ((LinearLayout) cameraCard.getView().getParent()).removeView(cameraCard.getView());
         }
         ll_scroll_camera_cards.addView(cameraCard.getView());
+    }
+
+    @Override
+    public void removeCameraCard(CameraCard cameraCard) {
+        ll_scroll_camera_cards.removeView(cameraCard.getView());
     }
 }

@@ -881,6 +881,12 @@
                 android:layout_height="wrap_content"
                 android:text="Reset Values" />
 
+            <Button
+                android:id="@+id/button_removeCamera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove Camera" />
+
 
         </LinearLayout>
     </ScrollView>

@@ -268,4 +268,8 @@ public class WebSocketService {
     public boolean isWebSocketConnected() {
         return webSocketClient.isOpen();
     }
+
+    public void close() {
+        webSocketClient.close();
+    }
 }

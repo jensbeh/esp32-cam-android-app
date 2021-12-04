@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.esp32camera.MainPresenter;
@@ -40,6 +42,9 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
      */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private final TextView tv_rv_ipAddress;
+        private final Button button_rv_selectCamera;
+        private final ConstraintLayout cl_selectName;
+        private final EditText et_selectName;
         private final Button button_rv_connectCamera;
         private boolean longClick;
 
@@ -49,6 +54,11 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
             tv_rv_ipAddress = (TextView) view.findViewById(R.id.tv_rv_ipAddress);
+            button_rv_selectCamera = (Button) view.findViewById(R.id.button_rv_selectCamera);
+
+            cl_selectName = (ConstraintLayout) view.findViewById(R.id.cl_selectName);
+
+            et_selectName = (EditText) view.findViewById(R.id.et_selectName);
             button_rv_connectCamera = (Button) view.findViewById(R.id.button_rv_connectCamera);
         }
 
@@ -95,11 +105,28 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
         // contents of the view with that element
         int pos = position;
         viewHolder.tv_rv_ipAddress.setText(espCamerasIp.get(position));
+        viewHolder.button_rv_selectCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewHolder.cl_selectName.getVisibility() == View.GONE) {
+                    viewHolder.cl_selectName.setVisibility(View.VISIBLE);
+                    viewHolder.button_rv_selectCamera.setText("^");
+                } else {
+                    viewHolder.cl_selectName.setVisibility(View.GONE);
+                    viewHolder.button_rv_selectCamera.setText("Select");
+                }
+            }
+        });
         viewHolder.button_rv_connectCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainPresenter.setupNewEspCamera(espCamerasIp.get(pos));
-                bottomSheetAddEspCamera.closeBottomSheet();
+                if (!viewHolder.et_selectName.getText().toString().equals("")) {
+                    mainPresenter.setupNewEspCamera(espCamerasIp.get(pos), viewHolder.et_selectName.getText().toString());
+
+                    mainPresenter.saveEspCameras();
+
+                    bottomSheetAddEspCamera.closeBottomSheet();
+                }
             }
         });
     }

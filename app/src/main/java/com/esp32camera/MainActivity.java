@@ -1,5 +1,6 @@
 package com.esp32camera;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,6 +17,10 @@ import com.esp32camera.home.notification.NotificationFragment;
 import com.esp32camera.home.notification.NotificationPresenter;
 import com.esp32camera.model.CameraCard;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private CamSettingsFragment camSettingsFragment;
 
     public enum State {
+        StartUp,
         HomeFragment,
         GalleryFragment,
         NotificationFragment,
@@ -62,11 +68,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         notificationFragment = new NotificationFragment(mainPresenter, notificationPresenter);
         camSettingsFragment = new CamSettingsFragment(mainPresenter, camSettingsPresenter);
 
+        // load all stored EspCameras
+        mainPresenter.loadEspCameras();
+
         // set homeFragment
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    homeFragment).commit();
-        }
+        mainPresenter.navigateToHomeFragment();
     }
 
     private void setupNavigationViewListener() {
@@ -127,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void onBackPressed() {
         if (mainPresenter.getViewState().equals(State.HomeFragment)) {
             // Close App
+            mainPresenter.saveEspCameras();
 
         } else if (mainPresenter.getViewState().equals(State.GalleryFragment)) {
             // go back to HomeFragment

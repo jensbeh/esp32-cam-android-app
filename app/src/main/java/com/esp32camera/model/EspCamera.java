@@ -28,10 +28,14 @@ public class EspCamera {
     int vFlip;
     int colorbar;
 
-    public EspCamera(String ipAddress) {
+    public EspCamera(String ipAddress, String name) {
         this.ipAddress = ipAddress;
 
-        this.setName("ESP Camera");
+        if (name.equals("")) {
+            this.setName("ESP Camera");
+        } else {
+            this.setName(name);
+        }
     }
 
     public String getIpAddress() {

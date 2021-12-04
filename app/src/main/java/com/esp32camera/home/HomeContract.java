@@ -8,6 +8,7 @@ public interface HomeContract {
     interface View {
         void addNewCameraCard(CameraCard cameraCard); // from presenter to view
 
+        void removeCameraCard(CameraCard cameraCard);
     }
 
     interface Model { // from presenter to model and back
@@ -20,5 +21,7 @@ public interface HomeContract {
         void addNewCameraCard(CameraCard cameraCard);
 
         HomeFragment getView();
+
+        void removeCameraCard(CameraCard cameraCard);
     }
 }

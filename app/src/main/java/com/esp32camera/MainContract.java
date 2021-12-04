@@ -38,7 +38,7 @@ public interface MainContract {
 
         boolean isWebSocketConnected();
 
-        void setupNewEspCamera(String s); // from BottomSheetAddEspCamera
+        void setupNewEspCamera(String ipAddress, String name); // from BottomSheetAddEspCamera
 
         void setCameraName(String newName);
 
@@ -89,5 +89,14 @@ public interface MainContract {
         void setCameraColorbar(EspCamera espCamera, int colorbar);
 
         Map<String, CameraCard> getCameraCardMap();
+
+        boolean ifCameraExisting(String ipAddress);
+
+        void resetCameraValues(EspCamera espCamera);
+
+        void removeCamera(EspCamera espCamera);
+
+        void loadEspCameras();
+        void saveEspCameras();
     }
 }

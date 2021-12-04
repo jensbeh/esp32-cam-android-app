@@ -84,6 +84,8 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     private SwitchCompat switch_Vflip;
     private SwitchCompat switch_Colorbar;
     private ArrayAdapter<CharSequence> frameSizeAdapter;
+    private Button button_resetValues;
+    private Button button_removeCamera;
 
     public CamSettingsFragment(MainPresenter mainPresenter, CamSettingsPresenter camSettingsPresenter) {
         this.mainPresenter = mainPresenter;
@@ -155,6 +157,9 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         switch_Hmirror = view.findViewById(R.id.switch_Hmirror);
         switch_Vflip = view.findViewById(R.id.switch_Vflip);
         switch_Colorbar = view.findViewById(R.id.switch_Colorbar);
+
+        button_resetValues = view.findViewById(R.id.button_resetValues);
+        button_removeCamera = view.findViewById(R.id.button_removeCamera);
 
         // set values
         tv_camera_name_settings.setText(camSettingsPresenter.getEspCamera().getName());
@@ -231,6 +236,15 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     private void setupOnListener() {
         // navigates back to home
         button_toHome.setOnClickListener(v -> {
+            mainPresenter.navigateToHomeFragment();
+        });
+
+        button_resetValues.setOnClickListener(v -> {
+            mainPresenter.resetCameraValues(camSettingsPresenter.getEspCamera());
+        });
+
+        button_removeCamera.setOnClickListener(v -> {
+            mainPresenter.removeCamera(camSettingsPresenter.getEspCamera());
             mainPresenter.navigateToHomeFragment();
         });
 
