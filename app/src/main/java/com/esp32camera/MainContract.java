@@ -29,7 +29,7 @@ public interface MainContract {
 
         void navigateToHomeFragment(); // from view to presenter (and back)
 
-        void sendWebSocketMessage(String message);
+        void sendWebSocketMessage(EspCamera espCamera, String message);
 
         // from bottom navigation bar
         void changeToSelectedFragment(MenuItem item);
@@ -87,6 +87,8 @@ public interface MainContract {
         void setCameraVflip(EspCamera espCamera, int vFlip);
 
         void setCameraColorbar(EspCamera espCamera, int colorbar);
+
+        void setCameraFlashlight(EspCamera espCamera, int flashlight);
 
         Map<String, CameraCard> getCameraCardMap();
 

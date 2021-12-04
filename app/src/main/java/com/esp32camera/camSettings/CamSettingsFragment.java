@@ -263,39 +263,39 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
                 String value = parent.getItemAtPosition(position).toString();
                 switch (value) {
                     case "UXGA":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + FRAMESIZE_PATH + 10);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 10);
                         break;
 
                     case "SXGA":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + FRAMESIZE_PATH + 9);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 9);
                         break;
 
                     case "XGA":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + FRAMESIZE_PATH + 8);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 8);
                         break;
 
                     case "SVGA":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + FRAMESIZE_PATH + 7);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 7);
                         break;
 
                     case "VGA":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + FRAMESIZE_PATH + 6);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 6);
                         break;
 
                     case "CIF":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + FRAMESIZE_PATH + 5);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 5);
                         break;
 
                     case "QVGA":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + FRAMESIZE_PATH + 4);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 4);
                         break;
 
                     case "HQVGA":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + FRAMESIZE_PATH + 3);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 3);
                         break;
 
                     case "QQVGA":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + FRAMESIZE_PATH + 0);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 0);
                         break;
 
                     default:
@@ -313,7 +313,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         sliderQuality.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + QUALITY_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + QUALITY_PATH + intValue);
             }
         });
 
@@ -321,7 +321,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         sliderBrightness.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + BRIGHTNESS_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + BRIGHTNESS_PATH + intValue);
             }
         });
 
@@ -329,7 +329,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         sliderContrast.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + CONTRAST_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + CONTRAST_PATH + intValue);
             }
         });
 
@@ -337,7 +337,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         sliderSaturation.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + SATURATION_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SATURATION_PATH + intValue);
             }
         });
 
@@ -349,31 +349,31 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
                 switch (value) {
                     case "No Effect":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 0);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 0);
                         break;
 
                     case "Negative":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 1);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 1);
                         break;
 
                     case "Grayscale":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 2);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 2);
                         break;
 
                     case "Red Tint":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 3);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 3);
                         break;
 
                     case "Green Tint":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 4);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 4);
                         break;
 
                     case "Blue Tint":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 5);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 5);
                         break;
 
                     case "Sepia":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 6);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 6);
                         break;
 
                     default:
@@ -390,19 +390,19 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         // set autoWhiteBalanceState
         switch_AutoWhiteBalanceState.setOnClickListener(v -> {
             if (switch_AutoWhiteBalanceState.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + WHITEBALANCE_STATE_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WHITEBALANCE_STATE_PATH + 1);
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + WHITEBALANCE_STATE_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WHITEBALANCE_STATE_PATH + 0);
             }
         });
 
         // set autoWbGain
         switch_AutoWbGain.setOnClickListener(v -> {
             if (switch_AutoWbGain.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AUTOWB_GAIN_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AUTOWB_GAIN_PATH + 1);
                 ll_WbMode.setVisibility(View.VISIBLE);
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AUTOWB_GAIN_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AUTOWB_GAIN_PATH + 0);
                 ll_WbMode.setVisibility(View.GONE);
             }
         });
@@ -414,23 +414,23 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
                 String value = parent.getItemAtPosition(position).toString();
                 switch (value) {
                     case "Auto":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + WB_MODE_PATH + 0);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 0);
                         break;
 
                     case "Sunny":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + WB_MODE_PATH + 1);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 1);
                         break;
 
                     case "Cloudy":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + WB_MODE_PATH + 2);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 2);
                         break;
 
                     case "Office":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + WB_MODE_PATH + 3);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 3);
                         break;
 
                     case "Home":
-                        mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + WB_MODE_PATH + 4);
+                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 4);
                         break;
 
                     default:
@@ -447,11 +447,11 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         // set exposureCtrlState
         switch_ExposureCtrlState.setOnClickListener(v -> {
             if (switch_ExposureCtrlState.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + EXPOSURE_CTRL_STATE_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + EXPOSURE_CTRL_STATE_PATH + 1);
                 ll_AecValue.setVisibility(View.GONE);
 
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + EXPOSURE_CTRL_STATE_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + EXPOSURE_CTRL_STATE_PATH + 0);
                 ll_AecValue.setVisibility(View.VISIBLE);
             }
         });
@@ -460,16 +460,16 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         sliderAecValue.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AEC_VALUE_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AEC_VALUE_PATH + intValue);
             }
         });
 
         // set aec2
         switch_Aec2.setOnClickListener(v -> {
             if (switch_Aec2.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AEC2_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AEC2_PATH + 1);
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AEC2_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AEC2_PATH + 0);
             }
         });
 
@@ -477,18 +477,18 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         sliderAeLevel.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AE_LEVEL_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AE_LEVEL_PATH + intValue);
             }
         });
 
         // set agcCtrlState
         switch_AgcCtrlState.setOnClickListener(v -> {
             if (switch_AgcCtrlState.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AGC_CTRL_STATE_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AGC_CTRL_STATE_PATH + 1);
                 ll_AgcGain.setVisibility(View.GONE);
                 ll_GainCeiling.setVisibility(View.VISIBLE);
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AGC_CTRL_STATE_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AGC_CTRL_STATE_PATH + 0);
                 ll_GainCeiling.setVisibility(View.GONE);
                 ll_AgcGain.setVisibility(View.VISIBLE);
             }
@@ -498,7 +498,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         sliderAgcGain.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + AGC_GAIN_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AGC_GAIN_PATH + intValue);
             }
         });
 
@@ -506,70 +506,70 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         sliderGainCeiling.addOnChangeListener((slider, value, fromUser) -> {
             if (fromUser) {
                 int intValue = (int) value;
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + GAINCEILING_PATH + intValue);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + GAINCEILING_PATH + intValue);
             }
         });
 
         // set bpc
         switch_Bpc.setOnClickListener(v -> {
             if (switch_Bpc.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + BPC_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + BPC_PATH + 1);
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + BPC_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + BPC_PATH + 0);
             }
         });
 
         // set wpc
         switch_Wpc.setOnClickListener(v -> {
             if (switch_Wpc.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + WPC_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WPC_PATH + 1);
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + WPC_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WPC_PATH + 0);
             }
         });
 
         // set rawGma
         switch_RawGma.setOnClickListener(v -> {
             if (switch_RawGma.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + RAW_GMA_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + RAW_GMA_PATH + 1);
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + RAW_GMA_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + RAW_GMA_PATH + 0);
             }
         });
 
         // set lenc
         switch_Lenc.setOnClickListener(v -> {
             if (switch_Lenc.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + LENC_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + LENC_PATH + 1);
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + LENC_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + LENC_PATH + 0);
             }
         });
 
         // set hMirror
         switch_Hmirror.setOnClickListener(v -> {
             if (switch_Hmirror.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + HMIRROR_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + HMIRROR_PATH + 1);
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + HMIRROR_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + HMIRROR_PATH + 0);
             }
         });
 
         // set vFlip
         switch_Vflip.setOnClickListener(v -> {
             if (switch_Vflip.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + VFLIP_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + VFLIP_PATH + 1);
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + VFLIP_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + VFLIP_PATH + 0);
             }
         });
 
         // set colorbar
         switch_Colorbar.setOnClickListener(v -> {
             if (switch_Colorbar.isChecked()) {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + COLORBAR_PATH + 1);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + COLORBAR_PATH + 1);
             } else {
-                mainPresenter.sendWebSocketMessage(CAM_CONTROLS_PATH + COLORBAR_PATH + 0);
+                mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + COLORBAR_PATH + 0);
             }
         });
     }

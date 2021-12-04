@@ -348,6 +348,16 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
+    public void setCameraFlashlight(EspCamera espCamera, int flashlightState) {
+        if (espCamera.getFlashlightState() != flashlightState) {
+            espCamera.setFlashlightState(flashlightState); // set new value to camera
+            if (viewState.equals(MainActivity.State.HomeFragment)) { // set visible action to cameraCard when homeFragment is shown
+                cameraCardMap.get(espCamera.getIpAddress()).setCameraFlashlight(flashlightState);
+            }
+        }
+    }
+
+    @Override
     public Map<String, CameraCard> getCameraCardMap() {
         return cameraCardMap;
     }
@@ -445,8 +455,8 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void sendWebSocketMessage(String message) {
-        webSocketServiceMap.get(camSettingsPresenter.getEspCamera().getIpAddress()).sendMessage(message);
+    public void sendWebSocketMessage(EspCamera espCamera, String message) {
+        webSocketServiceMap.get(espCamera.getIpAddress()).sendMessage(message);
     }
 
     @Override

@@ -27,6 +27,7 @@ public class EspCamera {
     int hMirror;
     int vFlip;
     int colorbar;
+    int flashlightState;
 
     public EspCamera(String ipAddress, String name) {
         this.ipAddress = ipAddress;
@@ -232,5 +233,13 @@ public class EspCamera {
 
     public int getColorbar() {
         return colorbar;
+    }
+
+    public void setFlashlightState(int flashlightState) {
+        this.flashlightState = flashlightState;
+    }
+
+    public int getFlashlightState() {
+        return flashlightState;
     }
 }

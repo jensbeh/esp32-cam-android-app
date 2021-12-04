@@ -37,4 +37,5 @@ public class Constants {
     public static final String HMIRROR_PATH = "hmirror="; // 0 = disable , 1 = enable
     public static final String VFLIP_PATH = "vflip="; // 0 = disable , 1 = enable
     public static final String COLORBAR_PATH = "colorbar="; // 0 = disable , 1 = enable
+    public static final String FLASHLIGHT_PATH = "flashlight="; // 0 = disable , 1 = enable
 }

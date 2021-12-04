@@ -1,5 +1,7 @@
 package com.esp32camera.model;
 
+import static com.esp32camera.util.Constants.CAM_CONTROLS_PATH;
+import static com.esp32camera.util.Constants.FLASHLIGHT_PATH;
 import static com.esp32camera.util.Constants.STREAM_PATH;
 import static com.esp32camera.util.Constants.WEBSERVER_HTTP;
 import static com.esp32camera.util.Constants.WEBSERVER_PORT;
@@ -16,6 +18,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -29,6 +32,7 @@ public class CameraCard {
     private EspCamera espCamera;
     private WebView webViewStream;
     private Button button_camSettings;
+    private ToggleButton button_flashlight;
     private TextView tv_camera_name;
     private ConstraintLayout streamLayout;
     private LinearLayout errorLayout;
@@ -44,6 +48,8 @@ public class CameraCard {
         cardView = view.findViewById(R.id.cardView);
         webViewStream = view.findViewById(R.id.webViewStream);
         button_camSettings = view.findViewById(R.id.button_camSettings);
+        button_flashlight = view.findViewById(R.id.button_flashlight);
+        button_flashlight.setChecked(espCamera.flashlightState == 1);
 
         tv_camera_name = view.findViewById(R.id.tv_camera_name);
         tv_camera_name.setText(espCamera.getName());
@@ -65,10 +71,23 @@ public class CameraCard {
         button_camSettings.setOnClickListener(v -> {
             mainPresenter.navigateToCamSettingsFragment(espCamera);
         });
+        button_flashlight.setOnClickListener(v -> {
+            if (button_flashlight.isChecked()) {
+                // make off
+                mainPresenter.sendWebSocketMessage(espCamera, CAM_CONTROLS_PATH + FLASHLIGHT_PATH + 1);
+            } else {
+                // make on
+                mainPresenter.sendWebSocketMessage(espCamera, CAM_CONTROLS_PATH + FLASHLIGHT_PATH + 0);
+            }
+        });
     }
 
     public void setCameraName(String newName) {
         tv_camera_name.setText(newName);
+    }
+
+    public void setCameraFlashlight(int flashlightState) {
+        button_flashlight.setChecked(flashlightState == 1);
     }
 
     private void setupCameraStreamWebView() {

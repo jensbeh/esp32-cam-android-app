@@ -12,6 +12,7 @@ import static com.esp32camera.util.Constants.CAM_CONTROLS_PATH;
 import static com.esp32camera.util.Constants.COLORBAR_PATH;
 import static com.esp32camera.util.Constants.CONTRAST_PATH;
 import static com.esp32camera.util.Constants.EXPOSURE_CTRL_STATE_PATH;
+import static com.esp32camera.util.Constants.FLASHLIGHT_PATH;
 import static com.esp32camera.util.Constants.FRAMESIZE_PATH;
 import static com.esp32camera.util.Constants.GAINCEILING_PATH;
 import static com.esp32camera.util.Constants.HMIRROR_PATH;
@@ -257,6 +258,11 @@ public class WebSocketService {
             else if (message.contains(COLORBAR_PATH)) {
                 int colorbar = Integer.parseInt(message.substring(message.indexOf("=") + 1));
                 mainPresenter.setCameraColorbar(espCamera, colorbar);
+            }
+            // set flashlight
+            else if (message.contains(FLASHLIGHT_PATH)) {
+                int flashlight = Integer.parseInt(message.substring(message.indexOf("=") + 1));
+                mainPresenter.setCameraFlashlight(espCamera, flashlight);
             }
         }
     }
