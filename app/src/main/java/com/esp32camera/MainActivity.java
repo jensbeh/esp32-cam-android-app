@@ -1,9 +1,11 @@
 package com.esp32camera;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.esp32camera.camSettings.CamSettingsFragment;
@@ -12,6 +14,8 @@ import com.esp32camera.home.HomeFragment;
 import com.esp32camera.home.HomePresenter;
 import com.esp32camera.home.gallery.GalleryFragment;
 import com.esp32camera.home.gallery.GalleryPresenter;
+import com.esp32camera.home.gallery.viewPager.GalleryViewPagerFragment;
+import com.esp32camera.home.gallery.viewPager.GalleryViewPagerPresenter;
 import com.esp32camera.home.notification.NotificationFragment;
 import com.esp32camera.home.notification.NotificationPresenter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,11 +27,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private MainPresenter mainPresenter;
     private HomePresenter homePresenter;
     private GalleryPresenter galleryPresenter;
+    private GalleryViewPagerPresenter galleryViewPagerPresenter;
     private NotificationPresenter notificationPresenter;
     private CamSettingsPresenter camSettingsPresenter;
 
     private HomeFragment homeFragment;
     private GalleryFragment galleryFragment;
+    private GalleryViewPagerFragment galleryViewPagerFragment;
     private NotificationFragment notificationFragment;
     private CamSettingsFragment camSettingsFragment;
 
@@ -35,14 +41,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         StartUp,
         HomeFragment,
         GalleryFragment,
+        GalleryViewPagerFragment,
         NotificationFragment,
-        CamSettingsFragment
+        CamSettingsFragment;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // request permissions
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }, 1);
 
         // Bottom Navigation View
         bottomNavigationView_home = findViewById(R.id.bottomNavigationView_home);
@@ -52,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         // Setup Presenter
         homePresenter = new HomePresenter(this);
         galleryPresenter = new GalleryPresenter(this);
+        galleryViewPagerPresenter = new GalleryViewPagerPresenter(this);
         notificationPresenter = new NotificationPresenter(this);
         camSettingsPresenter = new CamSettingsPresenter(this);
         mainPresenter = new MainPresenter(this, homePresenter, camSettingsPresenter);
@@ -59,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         // Setup Fragments
         homeFragment = new HomeFragment(mainPresenter, homePresenter);
         galleryFragment = new GalleryFragment(mainPresenter, galleryPresenter);
+        galleryViewPagerFragment = new GalleryViewPagerFragment(mainPresenter, galleryViewPagerPresenter, galleryPresenter);
         notificationFragment = new NotificationFragment(mainPresenter, notificationPresenter);
         camSettingsFragment = new CamSettingsFragment(mainPresenter, camSettingsPresenter);
 
@@ -84,6 +100,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.fragment_container, camSettingsFragment)
+                .commit();
+    }
+
+    @Override
+    public void navigateToGalleryViewPagerFragment() {
+        bottomNavigationView_home.setVisibility(View.GONE);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragment_container, galleryViewPagerFragment)
                 .commit();
     }
 
@@ -125,16 +152,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
      */
     @Override
     public void onBackPressed() {
-        if (mainPresenter.getViewState().equals(State.HomeFragment)) {
-            // Close App
-            mainPresenter.saveEspCameras();
+//        if (mainPresenter.getViewState().equals(State.HomeFragment)) {
+//            // Close App
+//            mainPresenter.saveEspCameras();
 
-        } else if (mainPresenter.getViewState().equals(State.GalleryFragment)) {
-            // go back to HomeFragment
-            mainPresenter.navigateToHomeFragment();
-        } else if (mainPresenter.getViewState().equals(State.NotificationFragment)) {
-            // go back to HomeFragment
-            mainPresenter.navigateToHomeFragment();
+//        } else if (mainPresenter.getViewState().equals(State.GalleryFragment)) {
+//            // go back to HomeFragment
+//            mainPresenter.navigateToHomeFragment();
+//        } else
+        if (mainPresenter.getViewState().equals(State.GalleryViewPagerFragment)) {
+            // go back to GalleryFragment
+            mainPresenter.navigateToGalleryFragment();
+//        }
+//        else if (mainPresenter.getViewState().equals(State.NotificationFragment)) {
+//            // go back to HomeFragment
+//            mainPresenter.navigateToHomeFragment();
         } else if (mainPresenter.getViewState().equals(State.CamSettingsFragment)) {
             // go back to HomeFragment
             mainPresenter.navigateToHomeFragment();

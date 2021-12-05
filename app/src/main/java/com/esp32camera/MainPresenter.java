@@ -444,6 +444,18 @@ public class MainPresenter implements MainContract.Presenter {
         mainActivity.navigateToHomeFragment();
     }
 
+    @Override
+    public void navigateToGalleryFragment() {
+        viewState = MainActivity.State.GalleryFragment;
+        mainActivity.navigateToGalleryFragment();
+    }
+
+    @Override
+    public void navigateToGalleryViewPagerFragment() {
+        viewState = MainActivity.State.GalleryViewPagerFragment;
+        mainActivity.navigateToGalleryViewPagerFragment();
+    }
+
 
     public MainActivity.State getViewState() {
         return viewState;

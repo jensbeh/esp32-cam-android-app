@@ -18,6 +18,8 @@ public interface MainContract {
         void navigateToNotificationFragment();
 
         void navigateToCamSettingsFragment();
+
+        void navigateToGalleryViewPagerFragment();
     }
 
     interface Model { // from presenter to model and back
@@ -28,6 +30,10 @@ public interface MainContract {
         void navigateToCamSettingsFragment(EspCamera espCamera); // from view to presenter (and back)
 
         void navigateToHomeFragment(); // from view to presenter (and back)
+
+        void navigateToGalleryViewPagerFragment();
+
+        void navigateToGalleryFragment();
 
         void sendWebSocketMessage(EspCamera espCamera, String message);
 
@@ -99,6 +105,7 @@ public interface MainContract {
         void removeCamera(EspCamera espCamera);
 
         void loadEspCameras();
+
         void saveEspCameras();
     }
 }
