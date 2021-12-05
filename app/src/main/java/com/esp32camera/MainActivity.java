@@ -1,6 +1,5 @@
 package com.esp32camera;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,12 +14,7 @@ import com.esp32camera.home.gallery.GalleryFragment;
 import com.esp32camera.home.gallery.GalleryPresenter;
 import com.esp32camera.home.notification.NotificationFragment;
 import com.esp32camera.home.notification.NotificationPresenter;
-import com.esp32camera.model.CameraCard;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
