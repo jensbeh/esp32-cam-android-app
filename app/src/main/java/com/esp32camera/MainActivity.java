@@ -2,6 +2,7 @@ package com.esp32camera;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // set network policy, because of some "android.os.NetworkOnMainThreadException"
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         // request permissions
         ActivityCompat.requestPermissions(MainActivity.this,

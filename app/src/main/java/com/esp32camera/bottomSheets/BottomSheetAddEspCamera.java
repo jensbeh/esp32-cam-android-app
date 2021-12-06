@@ -1,7 +1,6 @@
 package com.esp32camera.bottomSheets;
 
 import static android.content.Context.WIFI_SERVICE;
-
 import static java.lang.Math.round;
 
 import android.content.Context;
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,6 +42,11 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
     private MainPresenter mainPresenter;
     private RecyclerView rv_add_espCameras;
     private ConstraintLayout loadingLayout;
+    private LinearLayout ll_manuel_ip_input;
+    private EditText et_selectIpAddress;
+    private EditText et_selectName;
+    private Button button_rv_manuelConnectCamera;
+    private TextView tv_errorIpAddress;
 
     private List<String> espCamerasIp;
 
@@ -60,17 +65,97 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
         progressBarLoading = (ProgressBar) bottomSheetView.findViewById(R.id.progressBarLoading);
         progressBarLoading.setProgress(0);
         tv_searching = (TextView) bottomSheetView.findViewById(R.id.tv_searching);
+        rv_add_espCameras = (RecyclerView) bottomSheetView.findViewById(R.id.rv_add_espCameras);
+        rv_add_espCameras.setVisibility(View.GONE);
+
+        ll_manuel_ip_input = (LinearLayout) bottomSheetView.findViewById(R.id.ll_manuel_ip_input);
+        ll_manuel_ip_input.setVisibility(View.GONE);
+        et_selectIpAddress = (EditText) bottomSheetView.findViewById(R.id.et_selectIpAddress);
+        et_selectName = (EditText) bottomSheetView.findViewById(R.id.et_selectName);
+        button_rv_manuelConnectCamera = (Button) bottomSheetView.findViewById(R.id.button_rv_manuelConnectCamera);
+        tv_errorIpAddress = (TextView) bottomSheetView.findViewById(R.id.tv_errorIpAddress);
+        tv_errorIpAddress.setVisibility(View.GONE);
 
         loadAllEspCameras(new ReadyCallback() {
             @Override
             public void onReady() {
                 mainPresenter.getActivity().runOnUiThread(() -> {
                     loadingLayout.setVisibility(View.GONE);
-                    rv_add_espCameras = (RecyclerView) bottomSheetView.findViewById(R.id.rv_add_espCameras);
+                    if (!espCamerasIp.isEmpty()) {
+                        rv_add_espCameras.setVisibility(View.VISIBLE);
+                    }
+                    ll_manuel_ip_input.setVisibility(View.VISIBLE);
+
                     setupAddEspCamerasRecyclerView();
                 });
             }
         });
+
+        setupOnListener();
+    }
+
+    private void setupOnListener() {
+        button_rv_manuelConnectCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!et_selectIpAddress.getText().toString().equals("") && !et_selectName.getText().toString().equals("")) {
+                    String ipAddress = et_selectIpAddress.getText().toString();
+                    String name = et_selectName.getText().toString();
+                    if (checkForCorrectIpAddress(ipAddress)) {
+                        mainPresenter.setupNewEspCamera(ipAddress, name);
+                        mainPresenter.saveEspCameras();
+                        closeBottomSheet();
+
+                    } else {
+                        tv_errorIpAddress.setVisibility(View.VISIBLE);
+                        final Animation out = new AlphaAnimation(1.0f, 0.0f);
+                        out.setDuration(500);
+                        out.setStartOffset(3000);
+                        out.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                tv_errorIpAddress.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        tv_errorIpAddress.setAnimation(out);
+                    }
+                }
+            }
+        });
+    }
+
+    private boolean checkForCorrectIpAddress(String ipAddress) {
+        int timeout = 100;
+
+        try {
+            // catch every error -> wrong ip address or some letters instead of numbers
+            InetAddress.getByName(ipAddress);
+        } catch (Exception e) {
+            return false;
+        }
+
+        try {
+            if (InetAddress.getByName(ipAddress).isReachable(timeout)) {
+                InetAddress addr = InetAddress.getByName(ipAddress);
+                String hostName = addr.getHostName();
+                if (hostName.contains("ESP-Camera") && !mainPresenter.ifCameraExisting(ipAddress)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
@@ -113,13 +198,12 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
                             System.out.println(hostName);
                             espCamerasIp.add(host);
                         }
-
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 // set progress to progressBar
-                progressBarLoading.setProgress((int)(round(i * (100.0 / ipAddressMaxCount))));
+                progressBarLoading.setProgress((int) (round(i * (100.0 / ipAddressMaxCount))));
             }
             // call callback after read all available espCameras
             readyCallback.onReady();

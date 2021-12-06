@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_camSettings"
+        android:id="@+id/tv_camSearching"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/line_camSettings"
+        android:id="@+id/line_camSearching"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/darkGray"
@@ -40,13 +40,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:orientation="horizontal"
             android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="visible">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tv_searching"
@@ -77,12 +77,86 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_add_espCameras"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintHeight_max="300dp"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             tools:itemCount="10"
             tools:listitem="@layout/raw_add_esp_camera_item" />
+
+        <LinearLayout
+            android:id="@+id/ll_manuel_ip_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_add_espCameras">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    android:id="@+id/tv_notFoundManuel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Not Found? Type in ip address and custom name!"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_selectIpAddress"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:hint="E.g.: 192.168.188.12"
+                    app:layout_constraintStart_toStartOf="@+id/tv_notFoundManuel"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_notFoundManuel" />
+
+                <TextView
+                    android:id="@+id/tv_errorIpAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Can't connect! Error in ip address!"
+                    android:textColor="@color/red"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/et_selectIpAddress"
+                    app:layout_constraintStart_toStartOf="@+id/et_selectIpAddress"
+                    app:layout_constraintTop_toBottomOf="@+id/et_selectIpAddress"
+                    app:layout_constraintBottom_toTopOf="@id/et_selectName"/>
+
+                <EditText
+                    android:id="@+id/et_selectName"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Select a camera name..."
+                    app:layout_constraintStart_toStartOf="@+id/et_selectIpAddress"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_errorIpAddress" />
+
+                <Button
+                    android:id="@+id/button_rv_manuelConnectCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Connect"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_selectName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/et_selectIpAddress"
+                    app:layout_constraintTop_toTopOf="@+id/et_selectIpAddress" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
