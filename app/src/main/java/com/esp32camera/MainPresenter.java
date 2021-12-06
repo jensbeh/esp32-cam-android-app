@@ -82,7 +82,9 @@ public class MainPresenter implements MainContract.Presenter {
         WebSocketService webSocketService = new WebSocketService(this, newEspCamera, camSettingsPresenter, new WebSocketServiceInterface() {
             @Override
             public void OnConnectionOpened(EspCamera espCamera, String status) {
-                if (viewState.equals(MainActivity.State.CamSettingsFragment) && camSettingsPresenter.getEspCamera() == espCamera) {
+                if (viewState.equals(MainActivity.State.HomeFragment)) {
+                    cameraCardMap.get(espCamera.getIpAddress()).onWebSocketConnectionOpened();
+                } else if (viewState.equals(MainActivity.State.CamSettingsFragment) && camSettingsPresenter.getEspCamera() == espCamera) {
                     camSettingsPresenter.onWebSocketConnectionOpened();
                 }
             }

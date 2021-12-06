@@ -62,6 +62,8 @@ public class CameraCard {
     private Button errorReloadButton;
     private CardView cardView;
     private LinearLayout loadingLayout;
+    private final LinearLayout ll_actionButtonCam;
+
     private boolean record = false;
 
     public CameraCard(MainPresenter mainPresenter, EspCamera espCamera) {
@@ -89,6 +91,8 @@ public class CameraCard {
 
         loadingLayout = view.findViewById(R.id.loadingLayout);
         errorReloadButton = view.findViewById(R.id.errorReloadButton);
+
+        ll_actionButtonCam = view.findViewById(R.id.ll_actionButtonCam);
 
         iv_recording_circle = view.findViewById(R.id.iv_recording_circle);
         iv_recording_circle.setVisibility(View.GONE);
@@ -281,6 +285,7 @@ public class CameraCard {
                 Log.i("HomeFragment", "onPageStarted");
 
                 streamLayout.setVisibility(View.VISIBLE);
+                ll_actionButtonCam.setVisibility(View.GONE);
                 errorLayout.setVisibility(View.GONE);
             }
 
@@ -297,6 +302,7 @@ public class CameraCard {
                 Log.i("HomeFragment", "onReceivedError");
 
                 streamLayout.setVisibility(View.GONE);
+                ll_actionButtonCam.setVisibility(View.GONE);
                 errorLayout.setVisibility(View.VISIBLE);
             }
         });
@@ -307,6 +313,7 @@ public class CameraCard {
                 super.onProgressChanged(view, newProgress);
                 if (newProgress == 100) {
                     streamLayout.setVisibility(View.VISIBLE);
+                    ll_actionButtonCam.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -325,16 +332,26 @@ public class CameraCard {
         return view;
     }
 
+
+    public void onWebSocketConnectionOpened() {
+        mainPresenter.getActivity().runOnUiThread(() -> {
+            button_flashlight.setEnabled(true);
+        });
+    }
+
     /**
      * This method will be called when webSocketConnection get lost / is closed
      * ErrorLayout will be shown if it isn't already there, because in most cases the stream is also killed
      */
     public void onWebSocketConnectionClosed() {
         mainPresenter.getActivity().runOnUiThread(() -> {
+            button_flashlight.setEnabled(false);
+
             if (errorLayout.getVisibility() != View.VISIBLE) {
                 Log.i("CameraCard", "Show ERROR Layout on WebSocket Closed...");
 
                 errorLayout.setVisibility(View.VISIBLE);
+                ll_actionButtonCam.setVisibility(View.GONE);
             }
         });
     }
