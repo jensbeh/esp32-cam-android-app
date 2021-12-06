@@ -15,13 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.esp32camera.MainPresenter;
 import com.esp32camera.R;
 import com.esp32camera.adapter.GalleryRecyclerViewAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class GalleryFragment extends Fragment {
+public class GalleryFragment extends Fragment implements GalleryContract.View {
 
     private View view;
     private MainPresenter mainPresenter;
     private GalleryPresenter galleryPresenter;
     private RecyclerView rv_gallery;
+    private FloatingActionButton fab_delete_selected_gallery_items;
+    private GalleryRecyclerViewAdapter galleryRecyclerViewAdapter;
 
     public GalleryFragment(MainPresenter mainPresenter, GalleryPresenter galleryPresenter) {
         this.mainPresenter = mainPresenter;
@@ -48,6 +51,7 @@ public class GalleryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        fab_delete_selected_gallery_items = (FloatingActionButton) view.findViewById(R.id.fab_delete_selected_gallery_items);
         rv_gallery = (RecyclerView) view.findViewById(R.id.rv_gallery);
 
         setupRvGallery();
@@ -65,7 +69,7 @@ public class GalleryFragment extends Fragment {
         rv_gallery.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mainPresenter.getActivity());
 
-        GalleryRecyclerViewAdapter galleryRecyclerViewAdapter = new GalleryRecyclerViewAdapter(mainPresenter.getActivity(), mainPresenter, galleryPresenter, galleryPresenter.loadGalleryItems());
+        galleryRecyclerViewAdapter = new GalleryRecyclerViewAdapter(mainPresenter.getActivity(), mainPresenter, galleryPresenter, galleryPresenter.loadGalleryItems());
 
         rv_gallery.setLayoutManager(new GridLayoutManager(mainPresenter.getActivity(), 2));
         rv_gallery.setAdapter(galleryRecyclerViewAdapter);
@@ -84,6 +88,30 @@ public class GalleryFragment extends Fragment {
     }
 
     private void setupOnListener() {
+        fab_delete_selected_gallery_items.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                galleryPresenter.deleteSelectedItems();
+            }
+        });
+    }
 
+
+    @Override
+    public void showDeleteButton() {
+        if (fab_delete_selected_gallery_items.getVisibility() != View.VISIBLE)
+            fab_delete_selected_gallery_items.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideDeleteButton() {
+        if (fab_delete_selected_gallery_items.getVisibility() != View.GONE)
+            fab_delete_selected_gallery_items.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void notifyOnItemsDelete() {
+        fab_delete_selected_gallery_items.setVisibility(View.GONE);
+        galleryRecyclerViewAdapter.notifyDataSetChanged();
     }
 }

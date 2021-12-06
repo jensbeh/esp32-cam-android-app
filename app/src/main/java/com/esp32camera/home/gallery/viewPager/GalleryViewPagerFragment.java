@@ -80,7 +80,7 @@ public class GalleryViewPagerFragment extends Fragment implements GalleryViewPag
             @Override
             public void run() {
                 // need to run with delay, else the view position is incorrect; smoothScroll = false, because else there will be an annoying animation to that position
-                vp_gallerySlider.setCurrentItem(galleryPresenter.getSelectedItem(), false);
+                vp_gallerySlider.setCurrentItem(galleryPresenter.getViewPagerSelectedItem(), false);
             }
         }, 10);
     }

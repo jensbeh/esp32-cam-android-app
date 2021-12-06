@@ -4,8 +4,12 @@ import java.util.List;
 
 public interface GalleryContract {
 
-    interface View { // from presenter to view
+    interface View {
+        void showDeleteButton(); // from presenter to view
 
+        void hideDeleteButton();
+
+        void notifyOnItemsDelete();
     }
 
     interface Model { // from presenter to model and back
@@ -19,8 +23,20 @@ public interface GalleryContract {
 
         List<String> getGalleryItems();
 
-        void setSelectedItem(int position);
+        void setViewPagerSelectedItem(int selectedViewPagerItemPosition);
 
-        int getSelectedItem();
+        int getViewPagerSelectedItem();
+
+        void showDeleteButton();
+
+        void hideDeleteButton();
+
+        void deleteSelectedItems();
+
+        void setSelectedItem(String item);
+
+        List<String> getSelectedItems();
+
+        void removeSelectedItem(String item);
     }
 }

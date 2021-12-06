@@ -1,11 +1,13 @@
 package com.esp32camera.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,6 +56,8 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryRecy
      */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private final ImageView imageView;
+        private final LinearLayout ll_gallery_item_background;
+        private final ImageView iv_check_circle;
         private boolean longClick;
 
         public ViewHolder(View view) {
@@ -62,6 +66,8 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryRecy
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
             imageView = (ImageView) view.findViewById(R.id.imageView);
+            ll_gallery_item_background = (LinearLayout) view.findViewById(R.id.ll_gallery_item_background);
+            iv_check_circle = (ImageView) view.findViewById(R.id.iv_check_circle);
         }
 
         @Override
@@ -95,14 +101,54 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryRecy
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         // Get element from your local data at this position and replace the
         // contents of the view with that element
+//        RequestOptions requestOptions = new RequestOptions();
+//        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(50), new );
+        Glide.with(context)
+                .load(Uri.fromFile(new File(galleryItems.get(position))))
+//                .apply(requestOptions)
+                .into(viewHolder.imageView);
 
-        Glide.with(context).load(Uri.fromFile(new File(galleryItems.get(position)))).into(viewHolder.imageView);
+        viewHolder.imageView.setOnLongClickListener(v -> {
+            handleItemSelection(viewHolder, position);
+            return true;
+        });
 
         viewHolder.imageView.setOnClickListener(v -> {
-            Toast.makeText(mainPresenter.getActivity(), galleryItems.get(position), Toast.LENGTH_SHORT).show();
-            galleryPresenter.setSelectedItem(position);
-            mainPresenter.navigateToGalleryViewPagerFragment();
+            if (galleryPresenter.getSelectedItems().isEmpty()) {
+                // no item is selected -> show galleryViewPager
+                Toast.makeText(mainPresenter.getActivity(), galleryItems.get(position), Toast.LENGTH_SHORT).show();
+                galleryPresenter.setViewPagerSelectedItem(position);
+                mainPresenter.navigateToGalleryViewPagerFragment();
+            } else {
+                handleItemSelection(viewHolder, position);
+            }
+
         });
+    }
+
+    private void handleItemSelection(ViewHolder viewHolder, int position) {
+        if (!galleryPresenter.getSelectedItems().contains(galleryItems.get(position))) {
+            // if item is NOT selected
+            galleryPresenter.setSelectedItem(galleryItems.get(position));
+            viewHolder.ll_gallery_item_background.setBackgroundColor(Color.parseColor("#008FFF"));
+            viewHolder.iv_check_circle.setVisibility(View.VISIBLE);
+
+            if (!galleryPresenter.getSelectedItems().isEmpty()) {
+                // show delete button when item is selected
+                galleryPresenter.showDeleteButton();
+            }
+
+        } else {
+            // if item is selected
+            galleryPresenter.removeSelectedItem(galleryItems.get(position));
+            viewHolder.ll_gallery_item_background.setBackgroundColor(Color.TRANSPARENT);
+            viewHolder.iv_check_circle.setVisibility(View.GONE);
+
+            if (galleryPresenter.getSelectedItems().isEmpty()) {
+                // hide delete button when NO item is selected
+                galleryPresenter.hideDeleteButton();
+            }
+        }
     }
 
     // Return the size of your data (invoked by the layout manager)
