@@ -37,8 +37,10 @@ public class GalleryPresenter implements GalleryContract.Presenter {
         File itemsDir = new File(dcimDir.getAbsolutePath() + "/EspCamera/");
 
         File[] items = itemsDir.listFiles();
-        for (File item : items) {
-            galleryItems.add(item.getAbsolutePath());
+        if (items != null) {
+            for (File item : items) {
+                galleryItems.add(item.getAbsolutePath());
+            }
         }
 
         return galleryItems;
