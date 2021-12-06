@@ -58,6 +58,7 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryRecy
         private final ImageView imageView;
         private final LinearLayout ll_gallery_item_background;
         private final ImageView iv_check_circle;
+        private final ImageView iv_item_file_type;
         private boolean longClick;
 
         public ViewHolder(View view) {
@@ -67,6 +68,7 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryRecy
             view.setOnLongClickListener(this);
             imageView = (ImageView) view.findViewById(R.id.imageView);
             ll_gallery_item_background = (LinearLayout) view.findViewById(R.id.ll_gallery_item_background);
+            iv_item_file_type = (ImageView) view.findViewById(R.id.iv_item_file_type);
             iv_check_circle = (ImageView) view.findViewById(R.id.iv_check_circle);
         }
 
@@ -101,17 +103,18 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryRecy
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         // Get element from your local data at this position and replace the
         // contents of the view with that element
-//        RequestOptions requestOptions = new RequestOptions();
-//        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(50), new );
+
+        // set image to imageView
         Glide.with(context)
                 .load(Uri.fromFile(new File(galleryItems.get(position))))
-//                .apply(requestOptions)
                 .into(viewHolder.imageView);
 
-        viewHolder.imageView.setOnLongClickListener(v -> {
-            handleItemSelection(viewHolder, position);
-            return true;
-        });
+        // set photo or video icon on item
+        if (galleryItems.get(position).endsWith(".jpg")) {
+            viewHolder.iv_item_file_type.setImageResource(R.drawable.ic_photo_camera);
+        } else if (galleryItems.get(position).endsWith(".mp4")) {
+            viewHolder.iv_item_file_type.setImageResource(R.drawable.ic_videocam);
+        }
 
         viewHolder.imageView.setOnClickListener(v -> {
             if (galleryPresenter.getSelectedItems().isEmpty()) {
@@ -123,6 +126,11 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryRecy
                 handleItemSelection(viewHolder, position);
             }
 
+        });
+
+        viewHolder.imageView.setOnLongClickListener(v -> {
+            handleItemSelection(viewHolder, position);
+            return true;
         });
     }
 
