@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -104,6 +103,16 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryRecy
         // Get element from your local data at this position and replace the
         // contents of the view with that element
 
+        if (!galleryPresenter.getSelectedItems().contains(galleryItems.get(position))) {
+            // if item is NOT selected -> set unselected
+            viewHolder.ll_gallery_item_background.setBackgroundColor(Color.TRANSPARENT);
+            viewHolder.iv_check_circle.setVisibility(View.GONE);
+        } else {
+            // if item is selected -> set selected
+            viewHolder.ll_gallery_item_background.setBackgroundColor(Color.parseColor("#008FFF"));
+            viewHolder.iv_check_circle.setVisibility(View.VISIBLE);
+        }
+
         // set image to imageView
         Glide.with(context)
                 .load(Uri.fromFile(new File(galleryItems.get(position))))
@@ -119,7 +128,6 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryRecy
         viewHolder.imageView.setOnClickListener(v -> {
             if (galleryPresenter.getSelectedItems().isEmpty()) {
                 // no item is selected -> show galleryViewPager
-                Toast.makeText(mainPresenter.getActivity(), galleryItems.get(position), Toast.LENGTH_SHORT).show();
                 galleryPresenter.setViewPagerSelectedItem(position);
                 mainPresenter.navigateToGalleryViewPagerFragment();
             } else {
