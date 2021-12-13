@@ -1,7 +1,6 @@
 package com.esp32camera.home.gallery;
 
 import android.os.Environment;
-import android.widget.Toast;
 
 import com.esp32camera.MainActivity;
 
@@ -73,13 +72,6 @@ public class GalleryPresenter implements GalleryContract.Presenter {
 
     @Override
     public void deleteSelectedItems() {
-        mainActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mainActivity, selectedItems.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
         for (String item : selectedItems) {
             File file = new File(item);
             file.delete();

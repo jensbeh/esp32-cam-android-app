@@ -67,7 +67,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View {
 
     private void setupRvGallery() {
         rv_gallery.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mainPresenter.getActivity());
 
         galleryRecyclerViewAdapter = new GalleryRecyclerViewAdapter(mainPresenter.getActivity(), mainPresenter, galleryPresenter, galleryPresenter.loadGalleryItems());
 
