@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ESP32Camera"
         android:usesCleartextTraffic="true"
+        android:launchMode="singleTask"
         tools:targetApi="m">
         <activity
             android:name=".MainActivity"

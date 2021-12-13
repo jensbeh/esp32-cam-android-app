@@ -1,6 +1,7 @@
 package com.esp32camera;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.esp32camera.home.gallery.viewPager.GalleryViewPagerFragment;
 import com.esp32camera.home.gallery.viewPager.GalleryViewPagerPresenter;
 import com.esp32camera.home.notification.NotificationFragment;
 import com.esp32camera.home.notification.NotificationPresenter;
+import com.esp32camera.util.NotificationHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
@@ -48,6 +50,19 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String fragmentActionFromIntent = intent.getStringExtra("FRAGMENT");
+
+        if (fragmentActionFromIntent == null) {
+            // set homeFragment
+            bottomNavigationView_home.setSelectedItemId(R.id.nav_item_home);
+        } else if (fragmentActionFromIntent.equals("NOTIFICATION")) {
+            bottomNavigationView_home.setSelectedItemId(R.id.nav_item_notifications);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -68,13 +83,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         bottomNavigationView_home.setSelectedItemId(R.id.nav_item_home);
         setupNavigationViewListener();
 
+        // Setup Notification Handler
+        NotificationHandler notificationHandler = new NotificationHandler(this);
+
         // Setup Presenter
         homePresenter = new HomePresenter(this);
         galleryPresenter = new GalleryPresenter(this);
         galleryViewPagerPresenter = new GalleryViewPagerPresenter(this);
         notificationPresenter = new NotificationPresenter(this);
         camSettingsPresenter = new CamSettingsPresenter(this);
-        mainPresenter = new MainPresenter(this, homePresenter, camSettingsPresenter, notificationPresenter);
+        mainPresenter = new MainPresenter(this, homePresenter, camSettingsPresenter, notificationPresenter, notificationHandler);
 
         // Setup Fragments
         homeFragment = new HomeFragment(mainPresenter, homePresenter);
@@ -83,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         notificationFragment = new NotificationFragment(mainPresenter, notificationPresenter);
         camSettingsFragment = new CamSettingsFragment(mainPresenter, camSettingsPresenter);
 
+
         // load all stored EspCameras
         mainPresenter.loadEspCameras();
 
@@ -90,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mainPresenter.loadNotifications();
 
         // set homeFragment
-        mainPresenter.navigateToHomeFragment();
+        bottomNavigationView_home.setSelectedItemId(R.id.nav_item_home);
     }
 
     private void setupNavigationViewListener() {

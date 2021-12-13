@@ -15,6 +15,7 @@ import com.esp32camera.model.EspCamera;
 import com.esp32camera.model.Notification;
 import com.esp32camera.net.WebSocketService;
 import com.esp32camera.net.WebSocketServiceInterface;
+import com.esp32camera.util.NotificationHandler;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -31,16 +32,18 @@ public class MainPresenter implements MainContract.Presenter {
     private HomePresenter homePresenter;
     private CamSettingsPresenter camSettingsPresenter;
     private NotificationPresenter notificationPresenter;
+    private NotificationHandler notificationHandler;
     private Map<String, WebSocketService> webSocketServiceMap;
     private Map<String, EspCamera> espCameraMap;
     private Map<String, CameraCard> cameraCardMap;
     private List<Notification> notificationList;
 
-    public MainPresenter(MainActivity mainActivity, HomePresenter homePresenter, CamSettingsPresenter camSettingsPresenter, NotificationPresenter notificationPresenter) {
+    public MainPresenter(MainActivity mainActivity, HomePresenter homePresenter, CamSettingsPresenter camSettingsPresenter, NotificationPresenter notificationPresenter, NotificationHandler notificationHandler) {
         this.mainActivity = mainActivity;
         this.homePresenter = homePresenter;
         this.camSettingsPresenter = camSettingsPresenter;
         this.notificationPresenter = notificationPresenter;
+        this.notificationHandler = notificationHandler;
 
         viewState = MainActivity.State.StartUp;
         webSocketServiceMap = new HashMap<>();
@@ -389,6 +392,8 @@ public class MainPresenter implements MainContract.Presenter {
         }
 
         saveNotifications();
+
+        notificationHandler.notifyFrom(espCamera, notification);
     }
 
     @Override
@@ -525,6 +530,12 @@ public class MainPresenter implements MainContract.Presenter {
     public void navigateToGalleryFragment() {
         viewState = MainActivity.State.GalleryFragment;
         mainActivity.navigateToGalleryFragment();
+    }
+
+    @Override
+    public void navigateToNotificationFragment() {
+        viewState = MainActivity.State.NotificationFragment;
+        mainActivity.navigateToNotificationFragment();
     }
 
     @Override

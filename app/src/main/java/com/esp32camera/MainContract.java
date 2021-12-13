@@ -37,6 +37,8 @@ public interface MainContract {
 
         void navigateToGalleryFragment();
 
+        void navigateToNotificationFragment();
+
         void sendWebSocketMessage(EspCamera espCamera, String message);
 
         // from bottom navigation bar
