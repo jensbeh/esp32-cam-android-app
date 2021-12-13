@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         galleryViewPagerPresenter = new GalleryViewPagerPresenter(this);
         notificationPresenter = new NotificationPresenter(this);
         camSettingsPresenter = new CamSettingsPresenter(this);
-        mainPresenter = new MainPresenter(this, homePresenter, camSettingsPresenter);
+        mainPresenter = new MainPresenter(this, homePresenter, camSettingsPresenter, notificationPresenter);
 
         // Setup Fragments
         homeFragment = new HomeFragment(mainPresenter, homePresenter);
@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         // load all stored EspCameras
         mainPresenter.loadEspCameras();
+
+        // load all stored Notifications
+        mainPresenter.loadNotifications();
 
         // set homeFragment
         mainPresenter.navigateToHomeFragment();

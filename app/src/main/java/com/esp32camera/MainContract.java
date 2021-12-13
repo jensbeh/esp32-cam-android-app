@@ -5,7 +5,9 @@ import android.view.MenuItem;
 
 import com.esp32camera.model.CameraCard;
 import com.esp32camera.model.EspCamera;
+import com.esp32camera.model.Notification;
 
+import java.util.List;
 import java.util.Map;
 
 public interface MainContract {
@@ -96,6 +98,8 @@ public interface MainContract {
 
         void setCameraFlashlight(EspCamera espCamera, int flashlight);
 
+        void notifyOnMotionDetected(EspCamera espCamera);
+
         Map<String, CameraCard> getCameraCardMap();
 
         boolean ifCameraExisting(String ipAddress);
@@ -107,5 +111,9 @@ public interface MainContract {
         void loadEspCameras();
 
         void saveEspCameras();
+
+        List<Notification> getNotificationItems();
+
+        void deleteSelectedItems(List<Notification> selectedItemsToDelete);
     }
 }

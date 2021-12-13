@@ -182,7 +182,7 @@ public class CameraCard {
                 result.compress(Bitmap.CompressFormat.PNG, 100, fOut);
                 fOut.flush(); // Not really required
                 fOut.close(); // do not forget to close the stream
-                Toast.makeText(mainPresenter.getActivity(), "READY", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainPresenter.getActivity(), "Made a picture!", Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -206,7 +206,7 @@ public class CameraCard {
             mainPresenter.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(mainPresenter.getActivity(), "CAPTURE READY!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mainPresenter.getActivity(), "Recorded it! Please wait for saving File!", Toast.LENGTH_LONG).show();
                 }
             });
             return bitmapList;
@@ -223,7 +223,7 @@ public class CameraCard {
                     mainPresenter.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mainPresenter.getActivity(), "Encoding complete!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mainPresenter.getActivity(), "Saved the video!", Toast.LENGTH_LONG).show();
                         }
                     });
                 }

@@ -38,5 +38,7 @@ public interface GalleryContract {
         List<String> getSelectedItems();
 
         void removeSelectedItem(String item);
+
+        void clearSelectedItems();
     }
 }

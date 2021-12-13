@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.esp32camera.MainPresenter;
@@ -54,6 +53,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View {
         fab_delete_selected_gallery_items = (FloatingActionButton) view.findViewById(R.id.fab_delete_selected_gallery_items);
         rv_gallery = (RecyclerView) view.findViewById(R.id.rv_gallery);
 
+
         setupRvGallery();
 
         setupOnListener();
@@ -63,6 +63,12 @@ public class GalleryFragment extends Fragment implements GalleryContract.View {
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        galleryPresenter.clearSelectedItems();
     }
 
     private void setupRvGallery() {

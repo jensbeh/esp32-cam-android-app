@@ -38,4 +38,8 @@ public class Constants {
     public static final String VFLIP_PATH = "vflip="; // 0 = disable , 1 = enable
     public static final String COLORBAR_PATH = "colorbar="; // 0 = disable , 1 = enable
     public static final String FLASHLIGHT_PATH = "flashlight="; // 0 = disable , 1 = enable
+
+    // Notifications
+    public static final String CAM_NOTIFICATION_PATH = "camNotification/";
+    public static final String MOTION_DETECTED_PATH = "motionDetection";
 }

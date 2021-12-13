@@ -194,8 +194,6 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
                         InetAddress addr = InetAddress.getByName(host);
                         String hostName = addr.getHostName();
                         if (hostName.contains("ESP-Camera") && !mainPresenter.ifCameraExisting(host)) {
-                            System.out.println(host + "isreachable");
-                            System.out.println(hostName);
                             espCamerasIp.add(host);
                         }
                     }

@@ -96,4 +96,9 @@ public class GalleryPresenter implements GalleryContract.Presenter {
     public void removeSelectedItem(String item) {
         selectedItems.remove(item);
     }
+
+    @Override
+    public void clearSelectedItems() {
+        selectedItems.clear();
+    }
 }

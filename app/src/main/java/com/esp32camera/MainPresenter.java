@@ -9,8 +9,10 @@ import android.widget.Toast;
 
 import com.esp32camera.camSettings.CamSettingsPresenter;
 import com.esp32camera.home.HomePresenter;
+import com.esp32camera.home.notification.NotificationPresenter;
 import com.esp32camera.model.CameraCard;
 import com.esp32camera.model.EspCamera;
+import com.esp32camera.model.Notification;
 import com.esp32camera.net.WebSocketService;
 import com.esp32camera.net.WebSocketServiceInterface;
 import com.google.gson.Gson;
@@ -19,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainPresenter implements MainContract.Presenter {
@@ -27,35 +30,47 @@ public class MainPresenter implements MainContract.Presenter {
     private MainActivity.State viewState;
     private HomePresenter homePresenter;
     private CamSettingsPresenter camSettingsPresenter;
+    private NotificationPresenter notificationPresenter;
     private Map<String, WebSocketService> webSocketServiceMap;
     private Map<String, EspCamera> espCameraMap;
     private Map<String, CameraCard> cameraCardMap;
+    private List<Notification> notificationList;
 
-    public MainPresenter(MainActivity mainActivity, HomePresenter homePresenter, CamSettingsPresenter camSettingsPresenter) {
+    public MainPresenter(MainActivity mainActivity, HomePresenter homePresenter, CamSettingsPresenter camSettingsPresenter, NotificationPresenter notificationPresenter) {
         this.mainActivity = mainActivity;
         this.homePresenter = homePresenter;
         this.camSettingsPresenter = camSettingsPresenter;
+        this.notificationPresenter = notificationPresenter;
 
         viewState = MainActivity.State.StartUp;
         webSocketServiceMap = new HashMap<>();
         espCameraMap = new HashMap<>();
         cameraCardMap = new HashMap<>();
+        notificationList = new ArrayList<>();
     }
 
     @Override
     public void changeToSelectedFragment(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_item_gallery:
-                viewState = MainActivity.State.GalleryFragment;
-                mainActivity.navigateToGalleryFragment();
+                if (viewState != MainActivity.State.GalleryFragment) {
+                    viewState = MainActivity.State.GalleryFragment;
+                    mainActivity.navigateToGalleryFragment();
+                }
                 break;
             case R.id.nav_item_home:
-                viewState = MainActivity.State.HomeFragment;
-                mainActivity.navigateToHomeFragment();
+                if (viewState != MainActivity.State.HomeFragment) {
+                    viewState = MainActivity.State.HomeFragment;
+                    mainActivity.navigateToHomeFragment();
+                }
                 break;
             case R.id.nav_item_notifications:
-                viewState = MainActivity.State.NotificationFragment;
-                mainActivity.navigateToNotificationFragment();
+                if (viewState != MainActivity.State.NotificationFragment) {
+                    viewState = MainActivity.State.NotificationFragment;
+                    mainActivity.navigateToNotificationFragment();
+                } else {
+                    notificationPresenter.scrollToTop();
+                }
                 break;
             default:
                 break;
@@ -64,8 +79,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void setupNewEspCamera(String ipAddress, String name) {
-        Toast.makeText(mainActivity, ipAddress, Toast.LENGTH_SHORT).show();
-
         // create new EspCamera
         EspCamera newEspCamera = new EspCamera(ipAddress, name);
         espCameraMap.put(ipAddress, newEspCamera);
@@ -360,6 +373,25 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
+    public void notifyOnMotionDetected(EspCamera espCamera) {
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mainActivity, "MOTION DETECTED FROM: " + espCamera.getName() + " - " + espCamera.getIpAddress(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Notification notification = new Notification(espCamera.getName(), espCamera.getIpAddress());
+        notificationList.add(notification);
+
+        if (viewState == MainActivity.State.NotificationFragment) {
+            notificationPresenter.notifyOnMotionDetected(notification);
+        }
+
+        saveNotifications();
+    }
+
+    @Override
     public Map<String, CameraCard> getCameraCardMap() {
         return cameraCardMap;
     }
@@ -427,6 +459,49 @@ public class MainPresenter implements MainContract.Presenter {
         }
         String json = gson.toJson(espCamerasArrayList);
         editor.putString("EspCameras", json);
+        editor.apply();
+    }
+
+    @Override
+    public List<Notification> getNotificationItems() {
+        return notificationList;
+    }
+
+    @Override
+    public void deleteSelectedItems(List<Notification> selectedItemsToDelete) {
+        for (Notification notification : selectedItemsToDelete) {
+            if (notificationList.contains(notification))
+                notificationList.remove(notification);
+        }
+
+        saveNotifications();
+    }
+
+    /**
+     * loads the data from sharedPreferences
+     */
+    public void loadNotifications() {
+        SharedPreferences sharedPreferences = mainActivity.getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("Notifications", null);
+        Type type = new TypeToken<ArrayList<Notification>>() {
+        }.getType();
+        ArrayList<Notification> mExampleList = gson.fromJson(json, type);
+        if (mExampleList != null) {
+            notificationList = mExampleList;
+        }
+    }
+
+    /**
+     * saves the data to sharedPreferences
+     */
+    public void saveNotifications() {
+        SharedPreferences sharedPreferences = mainActivity.getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+
+        String json = gson.toJson(notificationList);
+        editor.putString("Notifications", json);
         editor.apply();
     }
 

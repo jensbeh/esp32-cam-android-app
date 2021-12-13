@@ -9,6 +9,7 @@ import static com.esp32camera.util.Constants.AUTOWB_GAIN_PATH;
 import static com.esp32camera.util.Constants.BPC_PATH;
 import static com.esp32camera.util.Constants.BRIGHTNESS_PATH;
 import static com.esp32camera.util.Constants.CAM_CONTROLS_PATH;
+import static com.esp32camera.util.Constants.CAM_NOTIFICATION_PATH;
 import static com.esp32camera.util.Constants.COLORBAR_PATH;
 import static com.esp32camera.util.Constants.CONTRAST_PATH;
 import static com.esp32camera.util.Constants.EXPOSURE_CTRL_STATE_PATH;
@@ -17,6 +18,7 @@ import static com.esp32camera.util.Constants.FRAMESIZE_PATH;
 import static com.esp32camera.util.Constants.GAINCEILING_PATH;
 import static com.esp32camera.util.Constants.HMIRROR_PATH;
 import static com.esp32camera.util.Constants.LENC_PATH;
+import static com.esp32camera.util.Constants.MOTION_DETECTED_PATH;
 import static com.esp32camera.util.Constants.QUALITY_PATH;
 import static com.esp32camera.util.Constants.RAW_GMA_PATH;
 import static com.esp32camera.util.Constants.SATURATION_PATH;
@@ -263,6 +265,10 @@ public class WebSocketService {
             else if (message.contains(FLASHLIGHT_PATH)) {
                 int flashlight = Integer.parseInt(message.substring(message.indexOf("=") + 1));
                 mainPresenter.setCameraFlashlight(espCamera, flashlight);
+            }
+        } else if (message.contains(CAM_NOTIFICATION_PATH)) {
+            if (message.contains(MOTION_DETECTED_PATH)) {
+                mainPresenter.notifyOnMotionDetected(espCamera);
             }
         }
     }
