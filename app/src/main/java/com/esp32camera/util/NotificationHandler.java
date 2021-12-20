@@ -54,9 +54,9 @@ public class NotificationHandler {
         PendingIntent pendingIntent = PendingIntent.getActivity(mainActivity, (int) System.currentTimeMillis(), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(mainActivity, CHANNEL_NOTIFICATION_ID)
-                .setSmallIcon(R.drawable.ic_videocam)
-                .setContentTitle("MOTION DETECTED!")
-                .setContentText(espCamera.getName() + " -- " + notificationDate)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Motion detected!")
+                .setContentText(espCamera.getName() + " at " + notificationDate)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_EVENT)
                 .setContentIntent(pendingIntent)

@@ -55,7 +55,7 @@ public class WebSocketForegroundService extends Service {
                 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("ESP Camera app is running!")
-                .setSmallIcon(R.drawable.ic_videocam)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
@@ -211,7 +211,7 @@ public class WebSocketForegroundService extends Service {
         Notification notification = new NotificationCompat.Builder(getApplication(), CHANNEL_ID)
                 .setContentTitle("ESP Camera app is running!")
                 .setContentText(mainPresenter.getOpenedWebSocketCount() + " of " + mainPresenter.getAllCamerasCount() + " cameras are online!")
-                .setSmallIcon(R.drawable.ic_videocam)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);

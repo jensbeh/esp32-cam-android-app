@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Primary Colors -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -15,6 +16,8 @@
     <color name="veryLightBlue">#8BA5FF</color>
     <color name="yellow">#FFFF00</color>
     <color name="red">#FF0000</color>
+
+    <color name="splashScreenStatusBar">#00970F</color>
 
     <!-- Bottom Navigation View Colors -->
     <color name="selectedItemBar">#FF0000</color>
