@@ -117,5 +117,11 @@ public interface MainContract {
         List<Notification> getNotificationItems();
 
         void deleteSelectedItems(List<Notification> selectedItemsToDelete);
+
+        void onDestroy();
+
+        int getAllCamerasCount();
+        int getOpenedWebSocketCount();
+        void setOpenedWebSocketCount(int newCount);
     }
 }

@@ -37,6 +37,7 @@ public class MainPresenter implements MainContract.Presenter {
     private Map<String, EspCamera> espCameraMap;
     private Map<String, CameraCard> cameraCardMap;
     private List<Notification> notificationList;
+    private int openedWebSocketCount;
 
     public MainPresenter(MainActivity mainActivity, HomePresenter homePresenter, CamSettingsPresenter camSettingsPresenter, NotificationPresenter notificationPresenter, NotificationHandler notificationHandler) {
         this.mainActivity = mainActivity;
@@ -50,6 +51,7 @@ public class MainPresenter implements MainContract.Presenter {
         espCameraMap = new HashMap<>();
         cameraCardMap = new HashMap<>();
         notificationList = new ArrayList<>();
+        openedWebSocketCount = 0;
     }
 
     @Override
@@ -119,7 +121,7 @@ public class MainPresenter implements MainContract.Presenter {
             public void OnConnectionFailed(EspCamera espCamera, String status) {
             }
         });
-        webSocketService.startWebSocketService();
+//        webSocketService.startWebSocketService();
         webSocketServiceMap.put(ipAddress, webSocketService);
     }
 
@@ -377,13 +379,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void notifyOnMotionDetected(EspCamera espCamera) {
-        mainActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mainActivity, "MOTION DETECTED FROM: " + espCamera.getName() + " - " + espCamera.getIpAddress(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
         Notification notification = new Notification(espCamera.getName(), espCamera.getIpAddress());
         notificationList.add(notification);
 
@@ -480,6 +475,28 @@ public class MainPresenter implements MainContract.Presenter {
         }
 
         saveNotifications();
+    }
+
+    @Override
+    public void onDestroy() {
+        for (CameraCard cameraCard : cameraCardMap.values()) {
+            cameraCard.stop();
+        }
+    }
+
+    @Override
+    public int getAllCamerasCount() {
+        return espCameraMap.size();
+    }
+
+    @Override
+    public int getOpenedWebSocketCount() {
+        return openedWebSocketCount;
+    }
+
+    @Override
+    public void setOpenedWebSocketCount(int newCount) {
+        this.openedWebSocketCount = newCount;
     }
 
     /**

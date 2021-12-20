@@ -30,10 +30,19 @@ import static com.esp32camera.util.Constants.WEBSOCKETS_SERVER_WS;
 import static com.esp32camera.util.Constants.WHITEBALANCE_STATE_PATH;
 import static com.esp32camera.util.Constants.WPC_PATH;
 
+import android.app.ActivityManager;
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.esp32camera.MainActivity;
 import com.esp32camera.MainPresenter;
 import com.esp32camera.camSettings.CamSettingsPresenter;
 import com.esp32camera.model.EspCamera;
@@ -46,9 +55,11 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.Timer;
 
-public class WebSocketService {
+public class WebSocketService implements WebSocketForegroundService.Callbacks {
 
-    private WebSocketClient webSocketClient;
+    private Intent serviceIntent;
+    private WebSocketForegroundService myService;
+
     private MainPresenter mainPresenter;
     private EspCamera espCamera;
     private CamSettingsPresenter camSettingsPresenter;
@@ -61,69 +72,14 @@ public class WebSocketService {
         this.camSettingsPresenter = camSettingsPresenter;
         this.webSocketServiceInterface = webSocketServiceInterface;
         this.noopTimer = new Timer();
+
+        serviceIntent = new Intent(mainPresenter.getActivity(), WebSocketForegroundService.class);
+        isMyServiceRunning(WebSocketForegroundService.class);
+
+        startService();
     }
 
-    public void startWebSocketService() {
-
-        URI uri = null;
-        try {
-            uri = new URI(WEBSOCKETS_SERVER_WS + espCamera.getIpAddress() + WEBSOCKETS_SERVER_PORT);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        webSocketClient = new WebSocketClient(Objects.requireNonNull(uri)) {
-            @Override
-            public void onOpen(ServerHandshake serverHandshake) {
-                webSocketServiceInterface.OnConnectionOpened(espCamera, "WEBSOCKET OPENED");
-                Log.i("WebSocket", "Opened");
-                webSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
-
-//                noopTimer.schedule(new TimerTask() {
-//                    @Override
-//                    public void run() {
-//                        // Send NOOP Message
-//                        sendMessage("COM_NOOP");
-//                    }
-//                }, 0, 1000 * 30);
-            }
-
-            @Override
-            public void onMessage(String s) {
-                final String message = s;
-                handleMessage(message);
-            }
-
-            @Override
-            public void onClose(int i, String s, boolean b) {
-                webSocketServiceInterface.OnConnectionClosed(espCamera, "WEBSOCKET CLOSE");
-                Log.i("WebSocket", "Closed " + s);
-
-                // tries to reconnect the webSocket after 5 sec; if not working then there will be an onClose Error again with reconnect etc.
-                mainPresenter.getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.i("WebSocket", "Try to reconnect...");
-                                webSocketClient.reconnect();
-                            }
-                        }, 5000);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(Exception e) {
-                webSocketServiceInterface.OnConnectionFailed(espCamera, "WEBSOCKET ERROR");
-                Log.i("WebSocket", "Error " + e.getMessage());
-            }
-        };
-        webSocketClient.setConnectionLostTimeout(3);
-        webSocketClient.connect();
-    }
-
-    private void handleMessage(String message) {
+    public void handleMessage(String message) {
         if (message.contains(CAM_CONTROLS_PATH)) {
             // set framesize
             if (message.contains(FRAMESIZE_PATH)) {
@@ -274,14 +230,70 @@ public class WebSocketService {
     }
 
     public void sendMessage(String message) {
-        webSocketClient.send(message);
+//        webSocketClient.send(message);
+        myService.send(message);
     }
 
     public boolean isWebSocketConnected() {
-        return webSocketClient.isOpen();
+//        return webSocketClient.isOpen();
+        return myService.isOpen();
     }
 
     public void close() {
-        webSocketClient.close();
+//        webSocketClient.close();
+        myService.close();
+    }
+
+    //------------------------------------------------------------------------------------
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            Toast.makeText(mainPresenter.getActivity(), "onServiceConnected called", Toast.LENGTH_SHORT).show();
+            // We've binded to LocalService, cast the IBinder and get LocalService instance
+            WebSocketForegroundService.LocalBinder binder = (WebSocketForegroundService.LocalBinder) service;
+            myService = binder.getServiceInstance(); //Get instance of your service!
+            myService.registerClient(getInstance()); //Activity register in the service as client for callabcks!
+
+            myService.startWebSocketService(getInstance(), mainPresenter, espCamera, webSocketServiceInterface);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            Toast.makeText(mainPresenter.getActivity(), "onServiceDisconnected called", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    public WebSocketService getInstance() {
+        return this;
+    }
+
+    public void startService() {
+        mainPresenter.getActivity().getApplication().startService(serviceIntent); //Starting the service
+        mainPresenter.getActivity().getApplication().bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE); //Binding to the service!
+        Toast.makeText(mainPresenter.getActivity(), "startService " + espCamera.getIpAddress(), Toast.LENGTH_SHORT).show();
+    }
+    public void stopService() {
+        mainPresenter.getActivity().unbindService(mConnection);
+        mainPresenter.getActivity().stopService(serviceIntent);
+        Toast.makeText(mainPresenter.getActivity(), "stopService " + espCamera.getIpAddress(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void updateClient(String data) {
+        Toast.makeText(mainPresenter.getActivity(), data, Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) mainPresenter.getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                mainPresenter.getActivity().stopService(serviceIntent);
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String fragmentActionFromIntent = getIntent().getStringExtra("FRAGMENT");
+
         // set network policy, because of some "android.os.NetworkOnMainThreadException"
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -108,8 +110,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         // load all stored Notifications
         mainPresenter.loadNotifications();
 
-        // set homeFragment
-        bottomNavigationView_home.setSelectedItemId(R.id.nav_item_home);
+        if (fragmentActionFromIntent == null) {
+            // set homeFragment
+            bottomNavigationView_home.setSelectedItemId(R.id.nav_item_home);
+        } else if (fragmentActionFromIntent.equals("NOTIFICATION")) {
+            bottomNavigationView_home.setSelectedItemId(R.id.nav_item_notifications);
+        }
     }
 
     private void setupNavigationViewListener() {
@@ -200,5 +206,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainPresenter.onDestroy();
     }
 }

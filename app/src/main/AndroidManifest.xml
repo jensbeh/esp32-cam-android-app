@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,6 +22,11 @@
         android:usesCleartextTraffic="true"
         android:launchMode="singleTask"
         tools:targetApi="m">
+
+        <service
+            android:name=".net.WebSocketForegroundService"
+            android:enabled="true"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
