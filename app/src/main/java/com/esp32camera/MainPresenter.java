@@ -5,7 +5,6 @@ import static android.content.Context.MODE_PRIVATE;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.esp32camera.camSettings.CamSettingsPresenter;
 import com.esp32camera.home.HomePresenter;
@@ -60,19 +59,32 @@ public class MainPresenter implements MainContract.Presenter {
             case R.id.nav_item_gallery:
                 if (viewState != MainActivity.State.GalleryFragment) {
                     viewState = MainActivity.State.GalleryFragment;
-                    mainActivity.navigateToGalleryFragment();
+                    mainActivity.navigateToGalleryFragmentWithAnim(R.anim.slide_in_left, R.anim.slide_out_right);
                 }
                 break;
             case R.id.nav_item_home:
                 if (viewState != MainActivity.State.HomeFragment) {
-                    viewState = MainActivity.State.HomeFragment;
-                    mainActivity.navigateToHomeFragment();
+                    // from gallery fragment
+                    if (viewState == MainActivity.State.GalleryFragment) {
+                        viewState = MainActivity.State.HomeFragment;
+                        mainActivity.navigateToHomeFragmentWithAnim(R.anim.slide_in_right, R.anim.slide_out_left);
+                    }
+                    // from notification fragment
+                    else if (viewState == MainActivity.State.NotificationFragment) {
+                        viewState = MainActivity.State.HomeFragment;
+                        mainActivity.navigateToHomeFragmentWithAnim(R.anim.slide_in_left, R.anim.slide_out_right);
+                    }
+                    // at start up
+                    else if (viewState == MainActivity.State.StartUp) {
+                        viewState = MainActivity.State.HomeFragment;
+                        mainActivity.navigateToHomeFragment();
+                    }
                 }
                 break;
             case R.id.nav_item_notifications:
                 if (viewState != MainActivity.State.NotificationFragment) {
                     viewState = MainActivity.State.NotificationFragment;
-                    mainActivity.navigateToNotificationFragment();
+                    mainActivity.navigateToNotificationFragmentWithAnim(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else {
                     notificationPresenter.scrollToTop();
                 }

@@ -14,10 +14,13 @@ public interface MainContract {
 
     interface View { // from presenter to view
         void navigateToHomeFragment();
+        void navigateToHomeFragmentWithAnim(int enter, int exit);
 
         void navigateToGalleryFragment();
+        void navigateToGalleryFragmentWithAnim(int enter, int exit);
 
         void navigateToNotificationFragment();
+        void navigateToNotificationFragmentWithAnim(int enter, int exit);
 
         void navigateToCamSettingsFragment();
 

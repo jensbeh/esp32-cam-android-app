@@ -159,6 +159,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void navigateToHomeFragmentWithAnim(int enter, int exit) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                .setCustomAnimations(enter, exit)
+                .replace(R.id.fragment_container, homeFragment)
+                .commit();
+
+        bottomNavigationView_home.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void navigateToGalleryFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -170,10 +182,34 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void navigateToGalleryFragmentWithAnim(int enter, int exit) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                .setCustomAnimations(enter, exit)
+                .replace(R.id.fragment_container, galleryFragment)
+                .commit();
+
+        bottomNavigationView_home.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void navigateToNotificationFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                .replace(R.id.fragment_container, notificationFragment)
+                .commit();
+
+        bottomNavigationView_home.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void navigateToNotificationFragmentWithAnim(int enter, int exit) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                .setCustomAnimations(enter, exit)
                 .replace(R.id.fragment_container, notificationFragment)
                 .commit();
 
