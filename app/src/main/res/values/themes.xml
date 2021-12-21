@@ -5,7 +5,19 @@
         <item name="android:windowDisablePreview">true</item>
 
         <!-- Status bar color -->
-        <item name="android:statusBarColor">@color/splashScreenStatusBar</item>
+        <item name="android:windowTranslucentStatus">true</item>
+
+        <!-- Custom Activity Animation -->
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+    </style>
+
+    <!-- Splash Screen application theme. -->
+    <style name="OnBoardingTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Theme settings -->
+        <item name="android:windowDisablePreview">true</item>
+
+        <!-- Status bar color -->
+        <item name="android:windowTranslucentStatus">true</item>
 
         <!-- Custom Activity Animation -->
         <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>

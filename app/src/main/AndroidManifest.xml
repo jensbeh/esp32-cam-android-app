@@ -28,7 +28,7 @@
             android:enabled="true"/>
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".splash.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashTheme"
             android:screenOrientation="portrait">
@@ -37,6 +37,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".onBoarding.OnBoardingActivity"
+            android:theme="@style/OnBoardingTheme"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
