@@ -1,25 +1,35 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Splash Screen application theme. -->
     <style name="SplashTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Theme settings -->
         <item name="android:windowDisablePreview">true</item>
+
+        <!-- Status bar color -->
         <item name="android:statusBarColor">@color/splashScreenStatusBar</item>
+
+        <!-- Custom Activity Animation -->
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
     </style>
 
     <!-- Base application theme. -->
     <style name="Theme.ESP32Camera" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Theme settings -->
         <item name="android:windowDisablePreview">true</item>
 
-        <!-- Primary brand color. -->
+        <!-- Status bar color -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
+        <!-- Custom Activity Animation -->
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+
+        <!-- Primary brand color -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
+        <!-- Secondary brand color -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
     </style>
 
     <!-- BottomSheetDialog Theme - behind the sheet -->
