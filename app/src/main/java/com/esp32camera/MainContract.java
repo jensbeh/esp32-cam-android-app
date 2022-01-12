@@ -14,12 +14,15 @@ public interface MainContract {
 
     interface View { // from presenter to view
         void navigateToHomeFragment();
+
         void navigateToHomeFragmentWithAnim(int enter, int exit);
 
         void navigateToGalleryFragment();
+
         void navigateToGalleryFragmentWithAnim(int enter, int exit);
 
         void navigateToNotificationFragment();
+
         void navigateToNotificationFragmentWithAnim(int enter, int exit);
 
         void navigateToCamSettingsFragment();
@@ -105,6 +108,8 @@ public interface MainContract {
 
         void notifyOnMotionDetected(EspCamera espCamera);
 
+        void notifyOnMotionDetectedPictureData(EspCamera espCamera, byte[] pictureData);
+
         Map<String, CameraCard> getCameraCardMap();
 
         boolean ifCameraExisting(String ipAddress);
@@ -124,7 +129,9 @@ public interface MainContract {
         void onDestroy();
 
         int getAllCamerasCount();
+
         int getOpenedWebSocketCount();
+
         void setOpenedWebSocketCount(int newCount);
     }
 }

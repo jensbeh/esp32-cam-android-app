@@ -25,34 +25,22 @@ import static com.esp32camera.util.Constants.SATURATION_PATH;
 import static com.esp32camera.util.Constants.SPECIAL_EFFECT_PATH;
 import static com.esp32camera.util.Constants.VFLIP_PATH;
 import static com.esp32camera.util.Constants.WB_MODE_PATH;
-import static com.esp32camera.util.Constants.WEBSOCKETS_SERVER_PORT;
-import static com.esp32camera.util.Constants.WEBSOCKETS_SERVER_WS;
 import static com.esp32camera.util.Constants.WHITEBALANCE_STATE_PATH;
 import static com.esp32camera.util.Constants.WPC_PATH;
 
 import android.app.ActivityManager;
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.esp32camera.MainActivity;
 import com.esp32camera.MainPresenter;
 import com.esp32camera.camSettings.CamSettingsPresenter;
 import com.esp32camera.model.EspCamera;
 
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ServerHandshake;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Objects;
+import java.nio.ByteBuffer;
 import java.util.Timer;
 
 public class WebSocketService implements WebSocketForegroundService.Callbacks {
@@ -229,18 +217,19 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
         }
     }
 
+    public void handleByteBuffer(ByteBuffer bytes) {
+        mainPresenter.notifyOnMotionDetectedPictureData(espCamera, bytes.array());
+    }
+
     public void sendMessage(String message) {
-//        webSocketClient.send(message);
         myService.send(message);
     }
 
     public boolean isWebSocketConnected() {
-//        return webSocketClient.isOpen();
         return myService.isOpen();
     }
 
     public void close() {
-//        webSocketClient.close();
         myService.close();
     }
 
@@ -275,6 +264,7 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
         mainPresenter.getActivity().getApplication().bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE); //Binding to the service!
         Toast.makeText(mainPresenter.getActivity(), "startService " + espCamera.getIpAddress(), Toast.LENGTH_SHORT).show();
     }
+
     public void stopService() {
         mainPresenter.getActivity().unbindService(mConnection);
         mainPresenter.getActivity().stopService(serviceIntent);

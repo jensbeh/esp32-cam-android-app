@@ -74,9 +74,9 @@ public class GalleryPresenter implements GalleryContract.Presenter {
     public void deleteSelectedItems() {
         for (String item : selectedItems) {
             File file = new File(item);
-            file.delete();
-
-            galleryItems.remove(item);
+            if (file.delete()) {
+                galleryItems.remove(item);
+            }
         }
         selectedItems.clear();
         galleryFragment.notifyOnItemsDelete();

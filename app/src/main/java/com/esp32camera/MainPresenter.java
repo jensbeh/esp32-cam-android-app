@@ -2,8 +2,12 @@ package com.esp32camera;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.view.MenuItem;
 
 import com.esp32camera.camSettings.CamSettingsPresenter;
@@ -14,10 +18,14 @@ import com.esp32camera.model.EspCamera;
 import com.esp32camera.model.Notification;
 import com.esp32camera.net.WebSocketService;
 import com.esp32camera.net.WebSocketServiceInterface;
+import com.esp32camera.util.CreateFile;
 import com.esp32camera.util.NotificationHandler;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -393,14 +401,59 @@ public class MainPresenter implements MainContract.Presenter {
     public void notifyOnMotionDetected(EspCamera espCamera) {
         Notification notification = new Notification(espCamera.getName(), espCamera.getIpAddress());
         notificationList.add(notification);
+    }
 
-        if (viewState == MainActivity.State.NotificationFragment) {
-            notificationPresenter.notifyOnMotionDetected(notification);
+    @Override
+    public void notifyOnMotionDetectedPictureData(EspCamera espCamera, byte[] pictureData) {
+        Bitmap bmp = BitmapFactory.decodeByteArray(pictureData, 0, pictureData.length);
+        for (int i = notificationList.size() - 1; i >= 0; i--) {
+            if (notificationList.get(i).getCameraName().equals(espCamera.getName())) {
+                notificationList.get(i).setPictureBmp(bmp);
+
+                new BackgroundSaveNotificationPicture(espCamera, notificationList.get(i)).execute();
+                break;
+            }
+        }
+    }
+
+    class BackgroundSaveNotificationPicture extends AsyncTask<Void, Void, Void> {
+        private final EspCamera espCamera;
+        private final Notification notification;
+
+        public BackgroundSaveNotificationPicture(EspCamera espCamera, Notification notification) {
+            this.espCamera = espCamera;
+            this.notification = notification;
         }
 
-        saveNotifications();
+        @Override
+        protected Void doInBackground(Void... params) {
+            // create notification picture
+            String jpegFilePath = CreateFile.createJpegFile(espCamera).getAbsolutePath();
 
-        notificationHandler.notifyFrom(espCamera, notification);
+            try {
+                FileOutputStream fOut = new FileOutputStream(jpegFilePath);
+                notification.getPictureBmp().compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                fOut.flush(); // Not really required
+                fOut.close(); // do not forget to close the stream
+                notification.setPicturePath(jpegFilePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @SuppressLint("WrongThread")
+        @Override
+        protected void onPostExecute(Void result) {
+            // save notificationList, update view if needed and push notification
+            saveNotifications();
+
+            if (viewState == MainActivity.State.NotificationFragment) {
+                notificationPresenter.notifyOnMotionDetected(notification);
+            }
+
+            notificationHandler.notifyFrom(espCamera, notification);
+        }
     }
 
     @Override
@@ -481,9 +534,15 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void deleteSelectedItems(List<Notification> selectedItemsToDelete) {
+
         for (Notification notification : selectedItemsToDelete) {
-            if (notificationList.contains(notification))
-                notificationList.remove(notification);
+            if (notificationList.contains(notification)) {
+
+                File file = new File(notification.getPicturePath());
+                if (file.delete()) {
+                    notificationList.remove(notification);
+                }
+            }
         }
 
         saveNotifications();
@@ -524,6 +583,12 @@ public class MainPresenter implements MainContract.Presenter {
         if (mExampleList != null) {
             notificationList = mExampleList;
         }
+
+        // load pictures
+        for (Notification notification : notificationList) {
+            Bitmap bitmap = BitmapFactory.decodeFile(notification.getPicturePath());
+            notification.setPictureBmp(bitmap);
+        }
     }
 
     /**
@@ -534,7 +599,19 @@ public class MainPresenter implements MainContract.Presenter {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
 
-        String json = gson.toJson(notificationList);
+        // save new notificationList without bitmaps
+        ArrayList<Notification> notificationsArrayList = new ArrayList<>();
+        for (Notification notification : notificationList) {
+            Notification newNotification = new Notification();
+            newNotification.setCameraName(notification.getCameraName());
+            newNotification.setCameraIp(notification.getCameraIp());
+            newNotification.setTimeStamp(notification.getTimeStamp());
+            newNotification.setPicturePath(notification.getPicturePath());
+
+            notificationsArrayList.add(newNotification);
+        }
+
+        String json = gson.toJson(notificationsArrayList);
         editor.putString("Notifications", json);
         editor.apply();
     }

@@ -29,6 +29,7 @@ import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.Objects;
 
@@ -162,6 +163,11 @@ public class WebSocketForegroundService extends Service {
             public void onMessage(String s) {
                 final String message = s;
                 webSocketService.handleMessage(message);
+            }
+
+            @Override
+            public void onMessage(ByteBuffer bytes) {
+                webSocketService.handleByteBuffer(bytes);
             }
 
             @Override

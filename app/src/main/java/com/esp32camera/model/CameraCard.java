@@ -1,6 +1,5 @@
 package com.esp32camera.model;
 
-import static android.content.ContentValues.TAG;
 import static com.esp32camera.util.Constants.CAM_CONTROLS_PATH;
 import static com.esp32camera.util.Constants.FLASHLIGHT_PATH;
 import static com.esp32camera.util.Constants.STREAM_PATH;
@@ -11,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,13 +34,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.esp32camera.MainPresenter;
 import com.esp32camera.R;
 import com.esp32camera.util.BitmapToVideoEncoder;
+import com.esp32camera.util.CreateFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class CameraCard {
@@ -175,7 +172,7 @@ public class CameraCard {
         @SuppressLint("WrongThread")
         @Override
         protected void onPostExecute(Bitmap result) {
-            String jpegFilePath = createJpegFile().getAbsolutePath();
+            String jpegFilePath = CreateFile.createJpegFile().getAbsolutePath();
 
             try {
                 FileOutputStream fOut = new FileOutputStream(jpegFilePath);
@@ -186,10 +183,7 @@ public class CameraCard {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
-
     }
 
     class BackgroundVideo extends AsyncTask<Void, Void, List<Bitmap>> {
@@ -215,7 +209,7 @@ public class CameraCard {
         @SuppressLint("WrongThread")
         @Override
         protected void onPostExecute(List<Bitmap> result) {
-            File mp4File = createMp4File();
+            File mp4File = CreateFile.createMp4File();
 
             BitmapToVideoEncoder bitmapToVideoEncoder = new BitmapToVideoEncoder(new BitmapToVideoEncoder.IBitmapToVideoEncoderCallback() {
                 @Override
@@ -237,30 +231,6 @@ public class CameraCard {
 
         }
 
-    }
-
-    private File createJpegFile() {
-        @SuppressLint("SimpleDateFormat")
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp;
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        File dir = new File(storageDir.getAbsolutePath() + "/EspCamera/");
-        dir.mkdirs();
-        File image = new File(dir, imageFileName + ".jpg");
-        Log.d(TAG, "file path is " + image.getAbsolutePath());
-        return image;
-    }
-
-    private File createMp4File() {
-        @SuppressLint("SimpleDateFormat")
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "MP4_" + timeStamp;
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        File dir = new File(storageDir.getAbsolutePath() + "/EspCamera/");
-        dir.mkdirs();
-        File video = new File(dir, imageFileName + ".mp4");
-        Log.d(TAG, "file path is " + video.getAbsolutePath());
-        return video;
     }
 
     public void setCameraName(String newName) {

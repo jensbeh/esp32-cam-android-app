@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.esp32camera.MainPresenter;
 import com.esp32camera.R;
 import com.esp32camera.home.notification.NotificationPresenter;
@@ -57,6 +58,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         private final TextView tv_timestamp_notification;
         private final ConstraintLayout cl_notification_item_background;
         private final ImageView iv_check_circle_notification;
+        private final ImageView iv_motionPicture;
         private boolean longClick;
 
         public ViewHolder(View view) {
@@ -69,6 +71,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
             tv_timestamp_notification = (TextView) view.findViewById(R.id.tv_timestamp_notification);
             cl_notification_item_background = (ConstraintLayout) view.findViewById(R.id.cl_notification_item_background);
             iv_check_circle_notification = (ImageView) view.findViewById(R.id.iv_check_circle_notification);
+            iv_motionPicture = (ImageView) view.findViewById(R.id.iv_motionPicture);
         }
 
         @Override
@@ -120,6 +123,17 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         }
 
         // TODO set image to imageView like in gallery fragment
+        if (mainPresenter.getNotificationItems().get(position).getPictureBmp() != null) {
+            if (viewHolder.iv_motionPicture.getVisibility() == View.GONE) {
+                viewHolder.iv_motionPicture.setVisibility(View.VISIBLE);
+            }
+            // set image to imageView
+            Glide.with(context)
+                    .load(mainPresenter.getNotificationItems().get(position).getPictureBmp())
+                    .into(viewHolder.iv_motionPicture);
+        } else {
+            viewHolder.iv_motionPicture.setVisibility(View.GONE);
+        }
 
         viewHolder.cardView_notification.setOnClickListener(v -> {
             if (!notificationPresenter.getSelectedItems().isEmpty()) {
