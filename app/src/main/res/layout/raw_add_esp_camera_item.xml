@@ -27,7 +27,7 @@
             android:layout_marginStart="20dp"
             android:text="@string/espCameraIp"
             android:textAlignment="textStart"
-            android:textColor="@android:color/black"
+            android:textColor="@color/white"
             android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/onlineUserStatus"
@@ -35,15 +35,29 @@
 
         <Button
             android:id="@+id/button_rv_selectCamera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="48dp"
             android:layout_marginStart="10dp"
             android:text="Select"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/tv_rv_ipAddress"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="visible"/>
+
+        <Button
+            android:id="@+id/button_rv_close_selectCamera"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/tv_rv_ipAddress"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -58,7 +72,9 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
+            android:textColor="@color/white"
             android:hint="Type in a camera name..."
+            android:textColorHint="@color/lightGray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

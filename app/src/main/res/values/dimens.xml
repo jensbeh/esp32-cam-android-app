@@ -2,4 +2,10 @@
 <resources>
     <!-- Width of the nav drawer left -->
     <dimen name="nav_left_width">350dp</dimen>
+    <dimen name="bottom_nav_height">55dp</dimen>
+
+    <dimen name="bottom_sheet_button_select_width">100dp</dimen>
+    <dimen name="bottom_sheet_button_select_height">48dp</dimen>
+    <dimen name="bottom_sheet_button_select_collapse_width">48dp</dimen>
+    <dimen name="bottom_sheet_button_select_collapse_height">48dp</dimen>
 </resources>

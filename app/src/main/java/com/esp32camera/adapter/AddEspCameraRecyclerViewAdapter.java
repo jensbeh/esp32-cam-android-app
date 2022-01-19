@@ -43,6 +43,7 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private final TextView tv_rv_ipAddress;
         private final Button button_rv_selectCamera;
+        private final Button button_rv_close_selectCamera;
         private final ConstraintLayout cl_selectName;
         private final EditText et_selectName;
         private final Button button_rv_connectCamera;
@@ -55,6 +56,7 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
             view.setOnLongClickListener(this);
             tv_rv_ipAddress = (TextView) view.findViewById(R.id.tv_rv_ipAddress);
             button_rv_selectCamera = (Button) view.findViewById(R.id.button_rv_selectCamera);
+            button_rv_close_selectCamera = (Button) view.findViewById(R.id.button_rv_close_selectCamera);
 
             cl_selectName = (ConstraintLayout) view.findViewById(R.id.cl_selectName);
 
@@ -108,15 +110,25 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
         viewHolder.button_rv_selectCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viewHolder.cl_selectName.getVisibility() == View.GONE) {
+                if (viewHolder.button_rv_close_selectCamera.getVisibility() == View.GONE) {
                     viewHolder.cl_selectName.setVisibility(View.VISIBLE);
-                    viewHolder.button_rv_selectCamera.setText("^");
-                } else {
-                    viewHolder.cl_selectName.setVisibility(View.GONE);
-                    viewHolder.button_rv_selectCamera.setText("Select");
+                    viewHolder.button_rv_selectCamera.setVisibility(View.INVISIBLE);
+                    viewHolder.button_rv_close_selectCamera.setVisibility(View.VISIBLE);
                 }
             }
         });
+        viewHolder.button_rv_close_selectCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (viewHolder.button_rv_selectCamera.getVisibility() == View.INVISIBLE) {
+                    viewHolder.cl_selectName.setVisibility(View.GONE);
+
+                    viewHolder.button_rv_selectCamera.setVisibility(View.VISIBLE);
+                    viewHolder.button_rv_close_selectCamera.setVisibility(View.GONE);
+                }
+            }
+        });
+
         viewHolder.button_rv_connectCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -9,35 +9,56 @@
     <!-- Toolbar Add ESP-Camera Strings -->
     <string name="nav_add_camera">Add Camera</string>
     <string name="espCameraIp">EspCamera Ip</string>
+    <string name="more_options">More Options</string>
 
-
+    <string name="framesize_UXGA">1600 x 1200 (UXGA)</string>
+    <string name="framesize_SXGA">1280 x 1024 (SXGA)</string>
+    <string name="framesize_XGA">1024 x 768 (XGA)</string>
+    <string name="framesize_SVGA">800 x 600 (SVGA)</string>
+    <string name="framesize_VGA">640 x 480 (VGA)</string>
+    <string name="framesize_CIF">352 x 288 (CIF)</string>
+    <string name="framesize_QVGA">320 x 240 (QVGA)</string>
+    <string name="framesize_HQVGA">240 x 176 (HQVGA)</string>
+    <string name="framesize_QQVGA">160 x 120 (QQVGA)</string>
     <string-array name="framesize_array">
-        <item>UXGA</item>
-        <item>SXGA</item>
-        <item>XGA</item>
-        <item>SVGA</item>
-        <item>VGA</item>
-        <item>CIF</item>
-        <item>QVGA</item>
-        <item>HQVGA</item>
-        <item>QQVGA</item>
+        <item>@string/framesize_UXGA</item>
+        <item>@string/framesize_SXGA</item>
+        <item>@string/framesize_XGA</item>
+        <item>@string/framesize_SVGA</item>
+        <item>@string/framesize_VGA</item>
+        <item>@string/framesize_CIF</item>
+        <item>@string/framesize_QVGA</item>
+        <item>@string/framesize_HQVGA</item>
+        <item>@string/framesize_QQVGA</item>
     </string-array>
 
+    <string name="effect_no_effect">No Effect</string>
+    <string name="effect_negative">Negative</string>
+    <string name="effect_grayscale">Grayscale</string>
+    <string name="effect_red_tint">Red Tint</string>
+    <string name="effect_green_tint">Green Tint</string>
+    <string name="effect_blue_tint">Blue Tint</string>
+    <string name="effect_sepia">Sepia</string>
     <string-array name="specialEffect_array">
-        <item>No Effect</item>
-        <item>Negative</item>
-        <item>Grayscale</item>
-        <item>Red Tint</item>
-        <item>Green Tint</item>
-        <item>Blue Tint</item>
-        <item>Sepia</item>
+        <item>@string/effect_no_effect</item>
+        <item>@string/effect_negative</item>
+        <item>@string/effect_grayscale</item>
+        <item>@string/effect_red_tint</item>
+        <item>@string/effect_green_tint</item>
+        <item>@string/effect_blue_tint</item>
+        <item>@string/effect_sepia</item>
     </string-array>
 
+    <string name="wbMode_auto">Auto</string>
+    <string name="wbMode_sunny">Sunny</string>
+    <string name="wbMode_cloudy">Cloudy</string>
+    <string name="wbMode_office">Office</string>
+    <string name="wbMode_home">Home</string>
     <string-array name="wbMode_array">
-        <item>Auto</item>
-        <item>Sunny</item>
-        <item>Cloudy</item>
-        <item>Office</item>
-        <item>Home</item>
+        <item>@string/wbMode_auto</item>
+        <item>@string/wbMode_sunny</item>
+        <item>@string/wbMode_cloudy</item>
+        <item>@string/wbMode_office</item>
+        <item>@string/wbMode_home</item>
     </string-array>
 </resources>

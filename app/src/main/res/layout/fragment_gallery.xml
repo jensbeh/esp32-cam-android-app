@@ -5,7 +5,8 @@
     android:id="@+id/gallery_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
+    android:layout_marginBottom="@dimen/bottom_nav_height"
+    android:background="@color/fragmentBackground"
     android:fitsSystemWindows="false"
     tools:context=".home.gallery.GalleryFragment">
 
@@ -16,8 +17,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:src="@drawable/ic_delete"
-        app:tint="@color/lightgray"
-        app:backgroundTint="@color/darkGray"
+        app:tint="@color/fabText"
+        app:backgroundTint="@color/fabBackground"
         app:borderWidth="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -36,10 +36,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.esp32camera.MainPresenter;
@@ -52,7 +54,6 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     private MainPresenter mainPresenter;
     private CamSettingsPresenter camSettingsPresenter;
 
-    private View button_toHome;
     private EditText et_new_camera_name;
     private Button button_change_camera_name;
     private TextView tv_camera_name_settings;
@@ -84,8 +85,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     private SwitchCompat switch_Vflip;
     private SwitchCompat switch_Colorbar;
     private ArrayAdapter<CharSequence> frameSizeAdapter;
-    private Button button_resetValues;
-    private Button button_removeCamera;
+    private Toolbar toolbar_camSettings;
 
     public CamSettingsFragment(MainPresenter mainPresenter, CamSettingsPresenter camSettingsPresenter) {
         this.mainPresenter = mainPresenter;
@@ -107,7 +107,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         super.onViewCreated(view, savedInstanceState);
 
         // init ui
-        button_toHome = view.findViewById(R.id.button_toHome);
+        toolbar_camSettings = view.findViewById(R.id.toolbar_camSettings);
 
         et_new_camera_name = view.findViewById(R.id.et_new_camera_name);
         button_change_camera_name = view.findViewById(R.id.button_change_camera_name);
@@ -158,9 +158,6 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         switch_Vflip = view.findViewById(R.id.switch_Vflip);
         switch_Colorbar = view.findViewById(R.id.switch_Colorbar);
 
-        button_resetValues = view.findViewById(R.id.button_resetValues);
-        button_removeCamera = view.findViewById(R.id.button_removeCamera);
-
         // set values
         tv_camera_name_settings.setText(camSettingsPresenter.getEspCamera().getName());
     }
@@ -192,7 +189,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
         spinner_SpecialEffect.setSelection(camSettingsPresenter.getEspCamera().getSpecialEffect(), false);
 
-        switch_AutoWhiteBalanceState.setChecked(camSettingsPresenter.getEspCamera().getAutoWhiteBalanceState()== 1);
+        switch_AutoWhiteBalanceState.setChecked(camSettingsPresenter.getEspCamera().getAutoWhiteBalanceState() == 1);
         if (camSettingsPresenter.getEspCamera().getAutoWbGain() == 1) {
             switch_AutoWbGain.setChecked(true);
             ll_WbMode.setVisibility(View.VISIBLE);
@@ -234,18 +231,26 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     }
 
     private void setupOnListener() {
+        toolbar_camSettings.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.nav_camera_settings_reset_values) {
+                Toast.makeText(mainPresenter.getActivity(), "Reset Values", Toast.LENGTH_LONG).show();
+
+                mainPresenter.resetCameraValues(camSettingsPresenter.getEspCamera());
+            } else if (item.getItemId() == R.id.nav_camera_settings_remove_camera) {
+                Toast.makeText(mainPresenter.getActivity(), "Remove Camera", Toast.LENGTH_LONG).show();
+
+                mainPresenter.removeCamera(camSettingsPresenter.getEspCamera());
+                mainPresenter.navigateToHomeFragment();
+            }
+            return true;
+        });
+
         // navigates back to home
-        button_toHome.setOnClickListener(v -> {
-            mainPresenter.navigateToHomeFragment();
-        });
-
-        button_resetValues.setOnClickListener(v -> {
-            mainPresenter.resetCameraValues(camSettingsPresenter.getEspCamera());
-        });
-
-        button_removeCamera.setOnClickListener(v -> {
-            mainPresenter.removeCamera(camSettingsPresenter.getEspCamera());
-            mainPresenter.navigateToHomeFragment();
+        toolbar_camSettings.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainPresenter.navigateToHomeFragment();
+            }
         });
 
         // set name
@@ -261,45 +266,25 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String value = parent.getItemAtPosition(position).toString();
-                switch (value) {
-                    case "UXGA":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 10);
-                        break;
 
-                    case "SXGA":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 9);
-                        break;
-
-                    case "XGA":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 8);
-                        break;
-
-                    case "SVGA":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 7);
-                        break;
-
-                    case "VGA":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 6);
-                        break;
-
-                    case "CIF":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 5);
-                        break;
-
-                    case "QVGA":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 4);
-                        break;
-
-                    case "HQVGA":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 3);
-                        break;
-
-                    case "QQVGA":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 0);
-                        break;
-
-                    default:
-                        break;
+                if (value.equals(getString(R.string.framesize_UXGA))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 10);
+                } else if (value.equals(getString(R.string.framesize_SXGA))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 9);
+                } else if (value.equals(getString(R.string.framesize_XGA))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 8);
+                } else if (value.equals(getString(R.string.framesize_SVGA))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 7);
+                } else if (value.equals(getString(R.string.framesize_VGA))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 6);
+                } else if (value.equals(getString(R.string.framesize_CIF))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 5);
+                } else if (value.equals(getString(R.string.framesize_QVGA))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 4);
+                } else if (value.equals(getString(R.string.framesize_HQVGA))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 3);
+                } else if (value.equals(getString(R.string.framesize_QQVGA))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + FRAMESIZE_PATH + 0);
                 }
             }
 
@@ -347,37 +332,20 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String value = parent.getItemAtPosition(position).toString();
 
-                switch (value) {
-                    case "No Effect":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 0);
-                        break;
-
-                    case "Negative":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 1);
-                        break;
-
-                    case "Grayscale":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 2);
-                        break;
-
-                    case "Red Tint":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 3);
-                        break;
-
-                    case "Green Tint":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 4);
-                        break;
-
-                    case "Blue Tint":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 5);
-                        break;
-
-                    case "Sepia":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 6);
-                        break;
-
-                    default:
-                        break;
+                if (value.equals(getString(R.string.effect_no_effect))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 0);
+                } else if (value.equals(getString(R.string.effect_negative))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 1);
+                } else if (value.equals(getString(R.string.effect_grayscale))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 2);
+                } else if (value.equals(getString(R.string.effect_red_tint))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 3);
+                } else if (value.equals(getString(R.string.effect_green_tint))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 4);
+                } else if (value.equals(getString(R.string.effect_blue_tint))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 5);
+                } else if (value.equals(getString(R.string.effect_sepia))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SPECIAL_EFFECT_PATH + 6);
                 }
             }
 
@@ -412,29 +380,17 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String value = parent.getItemAtPosition(position).toString();
-                switch (value) {
-                    case "Auto":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 0);
-                        break;
 
-                    case "Sunny":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 1);
-                        break;
-
-                    case "Cloudy":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 2);
-                        break;
-
-                    case "Office":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 3);
-                        break;
-
-                    case "Home":
-                        mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 4);
-                        break;
-
-                    default:
-                        break;
+                if (value.equals(getString(R.string.wbMode_auto))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 0);
+                } else if (value.equals(getString(R.string.wbMode_sunny))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 1);
+                } else if (value.equals(getString(R.string.wbMode_cloudy))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 2);
+                } else if (value.equals(getString(R.string.wbMode_office))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 3);
+                } else if (value.equals(getString(R.string.wbMode_home))) {
+                    mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + WB_MODE_PATH + 4);
                 }
             }
 

@@ -15,7 +15,7 @@
         android:gravity="center"
         android:padding="15dp"
         android:text="Add new ESP-Camera"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,13 +33,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp">
+        android:layout_height="500dp"
+        android:background="@color/fragmentBackground">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/loadingLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@color/fragmentBackground"
             android:gravity="center"
             android:orientation="horizontal"
             android:visibility="visible"
@@ -54,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="Searching"
                 android:textSize="14dp"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Not Found? Type in ip address and custom name!"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -119,7 +121,9 @@
                     android:id="@+id/et_selectIpAddress"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:hint="E.g.: 192.168.188.12"
+                    android:textColorHint="@color/lightGray"
                     app:layout_constraintStart_toStartOf="@+id/tv_notFoundManuel"
                     app:layout_constraintTop_toBottomOf="@+id/tv_notFoundManuel" />
 
@@ -140,7 +144,9 @@
                     android:id="@+id/et_selectName"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:hint="Select a camera name..."
+                    android:textColorHint="@color/lightGray"
                     app:layout_constraintStart_toStartOf="@+id/et_selectIpAddress"
                     app:layout_constraintTop_toBottomOf="@+id/tv_errorIpAddress" />
 

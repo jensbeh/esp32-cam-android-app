@@ -4,32 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/fragmentBackground"
     android:orientation="vertical"
     tools:context=".camSettings.CamSettingsFragment">
 
-
-    <TextView
-        android:id="@+id/tv_camSettings"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_camSettings"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="15dp"
-        android:text="Camera Settings"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/toolBar"
+        android:backgroundTint="@color/darkGray"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/toolbar_camera_settings"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
+        app:title="Camera Settings"
+        app:titleTextColor="@color/white" />
 
-    <TextView
-        android:id="@+id/tv_camera_name_settings"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="ESP Camera"
-        android:textAlignment="center" />
+        android:background="@color/toolBar">
+
+        <TextView
+            android:id="@+id/tv_camera_name_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="ESP Camera Name"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
 
     <View
         android:id="@+id/line_camSettings"
@@ -47,42 +65,59 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="left"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/button_toHome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Back to Home Fragment" />
-
             <LinearLayout
-                android:id="@+id/ll_cameraName"
-                android:layout_width="wrap_content"
+                android:id="@+id/ll_changeName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/et_new_camera_name"
-                    android:layout_width="250dp"
+                <TextView
+                    android:id="@+id/tv_changeCameraName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Type in new camera name..."
-                    android:inputType="textPersonName" />
+                    android:text="Change Camera Name"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/button_change_camera_name"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_cameraName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:text="Change" />
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_new_camera_name"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Type in new camera name..."
+                        android:inputType="textPersonName"
+                        android:textColorHint="@color/lightGray"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/button_change_camera_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Change"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_FrameSize"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -92,19 +127,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="FrameSize"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spinner_FrameSize"
                     android:layout_width="300dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/dark_gray_outline"
+                    android:popupBackground="@drawable/dark_gray_outline_fragment_background"
+                    android:spinnerMode="dropdown" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_quality"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -114,13 +155,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Quality"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/sliderQuality"
-                    android:layout_width="300dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:stepSize="1"
                     android:valueFrom="10"
                     android:valueTo="63"
@@ -132,6 +175,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
                     android:layout_marginTop="-15dp"
                     android:orientation="horizontal">
 
@@ -144,7 +188,7 @@
 
                     <TextView
                         android:id="@+id/tv_neutral_Quality"
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="118dp"
                         android:text=""
@@ -154,7 +198,6 @@
                         android:id="@+id/tv_max_Quality"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
                         android:text="worst"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
@@ -162,7 +205,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_brightness"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -172,13 +215,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Brightness"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/sliderBrightness"
-                    android:layout_width="300dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:stepSize="1"
                     android:valueFrom="-2"
                     android:valueTo="2"
@@ -190,6 +235,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
                     android:layout_marginTop="-15dp"
                     android:orientation="horizontal">
 
@@ -204,7 +250,7 @@
                         android:id="@+id/tv_neutral_Brightness"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
+                        android:layout_marginStart="141dp"
                         android:text="0"
                         android:textAlignment="center" />
 
@@ -212,7 +258,7 @@
                         android:id="@+id/tv_max_Brightness"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
+                        android:layout_marginStart="135dp"
                         android:text="max"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
@@ -220,7 +266,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_contrast"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -230,13 +276,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Contrast"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/sliderContrast"
-                    android:layout_width="300dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:stepSize="1"
                     android:valueFrom="-2"
                     android:valueTo="2"
@@ -248,6 +296,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
                     android:layout_marginTop="-15dp"
                     android:orientation="horizontal">
 
@@ -262,7 +311,7 @@
                         android:id="@+id/tv_neutral_Contrast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
+                        android:layout_marginStart="141dp"
                         android:text="0"
                         android:textAlignment="center" />
 
@@ -270,7 +319,7 @@
                         android:id="@+id/tv_max_Contrast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
+                        android:layout_marginStart="135dp"
                         android:text="max"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
@@ -279,7 +328,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_Saturation"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -289,13 +338,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Saturation"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/sliderSaturation"
-                    android:layout_width="300dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:stepSize="1"
                     android:valueFrom="-2"
                     android:valueTo="2"
@@ -307,6 +358,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
                     android:layout_marginTop="-15dp"
                     android:orientation="horizontal">
 
@@ -321,7 +373,7 @@
                         android:id="@+id/tv_neutral_Saturation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
+                        android:layout_marginStart="141dp"
                         android:text="0"
                         android:textAlignment="center" />
 
@@ -329,7 +381,7 @@
                         android:id="@+id/tv_max_Saturation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
+                        android:layout_marginStart="135dp"
                         android:text="max"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
@@ -337,7 +389,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_SpecialEffect"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -347,64 +399,88 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Special Effect"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spinner_SpecialEffect"
                     android:layout_width="300dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/dark_gray_outline"
+                    android:popupBackground="@drawable/dark_gray_outline_fragment_background"
+                    android:spinnerMode="dropdown" />
 
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_AutoWhiteBalanceState"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_Whitebal"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="AutoWhiteBalanceState"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_AutoWhiteBalanceState"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_AutoWbGain"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_AwbGain"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="AutoWbGain"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_AutoWbGain"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/ll_WbMode"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -414,40 +490,57 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="WbMode"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spinner_WbMode"
                     android:layout_width="300dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/dark_gray_outline"
+                    android:popupBackground="@drawable/dark_gray_outline_fragment_background"
+                    android:spinnerMode="dropdown" />
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_ExposureCtrlState"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
+
 
                 <TextView
                     android:id="@+id/tv_ExposureCtrl"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ExposureCtrlState"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_ExposureCtrlState"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/ll_AecValue"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -457,13 +550,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="AecValue"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/sliderAecValue"
-                    android:layout_width="300dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:stepSize="1"
                     android:valueFrom="0"
                     android:valueTo="1200"
@@ -475,6 +570,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
                     android:layout_marginTop="-15dp"
                     android:orientation="horizontal">
 
@@ -489,7 +585,7 @@
                         android:id="@+id/tv_neutral_AecValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
+                        android:layout_marginStart="135dp"
                         android:text="600"
                         android:textAlignment="center" />
 
@@ -497,37 +593,45 @@
                         android:id="@+id/tv_max_AecValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="95dp"
+                        android:layout_marginStart="130dp"
                         android:text="max"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_Aec2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_Aec2"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Aec2"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_Aec2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/ll_AeLevel"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -537,13 +641,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="AeLevel"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/sliderAeLevel"
-                    android:layout_width="300dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:stepSize="1"
                     android:valueFrom="-2"
                     android:valueTo="2"
@@ -555,6 +661,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
                     android:layout_marginTop="-15dp"
                     android:orientation="horizontal">
 
@@ -569,7 +676,7 @@
                         android:id="@+id/tv_neutral_AeLevel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
+                        android:layout_marginStart="141dp"
                         android:text="0"
                         android:textAlignment="center" />
 
@@ -577,37 +684,48 @@
                         android:id="@+id/tv_max_AeLevel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="110dp"
+                        android:layout_marginStart="135dp"
                         android:text="max"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_AgcCtrlState"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
+
 
                 <TextView
                     android:id="@+id/tv_GainCtrl"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="AgcCtrlState"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_AgcCtrlState"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/ll_AgcGain"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -617,13 +735,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="AgcGain"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/sliderAgcGain"
-                    android:layout_width="300dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:stepSize="1"
                     android:valueFrom="0"
                     android:valueTo="30"
@@ -635,6 +755,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
                     android:layout_marginTop="-15dp"
                     android:orientation="horizontal">
 
@@ -649,7 +770,7 @@
                         android:id="@+id/tv_neutral_AgcGain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
+                        android:layout_marginStart="141dp"
                         android:text=""
                         android:textAlignment="center" />
 
@@ -657,7 +778,7 @@
                         android:id="@+id/tv_max_AgcGain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="130dp"
+                        android:layout_marginStart="135dp"
                         android:text="31x"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
@@ -665,7 +786,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_GainCeiling"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -675,13 +796,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="GainCeiling"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.slider.Slider
                     android:id="@+id/sliderGainCeiling"
-                    android:layout_width="300dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:stepSize="1"
                     android:valueFrom="0"
                     android:valueTo="6"
@@ -693,6 +816,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
                     android:layout_marginTop="-15dp"
                     android:orientation="horizontal">
 
@@ -707,7 +831,7 @@
                         android:id="@+id/tv_neutral_GainCeiling"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="118dp"
+                        android:layout_marginStart="141dp"
                         android:text=""
                         android:textAlignment="center" />
 
@@ -715,178 +839,221 @@
                         android:id="@+id/tv_max_GainCeiling"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="125dp"
+                        android:layout_marginStart="135dp"
                         android:text="128x"
                         android:textAlignment="textEnd" />
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_Bpc"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_Bpc"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Bpc"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_Bpc"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_Wpc"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_Wpc"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Wpc"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_Wpc"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_RawGma"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_RawGma"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="RawGma"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_RawGma"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_Lenc"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_Lenc"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lens Correction"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_Lenc"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_Hmirror"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_Hmirror"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="H-Mirror"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_Hmirror"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_Vflip"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_Vflip"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="V-Flip"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_Vflip"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_Colorbar"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_Colorbar"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Colorbar"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_Colorbar"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/button_resetValues"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reset Values" />
-
-            <Button
-                android:id="@+id/button_removeCamera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Remove Camera" />
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
     </ScrollView>

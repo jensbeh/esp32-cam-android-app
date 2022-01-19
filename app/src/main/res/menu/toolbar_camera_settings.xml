@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/nav_camera_settings"
+        android:title="@string/more_options"
+        android:icon="@drawable/ic_more_vert"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item android:id="@+id/nav_camera_settings_reset_values"
+                android:title="Reset Values" />
+            <item android:id="@+id/nav_camera_settings_remove_camera"
+                android:title="Remove Camera" />
+        </menu>
+    </item>
+</menu>
