@@ -37,11 +37,9 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 import com.esp32camera.MainPresenter;
-import com.esp32camera.camSettings.CamSettingsPresenter;
 import com.esp32camera.model.EspCamera;
 
 import java.nio.ByteBuffer;
-import java.util.Timer;
 
 public class WebSocketService implements WebSocketForegroundService.Callbacks {
 
@@ -49,25 +47,82 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
     private WebSocketForegroundService myService;
 
     private MainPresenter mainPresenter;
-    private EspCamera espCamera;
-    private CamSettingsPresenter camSettingsPresenter;
     private WebSocketServiceInterface webSocketServiceInterface;
-    private Timer noopTimer;
 
-    public WebSocketService(MainPresenter mainPresenter, EspCamera espCamera, CamSettingsPresenter camSettingsPresenter, WebSocketServiceInterface webSocketServiceInterface) {
+    /**
+     * constructor to reference the interface and set init objects and start the service and/or bind it
+     */
+    public WebSocketService(MainPresenter mainPresenter, WebSocketServiceInterface webSocketServiceInterface) {
         this.mainPresenter = mainPresenter;
-        this.espCamera = espCamera;
-        this.camSettingsPresenter = camSettingsPresenter;
         this.webSocketServiceInterface = webSocketServiceInterface;
-        this.noopTimer = new Timer();
 
         serviceIntent = new Intent(mainPresenter.getActivity(), WebSocketForegroundService.class);
-        isMyServiceRunning(WebSocketForegroundService.class);
-
-        startService();
+        if (!isMyServiceRunning(WebSocketForegroundService.class)) {
+            startService();
+        } else {
+            mainPresenter.getActivity().getApplication().bindService(serviceIntent, mConnection, 0); //Binding to the service!
+        }
     }
 
-    public void handleMessage(String message) {
+    /**
+     * connection to connect to the service and bind it to an object and register this class to it to communicate
+     */
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        /**
+         * method is called when the service connects -> happens with startService()-method
+         */
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            Toast.makeText(mainPresenter.getActivity(), "Service Connected", Toast.LENGTH_SHORT).show();
+            // Here we bind the WebSocketForegroundService to this class to communicate with the service (this class -> service)
+            WebSocketForegroundService.LocalBinder binder = (WebSocketForegroundService.LocalBinder) service;
+            myService = binder.getService(); // Get the instance of WebSocketForegroundService
+            myService.registerClient(getInstance()); // to register in WebSocketForegroundService as client for callbacks to communicate with this class (service -> this class)
+
+            webSocketServiceInterface.OnServiceConnected();
+        }
+
+        /**
+         * method is called when the service disconnects
+         */
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            Toast.makeText(mainPresenter.getActivity(), "onServiceDisconnected called", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    /**
+     * method to bind and start the service
+     */
+    public void startService() {
+        mainPresenter.getActivity().getApplication().startService(serviceIntent); //Starting the service
+        mainPresenter.getActivity().getApplication().bindService(serviceIntent, mConnection, 0); //Binding to the service!
+        Toast.makeText(mainPresenter.getActivity(), "Service started", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * method to unbind and stop the service
+     */
+    public void stopService() {
+        mainPresenter.getActivity().unbindService(mConnection);
+        mainPresenter.getActivity().stopService(serviceIntent);
+        Toast.makeText(mainPresenter.getActivity(), "Service stopped", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * method to create/connect a new webSocket for this espCamera
+     */
+    public void createWebSocket(EspCamera espCamera, MainPresenter mainPresenter) {
+        myService.createWebSocket(espCamera, mainPresenter, webSocketServiceInterface);
+    }
+
+    /**
+     * method to handle incoming webSocket message strings like commands
+     */
+    @Override
+    public void handleMessage(EspCamera espCamera, String message) {
         if (message.contains(CAM_CONTROLS_PATH)) {
             // set framesize
             if (message.contains(FRAMESIZE_PATH)) {
@@ -217,73 +272,63 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
         }
     }
 
-    public void handleByteBuffer(ByteBuffer bytes) {
+    /**
+     * method to handle incoming webSocket message byte buffer like picture data
+     */
+    @Override
+    public void handleByteBuffer(EspCamera espCamera, ByteBuffer bytes) {
         mainPresenter.notifyOnMotionDetectedPictureData(espCamera, bytes.array());
     }
 
-    public void sendMessage(String message) {
-        myService.send(message);
+    /**
+     * method to send a message with the webSocket of the espCamera
+     */
+    public void sendMessage(EspCamera espCamera, String message) {
+        myService.sendMessage(espCamera, message);
     }
 
-    public boolean isWebSocketConnected() {
-        return myService.isOpen();
+    /**
+     * method to close the webSocket of the espCamera
+     */
+    public void closeWebSocket(EspCamera espCamera) {
+        myService.closeWebSocket(espCamera);
     }
 
-    public void close() {
-        myService.close();
-    }
-
-    //------------------------------------------------------------------------------------
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
-            Toast.makeText(mainPresenter.getActivity(), "onServiceConnected called", Toast.LENGTH_SHORT).show();
-            // We've binded to LocalService, cast the IBinder and get LocalService instance
-            WebSocketForegroundService.LocalBinder binder = (WebSocketForegroundService.LocalBinder) service;
-            myService = binder.getServiceInstance(); //Get instance of your service!
-            myService.registerClient(getInstance()); //Activity register in the service as client for callabcks!
-
-            myService.startWebSocketService(getInstance(), mainPresenter, espCamera, webSocketServiceInterface);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            Toast.makeText(mainPresenter.getActivity(), "onServiceDisconnected called", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    public WebSocketService getInstance() {
-        return this;
-    }
-
-    public void startService() {
-        mainPresenter.getActivity().getApplication().startService(serviceIntent); //Starting the service
-        mainPresenter.getActivity().getApplication().bindService(serviceIntent, mConnection, Context.BIND_AUTO_CREATE); //Binding to the service!
-        Toast.makeText(mainPresenter.getActivity(), "startService " + espCamera.getIpAddress(), Toast.LENGTH_SHORT).show();
-    }
-
-    public void stopService() {
-        mainPresenter.getActivity().unbindService(mConnection);
-        mainPresenter.getActivity().stopService(serviceIntent);
-        Toast.makeText(mainPresenter.getActivity(), "stopService " + espCamera.getIpAddress(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void updateClient(String data) {
-        Toast.makeText(mainPresenter.getActivity(), data, Toast.LENGTH_SHORT).show();
-    }
-
+    /**
+     * method to check if the WebSocketForegroundService is running or not
+     */
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) mainPresenter.getActivity().getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                mainPresenter.getActivity().stopService(serviceIntent);
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * method checks if the webSocket of this espCamera is connected and active
+     */
+    public boolean isWebSocketConnected(EspCamera espCamera) {
+        return myService.isWebSocketConnected(espCamera);
+    }
+
+    /**
+     * method checks if a webSocket object of this espCamera is already existing
+     */
+    public boolean webSocketAlreadyExisting(EspCamera espCamera) {
+        return myService.webSocketAlreadyExisting(espCamera);
+    }
+
+    /**
+     * method to update the service with new/fresh objects after app restart
+     */
+    public void updateWebSocketForegroundService(EspCamera newEspCamera, MainPresenter mainPresenter) {
+        myService.updateWebSocketForegroundService(newEspCamera, mainPresenter, this, webSocketServiceInterface);
+    }
+
+    public WebSocketService getInstance() {
+        return this;
     }
 }

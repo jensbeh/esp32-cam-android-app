@@ -52,7 +52,7 @@ public interface MainContract {
 
         Activity getActivity();
 
-        boolean isWebSocketConnected();
+        boolean isWebSocketConnected(EspCamera espCamera);
 
         void setupNewEspCamera(String ipAddress, String name); // from BottomSheetAddEspCamera
 
@@ -124,7 +124,7 @@ public interface MainContract {
 
         List<Notification> getNotificationItems();
 
-        void deleteSelectedItems(List<Notification> selectedItemsToDelete);
+        void deleteSelectedNotificationItems(List<Notification> selectedItemsToDelete);
 
         void onDestroy();
 

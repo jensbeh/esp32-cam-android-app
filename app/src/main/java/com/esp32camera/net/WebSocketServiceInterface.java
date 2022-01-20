@@ -6,4 +6,6 @@ public interface WebSocketServiceInterface {
     void OnConnectionOpened(EspCamera espCamera, String status);
     void OnConnectionClosed(EspCamera espCamera, String status);
     void OnConnectionFailed(EspCamera espCamera, String status);
+
+    void OnServiceConnected();
 }

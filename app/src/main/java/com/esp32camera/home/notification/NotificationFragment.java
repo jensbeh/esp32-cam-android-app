@@ -64,7 +64,7 @@ public class NotificationFragment extends Fragment implements NotificationContra
         fab_delete_selected_notification_items.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainPresenter.deleteSelectedItems(notificationPresenter.getSelectedItems());
+                mainPresenter.deleteSelectedNotificationItems(notificationPresenter.getSelectedItems());
                 notificationPresenter.deleteSelectedItems();
             }
         });

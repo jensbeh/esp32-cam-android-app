@@ -168,7 +168,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
         // init ui - need to set here because otherwise the slider wont be updated by values
         initUi();
-        if (!mainPresenter.isWebSocketConnected()) {
+        if (!mainPresenter.isWebSocketConnected(camSettingsPresenter.getEspCamera())) {
             disableCamSettings();
         }
 

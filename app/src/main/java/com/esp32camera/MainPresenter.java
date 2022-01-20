@@ -40,11 +40,11 @@ public class MainPresenter implements MainContract.Presenter {
     private CamSettingsPresenter camSettingsPresenter;
     private NotificationPresenter notificationPresenter;
     private NotificationHandler notificationHandler;
-    private Map<String, WebSocketService> webSocketServiceMap;
     private Map<String, EspCamera> espCameraMap;
     private Map<String, CameraCard> cameraCardMap;
     private List<Notification> notificationList;
     private int openedWebSocketCount;
+    private WebSocketService webSocketService;
 
     public MainPresenter(MainActivity mainActivity, HomePresenter homePresenter, CamSettingsPresenter camSettingsPresenter, NotificationPresenter notificationPresenter, NotificationHandler notificationHandler) {
         this.mainActivity = mainActivity;
@@ -54,13 +54,15 @@ public class MainPresenter implements MainContract.Presenter {
         this.notificationHandler = notificationHandler;
 
         viewState = MainActivity.State.StartUp;
-        webSocketServiceMap = new HashMap<>();
         espCameraMap = new HashMap<>();
         cameraCardMap = new HashMap<>();
         notificationList = new ArrayList<>();
         openedWebSocketCount = 0;
     }
 
+    /**
+     * method to change and handle the bottomNavigationView with fragments
+     */
     @Override
     public void changeToSelectedFragment(MenuItem item) {
         switch (item.getItemId()) {
@@ -102,49 +104,83 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to create a new EspCamera object and save it
+     * starts the webSocketService in case it isn't running already and handles webSocket actions
+     * updates the webSocket in case the app was restarted (service contains old instances of objects, because on restart app creates new instances of e.g. espCameras)
+     */
     @Override
     public void setupNewEspCamera(String ipAddress, String name) {
         // create new EspCamera
         EspCamera newEspCamera = new EspCamera(ipAddress, name);
         espCameraMap.put(ipAddress, newEspCamera);
 
+        // create/connect to webSocketService
+        // here i can show error view of the specific webView when webSocket has error
+        if (webSocketService == null) {
+            webSocketService = new WebSocketService(this, new WebSocketServiceInterface() {
+                @Override
+                public void OnConnectionOpened(EspCamera espCamera, String status) {
+                    if (viewState.equals(MainActivity.State.HomeFragment)) {
+                        cameraCardMap.get(espCamera.getIpAddress()).onWebSocketConnectionOpened();
+                    } else if (viewState.equals(MainActivity.State.CamSettingsFragment) && camSettingsPresenter.getEspCamera() == espCamera) {
+                        camSettingsPresenter.onWebSocketConnectionOpened();
+                    }
+                }
+
+                @Override
+                public void OnConnectionClosed(EspCamera espCamera, String status) {
+                    // here i can show error view of the specific webView
+                    if (viewState.equals(MainActivity.State.HomeFragment)) {
+                        cameraCardMap.get(espCamera.getIpAddress()).onWebSocketConnectionClosed();
+                    } else if (viewState.equals(MainActivity.State.CamSettingsFragment) && camSettingsPresenter.getEspCamera() == espCamera) {
+                        camSettingsPresenter.onWebSocketConnectionClosed();
+                    }
+                }
+
+                @Override
+                public void OnConnectionFailed(EspCamera espCamera, String status) {
+                }
+
+                @Override
+                public void OnServiceConnected() {
+                    // create and start webSocket
+                    if (!webSocketService.webSocketAlreadyExisting(newEspCamera)) {
+                        webSocketService.createWebSocket(newEspCamera, getThisMainPresenter());
+                    } else {
+                        webSocketService.updateWebSocketForegroundService(newEspCamera, getThisMainPresenter());
+                    }
+                }
+            });
+        } else {
+            // create and start webSocket
+            if (!webSocketService.webSocketAlreadyExisting(newEspCamera)) {
+                webSocketService.createWebSocket(newEspCamera, getThisMainPresenter());
+            } else {
+                webSocketService.updateWebSocketForegroundService(newEspCamera, getThisMainPresenter());
+            }
+        }
+
+
+        // create and show new Camera Card
+        createNewCameraCard(newEspCamera);
+    }
+
+    /**
+     * method to create and show a new cameraCard with the newEspCamera
+     */
+    private void createNewCameraCard(EspCamera newEspCamera) {
         // create and add new cardView
         CameraCard cameraCard = new CameraCard(this, newEspCamera);
         if (viewState != MainActivity.State.StartUp) { // if app is started view is not visible - only when a new espCamera is manually creating it will be directly added
             homePresenter.addNewCameraCard(cameraCard);
         }
-        cameraCardMap.put(ipAddress, cameraCard);
-
-        // connect to WebSocket
-        // here i can show error view of the specific webView
-        WebSocketService webSocketService = new WebSocketService(this, newEspCamera, camSettingsPresenter, new WebSocketServiceInterface() {
-            @Override
-            public void OnConnectionOpened(EspCamera espCamera, String status) {
-                if (viewState.equals(MainActivity.State.HomeFragment)) {
-                    cameraCardMap.get(espCamera.getIpAddress()).onWebSocketConnectionOpened();
-                } else if (viewState.equals(MainActivity.State.CamSettingsFragment) && camSettingsPresenter.getEspCamera() == espCamera) {
-                    camSettingsPresenter.onWebSocketConnectionOpened();
-                }
-            }
-
-            @Override
-            public void OnConnectionClosed(EspCamera espCamera, String status) {
-                // here i can show error view of the specific webView
-                if (viewState.equals(MainActivity.State.HomeFragment)) {
-                    cameraCardMap.get(espCamera.getIpAddress()).onWebSocketConnectionClosed();
-                } else if (viewState.equals(MainActivity.State.CamSettingsFragment) && camSettingsPresenter.getEspCamera() == espCamera) {
-                    camSettingsPresenter.onWebSocketConnectionClosed();
-                }
-            }
-
-            @Override
-            public void OnConnectionFailed(EspCamera espCamera, String status) {
-            }
-        });
-//        webSocketService.startWebSocketService();
-        webSocketServiceMap.put(ipAddress, webSocketService);
+        cameraCardMap.put(newEspCamera.getIpAddress(), cameraCard);
     }
 
+    /**
+     * method to save name to espCamera
+     */
     @Override
     public void setCameraName(String newName) {
         if (viewState.equals(MainActivity.State.CamSettingsFragment) && camSettingsPresenter.getEspCamera() != null) {
@@ -157,6 +193,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save framesize to espCamera
+     */
     @Override
     public void setCameraFramesize(EspCamera espCamera, int framesize) {
         if (espCamera.getFramesize() != framesize) {
@@ -167,6 +206,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save quality to espCamera
+     */
     @Override
     public void setCameraQuality(EspCamera espCamera, int quality) {
         if (espCamera.getQuality() != quality) {
@@ -177,6 +219,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save brightness to espCamera
+     */
     @Override
     public void setCameraBrightness(EspCamera espCamera, int brightness) {
         if (espCamera.getBrightness() != brightness) {
@@ -187,6 +232,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save contrast to espCamera
+     */
     @Override
     public void setCameraContrast(EspCamera espCamera, int contrast) {
         if (espCamera.getContrast() != contrast) {
@@ -197,6 +245,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save saturation to espCamera
+     */
     @Override
     public void setCameraSaturation(EspCamera espCamera, int saturation) {
         if (espCamera.getSaturation() != saturation) {
@@ -207,6 +258,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save specialEffect to espCamera
+     */
     @Override
     public void setCameraSpecialEffect(EspCamera espCamera, int specialEffect) {
         if (espCamera.getSpecialEffect() != specialEffect) {
@@ -217,6 +271,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save autoWhiteBalanceState to espCamera
+     */
     @Override
     public void setCameraAutoWhiteBalanceState(EspCamera espCamera, int autoWhiteBalanceState) {
         if (espCamera.getAutoWhiteBalanceState() != autoWhiteBalanceState) {
@@ -227,6 +284,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save autoWbGainState to espCamera
+     */
     @Override
     public void setCameraAutoWbGain(EspCamera espCamera, int autoWbGain) {
         if (espCamera.getAutoWbGain() != autoWbGain) {
@@ -237,6 +297,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save wbMode to espCamera
+     */
     @Override
     public void setCameraWbMode(EspCamera espCamera, int wbMode) {
         if (espCamera.getWbMode() != wbMode) {
@@ -247,6 +310,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save exposureCtrlState to espCamera
+     */
     @Override
     public void setCameraExposureCtrlState(EspCamera espCamera, int exposureCtrlState) {
         if (espCamera.getExposureCtrlState() != exposureCtrlState) {
@@ -257,6 +323,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save aecValue to espCamera
+     */
     @Override
     public void setCameraAecValue(EspCamera espCamera, int aecValue) {
         if (espCamera.getAecValue() != aecValue) {
@@ -267,6 +336,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save aec2State to espCamera
+     */
     @Override
     public void setCameraAec2(EspCamera espCamera, int aec2) {
         if (espCamera.getAec2() != aec2) {
@@ -277,6 +349,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save aeLevel to espCamera
+     */
     @Override
     public void setCameraAeLevel(EspCamera espCamera, int aeLevel) {
         if (espCamera.getAeLevel() != aeLevel) {
@@ -287,6 +362,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save agcCtrlState to espCamera
+     */
     @Override
     public void setCameraAgcCtrlState(EspCamera espCamera, int agcCtrlState) {
         if (espCamera.getAgcCtrlState() != agcCtrlState) {
@@ -297,6 +375,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save agcGain to espCamera
+     */
     @Override
     public void setCameraAgcGain(EspCamera espCamera, int agcGain) {
         if (espCamera.getAgcGain() != agcGain) {
@@ -307,6 +388,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save gainCeiling to espCamera
+     */
     @Override
     public void setCameraGainCeiling(EspCamera espCamera, int gainCeiling) {
         if (espCamera.getGainCeiling() != gainCeiling) {
@@ -317,6 +401,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save bpcState to espCamera
+     */
     @Override
     public void setCameraBpc(EspCamera espCamera, int bpc) {
         if (espCamera.getBpc() != bpc) {
@@ -327,6 +414,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save wpcState to espCamera
+     */
     @Override
     public void setCameraWpc(EspCamera espCamera, int wpc) {
         if (espCamera.getWpc() != wpc) {
@@ -337,6 +427,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save rawGmaState to espCamera
+     */
     @Override
     public void setCameraRawGma(EspCamera espCamera, int rawGma) {
         if (espCamera.getRawGma() != rawGma) {
@@ -347,6 +440,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save lencState to espCamera
+     */
     @Override
     public void setCameraLenc(EspCamera espCamera, int lenc) {
         if (espCamera.getLenc() != lenc) {
@@ -357,6 +453,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save hMirrorState to espCamera
+     */
     @Override
     public void setCameraHmirror(EspCamera espCamera, int hMirror) {
         if (espCamera.getHmirror() != hMirror) {
@@ -367,6 +466,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save vFlipState to espCamera
+     */
     @Override
     public void setCameraVflip(EspCamera espCamera, int vFlip) {
         if (espCamera.getVflip() != vFlip) {
@@ -377,6 +479,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save colobarState to espCamera
+     */
     @Override
     public void setCameraColorbar(EspCamera espCamera, int colorbar) {
         if (espCamera.getColorbar() != colorbar) {
@@ -387,6 +492,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to save flashlightState to espCamera
+     */
     @Override
     public void setCameraFlashlight(EspCamera espCamera, int flashlightState) {
         if (espCamera.getFlashlightState() != flashlightState) {
@@ -397,12 +505,18 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * method to create a notification on detection
+     */
     @Override
     public void notifyOnMotionDetected(EspCamera espCamera) {
         Notification notification = new Notification(espCamera.getName(), espCamera.getIpAddress());
         notificationList.add(notification);
     }
 
+    /**
+     * method to refresh the current notification with picture data
+     */
     @Override
     public void notifyOnMotionDetectedPictureData(EspCamera espCamera, byte[] pictureData) {
         Bitmap bmp = BitmapFactory.decodeByteArray(pictureData, 0, pictureData.length);
@@ -416,6 +530,9 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    /**
+     * AsyncTask-class with methods to create and save a file of the notification picture
+     */
     class BackgroundSaveNotificationPicture extends AsyncTask<Void, Void, Void> {
         private final EspCamera espCamera;
         private final Notification notification;
@@ -456,26 +573,21 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
-    @Override
-    public Map<String, CameraCard> getCameraCardMap() {
-        return cameraCardMap;
-    }
-
-    @Override
-    public boolean ifCameraExisting(String ipAddress) {
-        return espCameraMap.containsKey(ipAddress);
-    }
-
+    /**
+     * method to reset the values of the espCamera and send the command to the espCamera
+     */
     @Override
     public void resetCameraValues(EspCamera espCamera) {
 
     }
 
+    /**
+     * method to remove the espCamera -> closes webSocket, removes cameraCard and removes it from the maps -> then save all remaining espCameras
+     */
     @Override
     public void removeCamera(EspCamera espCamera) {
-        // close and remove webSocket
-        webSocketServiceMap.get(espCamera.getIpAddress()).close();
-        webSocketServiceMap.remove(espCamera.getIpAddress());
+        // close and remove webSocket in service
+        webSocketService.closeWebSocket(espCamera);
 
         // stop and remove cameraCard
         if (viewState == MainActivity.State.HomeFragment) {
@@ -527,13 +639,11 @@ public class MainPresenter implements MainContract.Presenter {
         editor.apply();
     }
 
+    /**
+     * method to delete all notification with picture files from selectedItemsToDelete
+     */
     @Override
-    public List<Notification> getNotificationItems() {
-        return notificationList;
-    }
-
-    @Override
-    public void deleteSelectedItems(List<Notification> selectedItemsToDelete) {
+    public void deleteSelectedNotificationItems(List<Notification> selectedItemsToDelete) {
 
         for (Notification notification : selectedItemsToDelete) {
             if (notificationList.contains(notification)) {
@@ -546,28 +656,6 @@ public class MainPresenter implements MainContract.Presenter {
         }
 
         saveNotifications();
-    }
-
-    @Override
-    public void onDestroy() {
-        for (CameraCard cameraCard : cameraCardMap.values()) {
-            cameraCard.stop();
-        }
-    }
-
-    @Override
-    public int getAllCamerasCount() {
-        return espCameraMap.size();
-    }
-
-    @Override
-    public int getOpenedWebSocketCount() {
-        return openedWebSocketCount;
-    }
-
-    @Override
-    public void setOpenedWebSocketCount(int newCount) {
-        this.openedWebSocketCount = newCount;
     }
 
     /**
@@ -616,40 +704,99 @@ public class MainPresenter implements MainContract.Presenter {
         editor.apply();
     }
 
-
+    /**
+     * method to navigate to CamSettingsFragment and sets the selected camera for the correct settings
+     */
     @Override
     public void navigateToCamSettingsFragment(EspCamera espCamera) {
         viewState = MainActivity.State.CamSettingsFragment;
 
-        camSettingsPresenter.setSelectedEspCamera(espCamera);
+        camSettingsPresenter.setSelectedEspCamera(espCameraMap.get(espCamera.getIpAddress()));
 
         mainActivity.navigateToCamSettingsFragment();
     }
 
+    /**
+     * method to navigate to HomeFragment
+     */
     @Override
     public void navigateToHomeFragment() {
         viewState = MainActivity.State.HomeFragment;
         mainActivity.navigateToHomeFragment();
     }
 
+    /**
+     * method to navigate to GalleryFragment
+     */
     @Override
     public void navigateToGalleryFragment() {
         viewState = MainActivity.State.GalleryFragment;
         mainActivity.navigateToGalleryFragment();
     }
 
+    /**
+     * method to navigate to NotificationFragment
+     */
     @Override
     public void navigateToNotificationFragment() {
         viewState = MainActivity.State.NotificationFragment;
         mainActivity.navigateToNotificationFragment();
     }
 
+    /**
+     * method to navigate to ViewPagerFragment
+     */
     @Override
     public void navigateToGalleryViewPagerFragment() {
         viewState = MainActivity.State.GalleryViewPagerFragment;
         mainActivity.navigateToGalleryViewPagerFragment();
     }
 
+    /**
+     * method to send a message with the webSocket of the espCamera
+     */
+    @Override
+    public void sendWebSocketMessage(EspCamera espCamera, String message) {
+        webSocketService.sendMessage(espCamera, message);
+    }
+
+    /**
+     * method checks if the webSocket of this espCamera is connected and active
+     */
+    @Override
+    public boolean isWebSocketConnected(EspCamera espCamera) {
+        return webSocketService.isWebSocketConnected(espCamera);
+    }
+
+    @Override
+    public Map<String, CameraCard> getCameraCardMap() {
+        return cameraCardMap;
+    }
+
+    @Override
+    public boolean ifCameraExisting(String ipAddress) {
+        return espCameraMap.containsKey(ipAddress);
+    }
+
+    @Override
+    public List<Notification> getNotificationItems() {
+        return notificationList;
+    }
+
+    @Override
+    public int getAllCamerasCount() {
+        return espCameraMap.size();
+    }
+
+    @Override
+    public int getOpenedWebSocketCount() {
+        return openedWebSocketCount;
+    }
+
+    @Override
+    public void setOpenedWebSocketCount(int newCount) {
+        this.openedWebSocketCount = newCount;
+    }
 
     public MainActivity.State getViewState() {
         return viewState;
@@ -660,13 +807,17 @@ public class MainPresenter implements MainContract.Presenter {
         return mainActivity;
     }
 
-    @Override
-    public void sendWebSocketMessage(EspCamera espCamera, String message) {
-        webSocketServiceMap.get(espCamera.getIpAddress()).sendMessage(message);
+    private MainPresenter getThisMainPresenter() {
+        return this;
     }
 
+    /**
+     * method is called when MainActivity is destroyed so all cameraCards can be stopped
+     */
     @Override
-    public boolean isWebSocketConnected() {
-        return webSocketServiceMap.get(camSettingsPresenter.getEspCamera().getIpAddress()).isWebSocketConnected();
+    public void onDestroy() {
+        for (CameraCard cameraCard : cameraCardMap.values()) {
+            cameraCard.stop();
+        }
     }
 }

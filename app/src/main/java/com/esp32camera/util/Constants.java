@@ -14,6 +14,7 @@ public class Constants {
 
     // Controls
     public static final String CAM_CONTROLS_PATH = "camControls/";
+    public static final String UPDATE_CAMERA_PATH = "updateCamera";
     public static final String FRAMESIZE_PATH = "framesize="; // 0,3,4,5,6,7,8,9,10
     public static final String QUALITY_PATH = "quality="; //10 - 63
     public static final String BRIGHTNESS_PATH = "brightness="; // -2  to 2
