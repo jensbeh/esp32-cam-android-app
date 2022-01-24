@@ -137,7 +137,7 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="3dp"
-                    android:background="@drawable/dark_gray_outline"
+                    android:background="@drawable/dark_gray_outline_with_arrow"
                     android:popupBackground="@drawable/dark_gray_outline_fragment_background"
                     android:spinnerMode="dropdown" />
 
@@ -409,7 +409,7 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="3dp"
-                    android:background="@drawable/dark_gray_outline"
+                    android:background="@drawable/dark_gray_outline_with_arrow"
                     android:popupBackground="@drawable/dark_gray_outline_fragment_background"
                     android:spinnerMode="dropdown" />
 
@@ -500,7 +500,7 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="3dp"
-                    android:background="@drawable/dark_gray_outline"
+                    android:background="@drawable/dark_gray_outline_with_arrow"
                     android:popupBackground="@drawable/dark_gray_outline_fragment_background"
                     android:spinnerMode="dropdown" />
             </LinearLayout>
