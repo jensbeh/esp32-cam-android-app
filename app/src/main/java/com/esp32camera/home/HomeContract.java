@@ -1,12 +1,11 @@
 package com.esp32camera.home;
 
 import com.esp32camera.model.CameraCard;
-import com.esp32camera.model.EspCamera;
 
 public interface HomeContract {
 
-    interface View {
-        void addNewCameraCard(CameraCard cameraCard); // from presenter to view
+    interface View { // from presenter to view
+        void addNewCameraCard(CameraCard cameraCard);
 
         void removeCameraCard(CameraCard cameraCard);
     }

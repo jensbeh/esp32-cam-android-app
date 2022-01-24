@@ -24,6 +24,9 @@ public class NotificationPresenter implements NotificationContract.Presenter {
         this.notificationFragment = notificationFragment;
     }
 
+    /**
+     * method to add new notification on motion detected
+     */
     @Override
     public void notifyOnMotionDetected(Notification notification) {
         notificationFragment.notifyOnMotionDetected();
@@ -44,12 +47,19 @@ public class NotificationPresenter implements NotificationContract.Presenter {
         notificationFragment.hideDeleteButton();
     }
 
+    /**
+     * method to remove selected items from list and refresh rv
+     * notifications are deleted in mainPresenter from NotificationFragment
+     */
     @Override
     public void deleteSelectedItems() {
         selectedItems.clear();
         notificationFragment.notifyOnItemsDelete();
     }
 
+    /**
+     * method to set selected items
+     */
     @Override
     public void setSelectedItem(Notification item) {
         selectedItems.add(item);

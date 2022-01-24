@@ -23,6 +23,9 @@ public class GalleryViewPagerFragment extends Fragment implements GalleryViewPag
     private GalleryPresenter galleryPresenter;
     private ViewPager vp_gallerySlider;
 
+    /**
+     * constructor for fragment when images is clicked in galleryFragment
+     */
     public GalleryViewPagerFragment(MainPresenter mainPresenter, GalleryViewPagerPresenter galleryViewPagerPresenter, GalleryPresenter galleryPresenter) {
         this.mainPresenter = mainPresenter;
         this.galleryViewPagerPresenter = galleryViewPagerPresenter;
@@ -67,6 +70,7 @@ public class GalleryViewPagerFragment extends Fragment implements GalleryViewPag
 
             @Override
             public void onPageSelected(int position) {
+                // method to hide the media controller
                 viewPagerAdapter.hideMediaController();
             }
 

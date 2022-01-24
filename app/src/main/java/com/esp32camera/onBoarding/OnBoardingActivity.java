@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
@@ -16,12 +15,14 @@ import com.esp32camera.MainActivity;
 import com.esp32camera.R;
 import com.esp32camera.adapter.OnBoardingViewPagerAdapter;
 
+/**
+ * activity with viewPager which is shown when you are a first time user
+ */
 public class OnBoardingActivity extends AppCompatActivity {
     private ViewPager vp_onBoardingSlider;
     private OnBoardingPresenter onBoardingPresenter;
     private Button btn_nextOnBoarding;
     private ConstraintLayout cl_onBoarding;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     }
 
     private void setupOnListener() {
+        // change button texts on next click or start application
         btn_nextOnBoarding.setOnClickListener(v -> {
             int position = vp_onBoardingSlider.getCurrentItem();
 
@@ -77,6 +79,7 @@ public class OnBoardingActivity extends AppCompatActivity {
             }
         });
 
+        // change button texts on slide
         vp_onBoardingSlider.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -102,6 +105,9 @@ public class OnBoardingActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * method to setup the viewPager with its adapter
+     */
     private void setupViewPager() {
         OnBoardingViewPagerAdapter onBoardingViewPagerAdapter = new OnBoardingViewPagerAdapter(onBoardingPresenter);
         vp_onBoardingSlider.setAdapter(onBoardingViewPagerAdapter);

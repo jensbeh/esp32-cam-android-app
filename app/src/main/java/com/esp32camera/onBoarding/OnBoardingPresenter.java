@@ -13,6 +13,9 @@ public class OnBoardingPresenter implements OnBoardingContract.Presenter {
 
     private List<Integer> fragmentList;
 
+    /**
+     * constructor where the fragmentsId are added/saved
+     */
     public OnBoardingPresenter(OnBoardingActivity onBoardingActivity) {
         this.onBoardingActivity = onBoardingActivity;
 
@@ -38,5 +41,4 @@ public class OnBoardingPresenter implements OnBoardingContract.Presenter {
     public List<Integer> getFragmentList() {
         return fragmentList;
     }
-
 }

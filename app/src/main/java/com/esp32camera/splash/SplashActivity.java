@@ -11,6 +11,9 @@ import com.esp32camera.MainActivity;
 import com.esp32camera.R;
 import com.esp32camera.onBoarding.OnBoardingActivity;
 
+/**
+ * activity to show the splash screen and then start the app/MainActivity or show the OnBoardingActivity
+ */
 public class SplashActivity extends AppCompatActivity {
 
     @Override

@@ -50,6 +50,9 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
 
     private List<String> espCamerasIp;
 
+    /**
+     * constructor where view is init and method is called to load all available EspCameras
+     */
     public BottomSheetAddEspCamera(@NonNull Context context, int theme, MainPresenter mainPresenter) {
         super(context, theme);
 
@@ -102,11 +105,13 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
                     String ipAddress = et_selectIpAddress.getText().toString();
                     String name = et_selectName.getText().toString();
                     if (checkForCorrectIpAddress(ipAddress)) {
+                        // if ip is correct or not already saved
                         mainPresenter.setupNewEspCamera(ipAddress, name);
                         mainPresenter.saveEspCameras();
                         closeBottomSheet();
 
                     } else {
+                        // if ip is not correct or already connected - show error
                         tv_errorIpAddress.setVisibility(View.VISIBLE);
                         final Animation out = new AlphaAnimation(1.0f, 0.0f);
                         out.setDuration(500);
@@ -134,6 +139,10 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
         });
     }
 
+    /**
+     * method to ping the ipAddress and check if correct ipAddress is already connected
+     * returns bool
+     */
     private boolean checkForCorrectIpAddress(String ipAddress) {
         int timeout = 100;
 
@@ -184,6 +193,8 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
             int ip = wifiInfo.getIpAddress();
             String ipAddress = Formatter.formatIpAddress(ip);
 
+            // ping all ipAddresses in network from 1 to 255
+            // TODO change ipAddressMaxCount to 255
             String currentSubIpAddress = ipAddress.substring(0, ipAddress.lastIndexOf("."));
             int timeout = 100;
             int ipAddressMaxCount = 46;
@@ -194,6 +205,7 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
                         InetAddress addr = InetAddress.getByName(host);
                         String hostName = addr.getHostName();
                         if (hostName.contains("ESP-Camera") && !mainPresenter.ifCameraExisting(host)) {
+                            // add ipAddress if its a camera ipAddress and not already connected
                             espCamerasIp.add(host);
                         }
                     }
@@ -209,7 +221,8 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
     }
 
     /**
-     * shows all available esp-cameras and setup handler
+     * shows all available esp-cameras and setup the handler
+     * gets all ipAddresses of cameras to make them visible and selectable
      */
     private void setupAddEspCamerasRecyclerView() {
         rv_add_espCameras.setHasFixedSize(true);

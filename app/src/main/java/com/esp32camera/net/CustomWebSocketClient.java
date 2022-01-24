@@ -5,7 +5,6 @@ import static com.esp32camera.util.Constants.UPDATE_CAMERA_PATH;
 
 import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 
 import com.esp32camera.MainPresenter;
 import com.esp32camera.model.EspCamera;
@@ -25,10 +24,16 @@ public class CustomWebSocketClient extends WebSocketClient {
 
     private boolean previousStateWasOpen;
 
+    /**
+     * @param serverUri uri of the esp camera to connect to
+     */
     public CustomWebSocketClient(URI serverUri) {
         super(serverUri);
     }
 
+    /**
+     * method to save all important objects
+     */
     public void init(WebSocketForegroundService.Callbacks webSocketService, WebSocketForegroundService webSocketForegroundService, EspCamera espCamera, MainPresenter mainPresenter, WebSocketServiceInterface webSocketServiceInterface) {
         this.webSocketService = webSocketService;
         this.webSocketForegroundService = webSocketForegroundService;
@@ -37,36 +42,50 @@ public class CustomWebSocketClient extends WebSocketClient {
         this.webSocketServiceInterface = webSocketServiceInterface;
     }
 
+    /**
+     * method is called when webSocketConnection is opened
+     */
     @Override
     public void onOpen(ServerHandshake handshakedata) {
         webSocketServiceInterface.OnConnectionOpened(espCamera, "WEBSOCKET OPENED");
-        Log.i("WebSocket", "Opened");
 
+        // add one more to webSocketCount
         mainPresenter.setOpenedWebSocketCount(mainPresenter.getOpenedWebSocketCount() + 1);
 
         this.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
 
+        // to update the notification with e.g. "1 of 2 cameras are online!"
         webSocketForegroundService.updateNotification(mainPresenter);
 
         previousStateWasOpen = true;
     }
 
+    /**
+     * method is called when webSocket receives a string message from esp camera
+     */
     @Override
     public void onMessage(String s) {
         final String message = s;
         webSocketService.handleMessage(espCamera, message);
     }
 
+    /**
+     * method is called when webSocket receives a byteBuffer message from esp camera
+     */
     @Override
     public void onMessage(ByteBuffer bytes) {
         webSocketService.handleByteBuffer(espCamera, bytes);
     }
 
+    /**
+     * method is called when webSocketConnection is closed
+     * runnable to reconnect
+     */
     @Override
     public void onClose(int code, String reason, boolean remote) {
         webSocketServiceInterface.OnConnectionClosed(espCamera, "WEBSOCKET CLOSE");
-        Log.i("WebSocket", "Closed " + reason);
 
+        // removes one from webSocketCount
         if (mainPresenter.getOpenedWebSocketCount() != 0) {
             mainPresenter.setOpenedWebSocketCount(mainPresenter.getOpenedWebSocketCount() - 1);
         }
@@ -77,7 +96,6 @@ public class CustomWebSocketClient extends WebSocketClient {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Log.i("WebSocket", "Try to reconnect...");
                         getThisCustomWebSocketClient().reconnect();
                     }
                 }, 5000);
@@ -85,6 +103,7 @@ public class CustomWebSocketClient extends WebSocketClient {
         });
 
         if (previousStateWasOpen) {
+            // to update the notification with e.g. "1 of 2 cameras are online!"
             webSocketForegroundService.updateNotification(mainPresenter);
         }
 
@@ -94,7 +113,6 @@ public class CustomWebSocketClient extends WebSocketClient {
     @Override
     public void onError(Exception e) {
         webSocketServiceInterface.OnConnectionFailed(espCamera, "WEBSOCKET ERROR");
-        Log.i("WebSocket", "Error " + e.getMessage());
     }
 
     /**
@@ -106,7 +124,7 @@ public class CustomWebSocketClient extends WebSocketClient {
         this.webSocketService = webSocketService;
         this.webSocketServiceInterface = webSocketServiceInterface;
 
-        // send the update command when webSocket is open(in case the esp is offline)
+        // send the update command when webSocket is open(in case the esp is online)
         if (this.isOpen()) {
             this.send(CAM_CONTROLS_PATH + UPDATE_CAMERA_PATH);
         }

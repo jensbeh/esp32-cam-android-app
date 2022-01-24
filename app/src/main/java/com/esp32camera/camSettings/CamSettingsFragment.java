@@ -102,6 +102,9 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         return view;
     }
 
+    /**
+     * method to init the fragment view
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -162,11 +165,15 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         tv_camera_name_settings.setText(camSettingsPresenter.getEspCamera().getName());
     }
 
+    /**
+     * method to init the ui with specific values
+     * init ui - need to set here because otherwise the slider wont be updated by values
+     * set also onListener
+     */
     @Override
     public void onStart() {
         super.onStart();
 
-        // init ui - need to set here because otherwise the slider wont be updated by values
         initUi();
         if (!mainPresenter.isWebSocketConnected(camSettingsPresenter.getEspCamera())) {
             disableCamSettings();
@@ -175,6 +182,9 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         setupOnListener();
     }
 
+    /**
+     * method to init ui with values
+     */
     private void initUi() {
         setFrameSizeToSpinner(camSettingsPresenter.getEspCamera().getFramesize());
 
@@ -233,10 +243,12 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     private void setupOnListener() {
         toolbar_camSettings.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.nav_camera_settings_reset_values) {
+                // on resetValues click
                 Toast.makeText(mainPresenter.getActivity(), "Reset Values", Toast.LENGTH_LONG).show();
 
                 mainPresenter.resetCameraValues(camSettingsPresenter.getEspCamera());
             } else if (item.getItemId() == R.id.nav_camera_settings_remove_camera) {
+                // on removeCamera click
                 Toast.makeText(mainPresenter.getActivity(), "Remove Camera", Toast.LENGTH_LONG).show();
 
                 mainPresenter.removeCamera(camSettingsPresenter.getEspCamera());
@@ -253,7 +265,7 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
             }
         });
 
-        // set name
+        // set camera name
         button_change_camera_name.setOnClickListener(v -> {
             if (!et_new_camera_name.getText().toString().equals("")) {
                 mainPresenter.setCameraName(et_new_camera_name.getText().toString());
@@ -737,6 +749,9 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         }
     }
 
+    /**
+     * method to enable the ui when webSocket is connected
+     */
     @Override
     public void enableCamSettings() {
         if (this.isVisible()) {
@@ -779,6 +794,9 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         }
     }
 
+    /**
+     * method to enable the ui when webSocket is disconnected
+     */
     @Override
     public void disableCamSettings() {
         if (this.isVisible()) {

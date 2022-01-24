@@ -129,6 +129,7 @@ public class AddEspCameraRecyclerViewAdapter extends RecyclerView.Adapter<AddEsp
             }
         });
 
+        // handle connect click - setup camera and save; close bottomSheet
         viewHolder.button_rv_connectCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

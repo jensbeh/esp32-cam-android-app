@@ -54,7 +54,7 @@ public class NotificationFragment extends Fragment implements NotificationContra
         rv_notification = (RecyclerView) view.findViewById(R.id.rv_notification);
         fab_delete_selected_notification_items = (FloatingActionButton) view.findViewById(R.id.fab_delete_selected_notification_items);
 
-        setupRvGallery();
+        setupRvNotification();
 
         setupOnListener();
 
@@ -70,7 +70,10 @@ public class NotificationFragment extends Fragment implements NotificationContra
         });
     }
 
-    private void setupRvGallery() {
+    /**
+     * method to setup the notification recyclerView
+     */
+    private void setupRvNotification() {
         rv_notification.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(mainPresenter.getActivity(), LinearLayoutManager.VERTICAL, true);
@@ -107,6 +110,10 @@ public class NotificationFragment extends Fragment implements NotificationContra
         notificationPresenter.clearSelectedItems();
     }
 
+    /**
+     * method to add new notification on motion detected
+     * scrolls to the top
+     */
     @Override
     public void notifyOnMotionDetected() {
         notificationRecyclerViewAdapter.notifyItemInserted(mainPresenter.getNotificationItems().size() - 1);
@@ -118,18 +125,27 @@ public class NotificationFragment extends Fragment implements NotificationContra
         rv_notification.smoothScrollToPosition(mainPresenter.getNotificationItems().size() - 1);
     }
 
+    /**
+     * method to show delete button on item selected
+     */
     @Override
     public void showDeleteButton() {
         if (fab_delete_selected_notification_items.getVisibility() != View.VISIBLE)
             fab_delete_selected_notification_items.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * method to hide delete button on items deleted
+     */
     @Override
     public void hideDeleteButton() {
         if (fab_delete_selected_notification_items.getVisibility() != View.GONE)
             fab_delete_selected_notification_items.setVisibility(View.GONE);
     }
 
+    /**
+     * method is called when notifications are deleted and is to hide the delete button and reload the recyclerView
+     */
     @Override
     public void notifyOnItemsDelete() {
         fab_delete_selected_notification_items.setVisibility(View.GONE);

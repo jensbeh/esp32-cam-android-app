@@ -65,7 +65,7 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
     }
 
     /**
-     * connection to connect to the service and bind it to an object and register this class to it to communicate
+     * ServiceConnection to connect to the service and bind it to an object and register this class to it to communicate
      */
     private ServiceConnection mConnection = new ServiceConnection() {
 
@@ -273,7 +273,7 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
     }
 
     /**
-     * method to handle incoming webSocket message byte buffer like picture data
+     * method to handle incoming webSocket message byteBuffer like picture data
      */
     @Override
     public void handleByteBuffer(EspCamera espCamera, ByteBuffer bytes) {

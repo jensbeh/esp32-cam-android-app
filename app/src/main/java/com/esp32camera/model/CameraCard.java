@@ -10,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -104,10 +103,12 @@ public class CameraCard {
 
     private void setupOnListener() {
         button_camSettings.setOnClickListener(v -> {
+            // navigate to SettingsFragment
             mainPresenter.navigateToCamSettingsFragment(espCamera);
         });
 
         button_flashlight.setOnClickListener(v -> {
+            // toggle flashlight with webSocketAction
             if (button_flashlight.isChecked()) {
                 // make off
                 mainPresenter.sendWebSocketMessage(espCamera, CAM_CONTROLS_PATH + FLASHLIGHT_PATH + 1);
@@ -118,9 +119,11 @@ public class CameraCard {
         });
 
         button_recordVideo.setOnClickListener(v -> {
+            // toggle recordVideo
             if (record) {
                 iv_recording_circle.setVisibility(View.GONE);
                 iv_recording_circle.setAnimation(null);
+                // stop recording
                 record = false;
             } else {
                 iv_recording_circle.setVisibility(View.VISIBLE);
@@ -131,11 +134,13 @@ public class CameraCard {
                 anim.setRepeatCount(Animation.INFINITE);
                 iv_recording_circle.startAnimation(anim);
 
+                // start recording
                 record = true;
                 new BackgroundVideo().execute();
             }
         });
         button_recordPicture.setOnClickListener(v -> {
+            // make picture
             Animation anim = new AlphaAnimation(0.8f, 0.0f);
             anim.setDuration(500);
             anim.setAnimationListener(new Animation.AnimationListener() {
@@ -156,11 +161,16 @@ public class CameraCard {
             });
             iv_capture_white.startAnimation(anim);
 
+            // start picture capture
             new BackgroundPng().execute();
         });
     }
 
+    /**
+     * AsyncTask class to record a single picture from webView to file in DCIM
+     */
     class BackgroundPng extends AsyncTask<Void, Void, Bitmap> {
+        // gets webView bitmap in background thread
         @Override
         protected Bitmap doInBackground(Void... params) {
             Bitmap bitmap = Bitmap.createBitmap(webViewStream.getWidth(), webViewStream.getHeight(), Bitmap.Config.ARGB_8888);
@@ -169,6 +179,7 @@ public class CameraCard {
             return bitmap;
         }
 
+        // saves bitmap after backgroundThread is finished
         @SuppressLint("WrongThread")
         @Override
         protected void onPostExecute(Bitmap result) {
@@ -186,7 +197,11 @@ public class CameraCard {
         }
     }
 
+    /**
+     * AsyncTask class to record a video picture from webView to file in DCIM
+     */
     class BackgroundVideo extends AsyncTask<Void, Void, List<Bitmap>> {
+        // gets webView bitmaps in background thread while record
         @Override
         protected List<Bitmap> doInBackground(Void... params) {
             List<Bitmap> bitmapList = new ArrayList<>();
@@ -197,6 +212,7 @@ public class CameraCard {
 
                 bitmapList.add(bitmap);
             }
+            // when stopped recording
             mainPresenter.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -206,6 +222,7 @@ public class CameraCard {
             return bitmapList;
         }
 
+        // create video from bitmapList with BitmapToVideoEncoder after backgroundThread is finished
         @SuppressLint("WrongThread")
         @Override
         protected void onPostExecute(List<Bitmap> result) {
@@ -241,6 +258,10 @@ public class CameraCard {
         button_flashlight.setChecked(flashlightState == 1);
     }
 
+    /**
+     * method to setup the webView with camera stream
+     * complex because opportunity to reload the webView on Connection error with custom error Label
+     */
     private void setupCameraStreamWebView() {
         loadingLayout.setVisibility(View.VISIBLE);
 
@@ -252,8 +273,7 @@ public class CameraCard {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 // when page is loading
-                Log.i("HomeFragment", "onPageStarted");
-
+                // hide errorLayout
                 streamLayout.setVisibility(View.VISIBLE);
                 ll_actionButtonCam.setVisibility(View.GONE);
                 errorLayout.setVisibility(View.GONE);
@@ -261,22 +281,23 @@ public class CameraCard {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.i("HomeFragment", "onPageFinished");
-
+                // when page is loaded
                 loadingLayout.setVisibility(View.GONE);
             }
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-                Log.i("HomeFragment", "onReceivedError");
-
+                // when page could not load -> error
+                // show errorLayout
                 streamLayout.setVisibility(View.GONE);
                 ll_actionButtonCam.setVisibility(View.GONE);
                 errorLayout.setVisibility(View.VISIBLE);
             }
         });
 
+        // webChromeClient to get the progressChange
+        // to make stream and actions visible when page is fully loaded
         webViewStream.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -288,13 +309,16 @@ public class CameraCard {
             }
         });
 
+        // button to reload the webView and show loadingLayout
         errorReloadButton.setOnClickListener(v -> {
             loadingLayout.setVisibility(View.VISIBLE);
 
             webViewStream.reload();
         });
 
+        // webViewStream url
         String html = "<html><body><img src=\"" + WEBSERVER_HTTP + espCamera.getIpAddress() + WEBSERVER_PORT + STREAM_PATH + "\" width=\"100%\" height=\"100%\"\"/></body></html>";
+        // load webViewContent
         webViewStream.loadData(html, "text/html", null);
     }
 
@@ -302,7 +326,9 @@ public class CameraCard {
         return view;
     }
 
-
+    /**
+     * method to enable flashlight when webSocket is available
+     */
     public void onWebSocketConnectionOpened() {
         mainPresenter.getActivity().runOnUiThread(() -> {
             button_flashlight.setEnabled(true);
@@ -318,8 +344,7 @@ public class CameraCard {
             button_flashlight.setEnabled(false);
 
             if (errorLayout.getVisibility() != View.VISIBLE) {
-                Log.i("CameraCard", "Show ERROR Layout on WebSocket Closed...");
-
+                // show error layout
                 errorLayout.setVisibility(View.VISIBLE);
                 ll_actionButtonCam.setVisibility(View.GONE);
             }

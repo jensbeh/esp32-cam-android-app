@@ -16,7 +16,6 @@ public class GalleryPresenter implements GalleryContract.Presenter {
     private int selectedViewPagerItemPosition;
     private List<String> selectedItems;
 
-
     public GalleryPresenter(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
 
@@ -28,6 +27,9 @@ public class GalleryPresenter implements GalleryContract.Presenter {
         this.galleryFragment = galleryFragment;
     }
 
+    /**
+     * method to load all galleryImagePaths from DCIM
+     */
     @Override
     public List<String> loadGalleryItems() {
         galleryItems = new ArrayList<>();
@@ -50,6 +52,9 @@ public class GalleryPresenter implements GalleryContract.Presenter {
         return galleryItems;
     }
 
+    /**
+     * method to save the current image/position to show the correct item in ViewPager and not the first item
+     */
     @Override
     public void setViewPagerSelectedItem(int selectedViewPagerItemPosition) {
         this.selectedViewPagerItemPosition = selectedViewPagerItemPosition;
@@ -70,6 +75,9 @@ public class GalleryPresenter implements GalleryContract.Presenter {
         galleryFragment.hideDeleteButton();
     }
 
+    /**
+     * method to delete the selected images from gallery
+     */
     @Override
     public void deleteSelectedItems() {
         for (String item : selectedItems) {

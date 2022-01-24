@@ -23,11 +23,18 @@ public class OnBoardingViewPagerAdapter extends PagerAdapter {
         return onBoardingPresenter.getFragmentList().size();
     }
 
+    /**
+     * method gets the object as key and checks if the view/page to be shown is equals to the object, if yes then show the page
+     */
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
+    /**
+     * method loads the view and sets the view as a key for a page at specific position
+     * here the view content can be load and set like pictures or texts
+     */
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -37,6 +44,9 @@ public class OnBoardingViewPagerAdapter extends PagerAdapter {
         return view;
     }
 
+    /**
+     * method to remove the item/view from the container where all views from the pages are saved
+     */
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((ConstraintLayout) object);

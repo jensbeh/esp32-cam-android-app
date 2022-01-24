@@ -122,7 +122,6 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
             viewHolder.iv_check_circle_notification.setVisibility(View.VISIBLE);
         }
 
-        // TODO set image to imageView like in gallery fragment
         if (mainPresenter.getNotificationItems().get(position).getPictureBmp() != null) {
             if (viewHolder.iv_motionPicture.getVisibility() == View.GONE) {
                 viewHolder.iv_motionPicture.setVisibility(View.VISIBLE);

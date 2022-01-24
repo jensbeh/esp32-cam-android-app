@@ -17,6 +17,9 @@ public class HomePresenter implements HomeContract.Presenter {
         this.homeFragment = homeFragment;
     }
 
+    /**
+     * method to show specific camera card on view
+     */
     @Override
     public void addNewCameraCard(CameraCard cameraCard) {
         // add new cardView with WebView/WebServer
@@ -28,6 +31,9 @@ public class HomePresenter implements HomeContract.Presenter {
         return homeFragment;
     }
 
+    /**
+     * method to remove specific camera card from view
+     */
     @Override
     public void removeCameraCard(CameraCard cameraCard) {
         homeFragment.removeCameraCard(cameraCard);

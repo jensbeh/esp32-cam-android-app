@@ -60,7 +60,6 @@ public class WebSocketForegroundService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
-        //do heavy work on a background thread
 
         // init variables
         webSocketClientMap = new HashMap<>();
@@ -69,7 +68,7 @@ public class WebSocketForegroundService extends Service {
     }
 
     /**
-     * method to send a message with the webSocket of the espCamera
+     * method to send a message with the webSocket of the espCamera to the espCamera
      */
     public void sendMessage(EspCamera espCamera, String message) {
         webSocketClientMap.get(espCamera.getIpAddress()).send(message);
@@ -90,7 +89,7 @@ public class WebSocketForegroundService extends Service {
         CustomWebSocketClient webSocketClient = new CustomWebSocketClient(Objects.requireNonNull(uri));
         webSocketClient.init(webSocketService, this, espCamera, mainPresenter, webSocketServiceInterface);
 
-        webSocketClient.setConnectionLostTimeout(3);
+        webSocketClient.setConnectionLostTimeout(3); // timeout to reconnect
         webSocketClient.connect();
 
         webSocketClientMap.put(espCamera.getIpAddress(), webSocketClient);
@@ -126,6 +125,9 @@ public class WebSocketForegroundService extends Service {
         return webSocketClientMap.containsKey(espCamera.getIpAddress());
     }
 
+    /**
+     * localBinder to bind it to the WebSocketService class to communicate
+     */
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -139,6 +141,9 @@ public class WebSocketForegroundService extends Service {
         }
     }
 
+    /**
+     * method to create the notification channel to let the service run
+     */
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
@@ -151,11 +156,16 @@ public class WebSocketForegroundService extends Service {
         }
     }
 
-    // client registers to the service as Callbacks client
+    /**
+     * method to client registers to the service as Callbacks client to communicate
+     */
     public void registerClient(WebSocketService webSocketService) {
         this.webSocketService = (Callbacks) webSocketService;
     }
 
+    /**
+     * method to update the notification with e.g. "1 of 2 cameras are online!" when new webSocket opened or closes
+     */
     protected void updateNotification(MainPresenter mainPresenter) {
         Intent notificationIntent = new Intent(getApplication(), MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplication(),
@@ -169,13 +179,18 @@ public class WebSocketForegroundService extends Service {
         startForeground(1, notification);
     }
 
-    //callbacks interface for communication with service clients!
+    /**
+     * callbacks interface for communication with service clients!
+     */
     public interface Callbacks {
         void handleMessage(EspCamera espCamera, String message);
 
         void handleByteBuffer(EspCamera espCamera, ByteBuffer bytes);
     }
 
+    /**
+     * method which is called when service is closed/killed to close webSockets and clear the map
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -186,6 +201,9 @@ public class WebSocketForegroundService extends Service {
         stopSelf();
     }
 
+    /**
+     * method to stop the service
+     */
     @Override
     public boolean stopService(Intent name) {
         return super.stopService(name);

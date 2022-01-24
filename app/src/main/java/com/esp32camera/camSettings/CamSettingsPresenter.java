@@ -171,12 +171,19 @@ public class CamSettingsPresenter implements CamSettingsContract.Presenter {
         camSettingsFragment.setSwitchCameraColorbar(colorbar);
     }
 
-
+    /**
+     * method to set camera
+     * when settings are opened we need to save the current camera to change settings
+     */
     @Override
     public void setSelectedEspCamera(EspCamera espCamera) {
         this.espCamera = espCamera;
     }
 
+    /**
+     * method to get camera
+     * when settings are opened we need to save the current camera to change settings
+     */
     @Override
     public EspCamera getEspCamera() {
         return espCamera;

@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface NotificationContract {
 
-    interface View {
-        void notifyOnMotionDetected(); // from presenter to view
+    interface View { // from presenter to view
+        void notifyOnMotionDetected();
 
         void scrollToTop();
 

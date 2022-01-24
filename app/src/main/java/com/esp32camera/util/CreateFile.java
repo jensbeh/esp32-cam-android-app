@@ -1,10 +1,7 @@
 package com.esp32camera.util;
 
-import static android.content.ContentValues.TAG;
-
 import android.annotation.SuppressLint;
 import android.os.Environment;
-import android.util.Log;
 
 import com.esp32camera.model.EspCamera;
 
@@ -12,7 +9,13 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * class to create specific files
+ */
 public class CreateFile {
+    /**
+     * create jpeg file to save pictures with espCameraIpAddress in name
+     */
     public static File createJpegFile(EspCamera espCamera) {
         @SuppressLint("SimpleDateFormat")
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -21,10 +24,12 @@ public class CreateFile {
         File dir = new File(storageDir.getAbsolutePath() + "/EspCamera/");
         dir.mkdirs();
         File image = new File(dir, imageFileName + ".jpg");
-        Log.d(TAG, "file path is " + image.getAbsolutePath());
         return image;
     }
 
+    /**
+     * create jpeg file to save pictures
+     */
     public static File createJpegFile() {
         @SuppressLint("SimpleDateFormat")
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -33,10 +38,12 @@ public class CreateFile {
         File dir = new File(storageDir.getAbsolutePath() + "/EspCamera/");
         dir.mkdirs();
         File image = new File(dir, imageFileName + ".jpg");
-        Log.d(TAG, "file path is " + image.getAbsolutePath());
         return image;
     }
 
+    /**
+     * create mp4 file to save video
+     */
     public static File createMp4File() {
         @SuppressLint("SimpleDateFormat")
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -45,7 +52,6 @@ public class CreateFile {
         File dir = new File(storageDir.getAbsolutePath() + "/EspCamera/");
         dir.mkdirs();
         File video = new File(dir, imageFileName + ".mp4");
-        Log.d(TAG, "file path is " + video.getAbsolutePath());
         return video;
     }
 }

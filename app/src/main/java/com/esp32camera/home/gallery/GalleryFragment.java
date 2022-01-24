@@ -71,6 +71,9 @@ public class GalleryFragment extends Fragment implements GalleryContract.View {
         galleryPresenter.clearSelectedItems();
     }
 
+    /**
+     * method to setup recyclerView with all gallery images
+     */
     private void setupRvGallery() {
         rv_gallery.setHasFixedSize(true);
 
@@ -101,19 +104,27 @@ public class GalleryFragment extends Fragment implements GalleryContract.View {
         });
     }
 
-
+    /**
+     * method to show delete button on item selected
+     */
     @Override
     public void showDeleteButton() {
         if (fab_delete_selected_gallery_items.getVisibility() != View.VISIBLE)
             fab_delete_selected_gallery_items.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * method to hide delete button on items deleted
+     */
     @Override
     public void hideDeleteButton() {
         if (fab_delete_selected_gallery_items.getVisibility() != View.GONE)
             fab_delete_selected_gallery_items.setVisibility(View.GONE);
     }
 
+    /**
+     * method to refresh recyclerView on items deleted
+     */
     @Override
     public void notifyOnItemsDelete() {
         fab_delete_selected_gallery_items.setVisibility(View.GONE);

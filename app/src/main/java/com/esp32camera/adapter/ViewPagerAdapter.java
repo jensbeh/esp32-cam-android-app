@@ -36,11 +36,18 @@ public class ViewPagerAdapter extends PagerAdapter {
         return galleryItems.size();
     }
 
+    /**
+     * method gets the object as key and checks if the view/page to be shown is equals to the object, if yes then show the page
+     */
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
+    /**
+     * method loads the view and sets the view as a key for a page at specific position
+     * here the view content can be load and set like pictures or texts
+     */
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -67,7 +74,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         FloatingActionButton fab_backButton = (FloatingActionButton) view.findViewById(R.id.fab_backButton);
         TextView tv_itemCount = (TextView) view.findViewById(R.id.tv_itemCount);
 
-        tv_itemName.setText(galleryItems.get(position).substring(galleryItems.get(position).lastIndexOf("/")+1));
+        tv_itemName.setText(galleryItems.get(position).substring(galleryItems.get(position).lastIndexOf("/") + 1));
 
         fab_backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,11 +88,18 @@ public class ViewPagerAdapter extends PagerAdapter {
         return view;
     }
 
+    /**
+     * method to remove the item/view from the container where all views from the pages are saved
+     */
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((ConstraintLayout) object);
     }
 
+    /**
+     * method to hide the media controller
+     * is called if page changed
+     */
     public void hideMediaController() {
         if (mediaController != null)
             mediaController.hide();

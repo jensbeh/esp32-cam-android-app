@@ -59,6 +59,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         loadCameraCards();
     }
 
+    /**
+     * method to load/show all cameras cards to view
+     */
     private void loadCameraCards() {
         for (CameraCard cameraCard : mainPresenter.getCameraCardMap().values()) {
             homePresenter.addNewCameraCard(cameraCard);
@@ -68,6 +71,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private void setupOnListener() {
         toolbarHome.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.nav_add_camera) {
+                // calls bottomSheet to add new camera
                 BottomSheetAddEspCamera bottomSheetAddEspCamera = new BottomSheetAddEspCamera(mainPresenter.getActivity(), R.style.BottomSheetDialogTheme, mainPresenter);
                 bottomSheetAddEspCamera.show();
             }
@@ -83,6 +87,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 //        webViewStream.destroy();
     }
 
+    /**
+     * method to show specific camera card on view
+     */
     @Override
     public void addNewCameraCard(CameraCard cameraCard) {
         if (cameraCard.getView().getParent() != null) {
@@ -91,6 +98,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         ll_scroll_camera_cards.addView(cameraCard.getView());
     }
 
+    /**
+     * method to remove specific camera card from view
+     */
     @Override
     public void removeCameraCard(CameraCard cameraCard) {
         ll_scroll_camera_cards.removeView(cameraCard.getView());

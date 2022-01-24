@@ -29,6 +29,9 @@ public class NotificationHandler {
         notificationManager = NotificationManagerCompat.from(mainActivity);
     }
 
+    /**
+     * method to create notification channel to display notification from espCamera motion detected
+     */
     private void createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(
@@ -43,6 +46,9 @@ public class NotificationHandler {
         }
     }
 
+    /**
+     * method to display/notify notification from espCamera motion detected with id from espCameraIpAddress
+     */
     public void notifyFrom(EspCamera espCamera, com.esp32camera.model.Notification espNotification) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy '-' HH:mm");
         String notificationDate = sdf.format(espNotification.getTimeStamp());

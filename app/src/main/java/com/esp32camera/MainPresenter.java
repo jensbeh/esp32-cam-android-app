@@ -67,12 +67,14 @@ public class MainPresenter implements MainContract.Presenter {
     public void changeToSelectedFragment(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_item_gallery:
+                // to GalleryFragment
                 if (viewState != MainActivity.State.GalleryFragment) {
                     viewState = MainActivity.State.GalleryFragment;
                     mainActivity.navigateToGalleryFragmentWithAnim(R.anim.slide_in_left, R.anim.slide_out_right);
                 }
                 break;
             case R.id.nav_item_home:
+                // to HomeFragment
                 if (viewState != MainActivity.State.HomeFragment) {
                     // from gallery fragment
                     if (viewState == MainActivity.State.GalleryFragment) {
@@ -92,6 +94,7 @@ public class MainPresenter implements MainContract.Presenter {
                 }
                 break;
             case R.id.nav_item_notifications:
+                // to NotificationFragment
                 if (viewState != MainActivity.State.NotificationFragment) {
                     viewState = MainActivity.State.NotificationFragment;
                     mainActivity.navigateToNotificationFragmentWithAnim(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -116,7 +119,7 @@ public class MainPresenter implements MainContract.Presenter {
         espCameraMap.put(ipAddress, newEspCamera);
 
         // create/connect to webSocketService
-        // here i can show error view of the specific webView when webSocket has error
+        // here i can show error view of the specific webView when webSocket has error or enable/disable camSettings
         if (webSocketService == null) {
             webSocketService = new WebSocketService(this, new WebSocketServiceInterface() {
                 @Override
@@ -144,7 +147,9 @@ public class MainPresenter implements MainContract.Presenter {
 
                 @Override
                 public void OnServiceConnected() {
+                    // on create a new service
                     // create and start webSocket
+                    // OR update the current webSocket with new objects
                     if (!webSocketService.webSocketAlreadyExisting(newEspCamera)) {
                         webSocketService.createWebSocket(newEspCamera, getThisMainPresenter());
                     } else {
@@ -153,7 +158,9 @@ public class MainPresenter implements MainContract.Presenter {
                 }
             });
         } else {
+            // on service already existing
             // create and start webSocket
+            // OR update the current webSocket with new objects
             if (!webSocketService.webSocketAlreadyExisting(newEspCamera)) {
                 webSocketService.createWebSocket(newEspCamera, getThisMainPresenter());
             } else {
@@ -542,9 +549,9 @@ public class MainPresenter implements MainContract.Presenter {
             this.notification = notification;
         }
 
+        // create notification picture in background thread
         @Override
         protected Void doInBackground(Void... params) {
-            // create notification picture
             String jpegFilePath = CreateFile.createJpegFile(espCamera).getAbsolutePath();
 
             try {
@@ -559,10 +566,10 @@ public class MainPresenter implements MainContract.Presenter {
             return null;
         }
 
+        // save notificationList, update view if needed and push notification, after backgroundThread is finished
         @SuppressLint("WrongThread")
         @Override
         protected void onPostExecute(Void result) {
-            // save notificationList, update view if needed and push notification
             saveNotifications();
 
             if (viewState == MainActivity.State.NotificationFragment) {

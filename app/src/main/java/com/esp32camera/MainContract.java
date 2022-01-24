@@ -34,10 +34,10 @@ public interface MainContract {
 
     }
 
-    interface Presenter {
-        void navigateToCamSettingsFragment(EspCamera espCamera); // from view to presenter (and back)
+    interface Presenter { // from view to presenter (and back)
+        void navigateToCamSettingsFragment(EspCamera espCamera);
 
-        void navigateToHomeFragment(); // from view to presenter (and back)
+        void navigateToHomeFragment();
 
         void navigateToGalleryViewPagerFragment();
 

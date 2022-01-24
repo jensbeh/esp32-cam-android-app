@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface GalleryContract {
 
-    interface View {
-        void showDeleteButton(); // from presenter to view
+    interface View { // from presenter to view
+        void showDeleteButton();
 
         void hideDeleteButton();
 

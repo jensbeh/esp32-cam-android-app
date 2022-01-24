@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         String fragmentActionFromIntent = getIntent().getStringExtra("FRAGMENT");
 
-        // set network policy, because of some "android.os.NetworkOnMainThreadException"
+        // set network policy, because of some "android.os.NetworkOnMainThreadException" error
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -110,14 +110,20 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         // load all stored Notifications
         mainPresenter.loadNotifications();
 
+        // set start-fragment
         if (fragmentActionFromIntent == null) {
-            // set homeFragment
+            // default: set homeFragment on normal app start
             bottomNavigationView_home.setSelectedItemId(R.id.nav_item_home);
         } else if (fragmentActionFromIntent.equals("NOTIFICATION")) {
+            // when clicked on notification: set notificationFragment on app start
             bottomNavigationView_home.setSelectedItemId(R.id.nav_item_notifications);
         }
     }
 
+    /**
+     * method/listener to listen to bottomNavigationView changes and change fragments
+     * listener called with .setSelectedItemId(...)
+     */
     private void setupNavigationViewListener() {
         bottomNavigationView_home.setOnNavigationItemSelectedListener(item -> {
             mainPresenter.changeToSelectedFragment(item);
@@ -125,6 +131,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         });
     }
 
+    /**
+     * method to navigate to CamSettingsFragment
+     */
     @Override
     public void navigateToCamSettingsFragment() {
         bottomNavigationView_home.setVisibility(View.GONE);
@@ -136,6 +145,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 .commit();
     }
 
+    /**
+     * method to navigate to GalleryViewPagerFragment
+     */
     @Override
     public void navigateToGalleryViewPagerFragment() {
         bottomNavigationView_home.setVisibility(View.GONE);
@@ -147,6 +159,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 .commit();
     }
 
+    /**
+     * method to navigate to HomeFragment
+     */
     @Override
     public void navigateToHomeFragment() {
         getSupportFragmentManager()
@@ -158,6 +173,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         bottomNavigationView_home.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * method to navigate to HomeFragment with custom animation
+     */
     @Override
     public void navigateToHomeFragmentWithAnim(int enter, int exit) {
         getSupportFragmentManager()
@@ -170,6 +188,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         bottomNavigationView_home.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * method to navigate to GalleryFragment
+     */
     @Override
     public void navigateToGalleryFragment() {
         getSupportFragmentManager()
@@ -181,6 +202,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         bottomNavigationView_home.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * method to navigate to GalleryFragment with custom animation
+     */
     @Override
     public void navigateToGalleryFragmentWithAnim(int enter, int exit) {
         getSupportFragmentManager()
@@ -193,6 +217,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         bottomNavigationView_home.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * method to navigate to NotificationFragment
+     */
     @Override
     public void navigateToNotificationFragment() {
         getSupportFragmentManager()
@@ -204,6 +231,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         bottomNavigationView_home.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * method to navigate to NotificationFragment with custom animation
+     */
     @Override
     public void navigateToNotificationFragmentWithAnim(int enter, int exit) {
         getSupportFragmentManager()
@@ -221,22 +251,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
      */
     @Override
     public void onBackPressed() {
-//        if (mainPresenter.getViewState().equals(State.HomeFragment)) {
-//            // Close App
-//            mainPresenter.saveEspCameras();
-
-//        } else if (mainPresenter.getViewState().equals(State.GalleryFragment)) {
-//            // go back to HomeFragment
-//            mainPresenter.navigateToHomeFragment();
-//        } else
+        // GalleryViewPagerFragment -> GalleryFragment
         if (mainPresenter.getViewState().equals(State.GalleryViewPagerFragment)) {
             // go back to GalleryFragment
             mainPresenter.navigateToGalleryFragment();
-//        }
-//        else if (mainPresenter.getViewState().equals(State.NotificationFragment)) {
-//            // go back to HomeFragment
-//            mainPresenter.navigateToHomeFragment();
-        } else if (mainPresenter.getViewState().equals(State.CamSettingsFragment)) {
+        }
+        // CamSettingsFragment -> HomeFragment
+        else if (mainPresenter.getViewState().equals(State.CamSettingsFragment)) {
             // go back to HomeFragment
             mainPresenter.navigateToHomeFragment();
         } else {
