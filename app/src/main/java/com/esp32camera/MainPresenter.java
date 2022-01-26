@@ -205,6 +205,8 @@ public class MainPresenter implements MainContract.Presenter {
             cameraCardMap.get(camSettingsPresenter.getEspCamera().getIpAddress()).setCameraName(newName);
 
             camSettingsPresenter.setCameraName(newName);
+
+            saveEspCameras();
         }
     }
 
