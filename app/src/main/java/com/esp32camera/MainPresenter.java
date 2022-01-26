@@ -1,6 +1,9 @@
 package com.esp32camera;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.esp32camera.util.Constants.CAM_CONTROLS_PATH;
+import static com.esp32camera.util.Constants.FACTORY_RESET_ESP_PATH;
+import static com.esp32camera.util.Constants.RESET_CAM_VALUES_PATH;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -163,7 +166,7 @@ public class MainPresenter implements MainContract.Presenter {
             // OR update the current webSocket with new objects
             webSocketService.setOnRunningCallback(new WebSocketServiceInterface.OnRunningInterface() {
                 @Override
-                public void onServiceRunning() {
+                public void onServiceRunning() { // needs to wait with callback because on startup the service is not so fast started when multiple cameras are connected
                     if (!webSocketService.webSocketAlreadyExisting(newEspCamera)) {
                         webSocketService.createWebSocket(newEspCamera, getThisMainPresenter());
                     } else {
@@ -590,7 +593,12 @@ public class MainPresenter implements MainContract.Presenter {
      */
     @Override
     public void resetCameraValues(EspCamera espCamera) {
+        webSocketService.sendMessage(espCamera, CAM_CONTROLS_PATH + RESET_CAM_VALUES_PATH);
+    }
 
+    @Override
+    public void cameraFactoryReset(EspCamera espCamera) {
+        webSocketService.sendMessage(espCamera, CAM_CONTROLS_PATH + FACTORY_RESET_ESP_PATH);
     }
 
     /**

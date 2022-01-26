@@ -324,7 +324,6 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
      */
     public boolean webSocketAlreadyExisting(EspCamera espCamera) {
         return myService.webSocketAlreadyExisting(espCamera);
-
     }
 
 

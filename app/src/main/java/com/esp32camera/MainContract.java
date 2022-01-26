@@ -116,6 +116,8 @@ public interface MainContract {
 
         void resetCameraValues(EspCamera espCamera);
 
+        void cameraFactoryReset(EspCamera espCamera);
+
         void removeCamera(EspCamera espCamera);
 
         void loadEspCameras();

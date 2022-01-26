@@ -247,9 +247,19 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
                 Toast.makeText(mainPresenter.getActivity(), "Reset Values", Toast.LENGTH_LONG).show();
 
                 mainPresenter.resetCameraValues(camSettingsPresenter.getEspCamera());
+
             } else if (item.getItemId() == R.id.nav_camera_settings_remove_camera) {
                 // on removeCamera click
                 Toast.makeText(mainPresenter.getActivity(), "Remove Camera", Toast.LENGTH_LONG).show();
+
+                mainPresenter.removeCamera(camSettingsPresenter.getEspCamera());
+                mainPresenter.navigateToHomeFragment();
+
+            } else if (item.getItemId() == R.id.nav_camera_settings_factory_reset) {
+                // on factoryReset click
+                Toast.makeText(mainPresenter.getActivity(), "Factory Reset", Toast.LENGTH_LONG).show();
+
+                mainPresenter.cameraFactoryReset(camSettingsPresenter.getEspCamera());
 
                 mainPresenter.removeCamera(camSettingsPresenter.getEspCamera());
                 mainPresenter.navigateToHomeFragment();
@@ -307,33 +317,57 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         });
 
         // set quality
-        sliderQuality.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
+        sliderQuality.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int intValue = (int) slider.getValue();
                 mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + QUALITY_PATH + intValue);
             }
         });
 
         // set brightness
-        sliderBrightness.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
+        sliderBrightness.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int intValue = (int) slider.getValue();
                 mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + BRIGHTNESS_PATH + intValue);
             }
         });
 
         // set contrast
-        sliderContrast.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
+        sliderContrast.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int intValue = (int) slider.getValue();
                 mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + CONTRAST_PATH + intValue);
             }
         });
 
         // set saturation
-        sliderSaturation.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
+        sliderSaturation.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int intValue = (int) slider.getValue();
                 mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + SATURATION_PATH + intValue);
             }
         });
@@ -425,9 +459,15 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         });
 
         // set aecValue
-        sliderAecValue.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
+        sliderAecValue.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int intValue = (int) slider.getValue();
                 mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AEC_VALUE_PATH + intValue);
             }
         });
@@ -442,9 +482,15 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         });
 
         // set aeLevel
-        sliderAeLevel.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
+        sliderAeLevel.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int intValue = (int) slider.getValue();
                 mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AE_LEVEL_PATH + intValue);
             }
         });
@@ -463,17 +509,29 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
         });
 
         // set agcGain
-        sliderAgcGain.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
+        sliderAgcGain.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int intValue = (int) slider.getValue();
                 mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + AGC_GAIN_PATH + intValue);
             }
         });
 
         // set gainCeiling
-        sliderGainCeiling.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) {
-                int intValue = (int) value;
+        sliderGainCeiling.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int intValue = (int) slider.getValue();
                 mainPresenter.sendWebSocketMessage(camSettingsPresenter.getEspCamera(), CAM_CONTROLS_PATH + GAINCEILING_PATH + intValue);
             }
         });
@@ -545,8 +603,14 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
     @Override
     public void onStop() {
         super.onStop();
-        sliderBrightness.addOnChangeListener(null);
-        sliderContrast.addOnChangeListener(null);
+        sliderBrightness.addOnSliderTouchListener(null);
+        sliderContrast.addOnSliderTouchListener(null);
+        sliderQuality.addOnSliderTouchListener(null);
+        sliderAecValue.addOnSliderTouchListener(null);
+        sliderAeLevel.addOnSliderTouchListener(null);
+        sliderAgcGain.addOnSliderTouchListener(null);
+        sliderGainCeiling.addOnSliderTouchListener(null);
+        sliderSaturation.addOnSliderTouchListener(null);
 
         camSettingsPresenter.setSelectedEspCamera(null);
     }

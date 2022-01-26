@@ -11,6 +11,8 @@
                 android:title="Reset Values" />
             <item android:id="@+id/nav_camera_settings_remove_camera"
                 android:title="Remove Camera" />
+            <item android:id="@+id/nav_camera_settings_factory_reset"
+                android:title="Factory Reset" />
         </menu>
     </item>
 </menu>
