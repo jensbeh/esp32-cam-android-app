@@ -48,6 +48,7 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
 
     private MainPresenter mainPresenter;
     private WebSocketServiceInterface webSocketServiceInterface;
+    private WebSocketServiceInterface.OnRunningInterface onRunningInterface;
 
     /**
      * constructor to reference the interface and set init objects and start the service and/or bind it
@@ -82,6 +83,10 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
             myService.registerClient(getInstance()); // to register in WebSocketForegroundService as client for callbacks to communicate with this class (service -> this class)
 
             webSocketServiceInterface.OnServiceConnected();
+
+            if (onRunningInterface != null) {
+                onRunningInterface.onServiceRunning();
+            }
         }
 
         /**
@@ -319,7 +324,9 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
      */
     public boolean webSocketAlreadyExisting(EspCamera espCamera) {
         return myService.webSocketAlreadyExisting(espCamera);
+
     }
+
 
     /**
      * method to update the service with new/fresh objects after app restart
@@ -330,5 +337,9 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
 
     public WebSocketService getInstance() {
         return this;
+    }
+
+    public void setOnRunningCallback(WebSocketServiceInterface.OnRunningInterface onRunningInterface) {
+        this.onRunningInterface = onRunningInterface;
     }
 }

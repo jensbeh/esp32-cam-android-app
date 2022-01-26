@@ -161,11 +161,16 @@ public class MainPresenter implements MainContract.Presenter {
             // on service already existing
             // create and start webSocket
             // OR update the current webSocket with new objects
-            if (!webSocketService.webSocketAlreadyExisting(newEspCamera)) {
-                webSocketService.createWebSocket(newEspCamera, getThisMainPresenter());
-            } else {
-                webSocketService.updateWebSocketForegroundService(newEspCamera, getThisMainPresenter());
-            }
+            webSocketService.setOnRunningCallback(new WebSocketServiceInterface.OnRunningInterface() {
+                @Override
+                public void onServiceRunning() {
+                    if (!webSocketService.webSocketAlreadyExisting(newEspCamera)) {
+                        webSocketService.createWebSocket(newEspCamera, getThisMainPresenter());
+                    } else {
+                        webSocketService.updateWebSocketForegroundService(newEspCamera, getThisMainPresenter());
+                    }
+                }
+            });
         }
 
 

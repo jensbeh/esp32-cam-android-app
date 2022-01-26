@@ -8,4 +8,8 @@ public interface WebSocketServiceInterface {
     void OnConnectionFailed(EspCamera espCamera, String status);
 
     void OnServiceConnected();
+
+    interface OnRunningInterface {
+        void onServiceRunning();
+    }
 }
