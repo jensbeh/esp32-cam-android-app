@@ -106,9 +106,19 @@ public class WebSocketForegroundService extends Service {
     /**
      * method to close the webSocket of the espCamera and removes it from the map
      */
-    public void closeWebSocket(EspCamera espCamera) {
+    public void closeWebSocket(EspCamera espCamera, MainPresenter mainPresenter) {
         webSocketClientMap.get(espCamera.getIpAddress()).close();
         webSocketClientMap.remove(espCamera.getIpAddress());
+
+        // removes one from webSocketCount
+        if (mainPresenter.getOpenedWebSocketCount() != 0) {
+            mainPresenter.setOpenedWebSocketCount(mainPresenter.getOpenedWebSocketCount() - 1);
+        }
+        if (mainPresenter.getAllCamerasCount() == 0) {
+            stopSelf();
+        }
+
+        updateNotification(mainPresenter);
     }
 
     /**
@@ -170,12 +180,22 @@ public class WebSocketForegroundService extends Service {
         Intent notificationIntent = new Intent(getApplication(), MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplication(),
                 0, notificationIntent, 0);
-        Notification notification = new NotificationCompat.Builder(getApplication(), CHANNEL_ID)
-                .setContentTitle("ESP Camera app is running!")
-                .setContentText(mainPresenter.getOpenedWebSocketCount() + " of " + mainPresenter.getAllCamerasCount() + " cameras are online!")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentIntent(pendingIntent)
-                .build();
+        Notification notification;
+        // handle notification camera count
+        if (mainPresenter.getAllCamerasCount() > 0) {
+            notification = new NotificationCompat.Builder(getApplication(), CHANNEL_ID)
+                    .setContentTitle("ESP Camera app is running!")
+                    .setContentText(mainPresenter.getOpenedWebSocketCount() + " of " + mainPresenter.getAllCamerasCount() + " cameras are online!")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentIntent(pendingIntent)
+                    .build();
+        } else {
+            notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle("ESP Camera app is running!")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentIntent(pendingIntent)
+                    .build();
+        }
         startForeground(1, notification);
     }
 

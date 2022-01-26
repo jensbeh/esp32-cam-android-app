@@ -159,6 +159,11 @@ public class MainPresenter implements MainContract.Presenter {
                         webSocketService.updateWebSocketForegroundService(newEspCamera, getThisMainPresenter());
                     }
                 }
+
+                @Override
+                public void OnServiceDisconnected() {
+                    webSocketService = null;
+                }
             });
         } else {
             // on service already existing
@@ -608,9 +613,6 @@ public class MainPresenter implements MainContract.Presenter {
      */
     @Override
     public void removeCamera(EspCamera espCamera) {
-        // close and remove webSocket in service
-        webSocketService.closeWebSocket(espCamera);
-
         // stop and remove cameraCard
         if (viewState == MainActivity.State.HomeFragment) {
             cameraCardMap.get(espCamera.getIpAddress()).stop();
@@ -620,6 +622,9 @@ public class MainPresenter implements MainContract.Presenter {
 
         // remove espCamera
         espCameraMap.remove(espCamera.getIpAddress());
+
+        // close and remove webSocket in service
+        webSocketService.closeWebSocket(espCamera, this);
 
         // save all available cameras
         saveEspCameras();

@@ -43,6 +43,7 @@ import java.nio.ByteBuffer;
 
 public class WebSocketService implements WebSocketForegroundService.Callbacks {
 
+    private boolean serviceConnected;
     private Intent serviceIntent;
     private WebSocketForegroundService myService;
 
@@ -56,6 +57,7 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
     public WebSocketService(MainPresenter mainPresenter, WebSocketServiceInterface webSocketServiceInterface) {
         this.mainPresenter = mainPresenter;
         this.webSocketServiceInterface = webSocketServiceInterface;
+        serviceConnected = false;
 
         serviceIntent = new Intent(mainPresenter.getActivity(), WebSocketForegroundService.class);
         if (!isMyServiceRunning(WebSocketForegroundService.class)) {
@@ -85,6 +87,7 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
             webSocketServiceInterface.OnServiceConnected();
 
             if (onRunningInterface != null) {
+                serviceConnected = true;
                 onRunningInterface.onServiceRunning();
             }
         }
@@ -95,6 +98,11 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
             Toast.makeText(mainPresenter.getActivity(), "onServiceDisconnected called", Toast.LENGTH_SHORT).show();
+            myService = null;
+            mainPresenter = null;
+            serviceConnected = false;
+
+            webSocketServiceInterface.OnServiceDisconnected();
         }
     };
 
@@ -293,10 +301,10 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
     }
 
     /**
-     * method to close the webSocket of the espCamera
+     * method to actively close the webSocket of the espCamera on removing camera
      */
-    public void closeWebSocket(EspCamera espCamera) {
-        myService.closeWebSocket(espCamera);
+    public void closeWebSocket(EspCamera espCamera, MainPresenter mainPresenter) {
+        myService.closeWebSocket(espCamera, mainPresenter);
     }
 
     /**
@@ -340,5 +348,8 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
 
     public void setOnRunningCallback(WebSocketServiceInterface.OnRunningInterface onRunningInterface) {
         this.onRunningInterface = onRunningInterface;
+        if (serviceConnected) {
+            this.onRunningInterface.onServiceRunning();
+        }
     }
 }

@@ -95,6 +95,8 @@ public class CameraCard {
 
         iv_capture_white = view.findViewById(R.id.iv_capture_white);
 
+        button_flashlight.setEnabled(false);
+
         setupOnListener();
 
         // create WebView and connect to WebServer
