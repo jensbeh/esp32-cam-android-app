@@ -41,6 +41,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// webView zoom with different camera framesizes - https://stackoverflow.com/questions/10395292/android-webview-scaling-image-to-fit-the-screen
+// create picture/bitmap - https://stackoverflow.com/questions/20942623/which-can-replace-capturepicture-function/20963109#20963109
+// save picture/bitmap - https://stackoverflow.com/questions/649154/save-bitmap-to-location
+
 public class CameraCard {
     private final View view;
     private final ImageView iv_recording_circle;

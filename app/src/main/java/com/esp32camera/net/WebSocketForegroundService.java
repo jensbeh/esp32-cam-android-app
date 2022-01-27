@@ -30,6 +30,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+// example and info - https://developer.android.com/guide/components/foreground-services
+// example and info - https://stackoverflow.com/questions/20594936/communication-between-activity-and-service
+// example and info - https://developer.android.com/reference/android/app/Service#LocalServiceSample
+
 public class WebSocketForegroundService extends Service {
     public static final String CHANNEL_ID = "WebSocketForegroundServiceChannel";
     private Callbacks webSocketService;

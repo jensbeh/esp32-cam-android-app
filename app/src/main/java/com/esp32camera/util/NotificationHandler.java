@@ -16,6 +16,8 @@ import com.esp32camera.model.EspCamera;
 
 import java.text.SimpleDateFormat;
 
+// create notifications - https://www.youtube.com/watch?v=tTbd1Mfi-Sk&list=PLrnPJCHvNZuCN52QwGu7YTSLIMrjCF0gM
+
 public class NotificationHandler {
     public static final String CHANNEL_NOTIFICATION_ID = "notificationChannel";
     private MainActivity mainActivity;

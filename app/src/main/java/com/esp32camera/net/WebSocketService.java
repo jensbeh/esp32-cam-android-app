@@ -309,6 +309,7 @@ public class WebSocketService implements WebSocketForegroundService.Callbacks {
 
     /**
      * method to check if the WebSocketForegroundService is running or not
+     * https://stackoverflow.com/questions/600207/how-to-check-if-a-service-is-running-on-android
      */
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) mainPresenter.getActivity().getSystemService(Context.ACTIVITY_SERVICE);

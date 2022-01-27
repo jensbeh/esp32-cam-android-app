@@ -17,6 +17,8 @@ import com.esp32camera.adapter.NotificationRecyclerViewAdapter;
 import com.esp32camera.model.Notification;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+// reversed rv - https://stackoverflow.com/questions/32003402/add-items-to-top-of-recyclerview/48864224
+
 public class NotificationFragment extends Fragment implements NotificationContract.View {
 
     private View view;

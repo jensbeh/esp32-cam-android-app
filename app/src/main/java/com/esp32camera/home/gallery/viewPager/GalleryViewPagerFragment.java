@@ -15,6 +15,8 @@ import com.esp32camera.R;
 import com.esp32camera.adapter.ViewPagerAdapter;
 import com.esp32camera.home.gallery.GalleryPresenter;
 
+// viewPager example - https://www.youtube.com/watch?v=Q2FPDI99-as
+
 public class GalleryViewPagerFragment extends Fragment implements GalleryViewPagerContract.View {
 
     private View view;

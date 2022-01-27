@@ -17,6 +17,7 @@ import com.esp32camera.adapter.OnBoardingViewPagerAdapter;
 
 /**
  * activity with viewPager which is shown when you are a first time user
+ * https://www.youtube.com/watch?v=eUqi8YcSchI
  */
 public class OnBoardingActivity extends AppCompatActivity {
     private ViewPager vp_onBoardingSlider;

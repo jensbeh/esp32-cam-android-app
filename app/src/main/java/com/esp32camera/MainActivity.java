@@ -23,6 +23,9 @@ import com.esp32camera.home.notification.NotificationPresenter;
 import com.esp32camera.util.NotificationHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+// bottom navigation view - https://www.youtube.com/watch?v=UETiPd3zR2E&list=PL3m9bHmTF9ihvR-VcvAGSaAxjhZC_PZpP
+// animation between fragments - https://gist.github.com/codinginflow/a2b08fb50b0971923176a4e0c062971a && https://developer.android.com/guide/fragments/animate
+
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
     private BottomNavigationView bottomNavigationView_home;
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        // request permissions
+        // request permissions - https://stackoverflow.com/questions/33666071/android-marshmallow-request-permission
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{
                         Manifest.permission.READ_EXTERNAL_STORAGE,

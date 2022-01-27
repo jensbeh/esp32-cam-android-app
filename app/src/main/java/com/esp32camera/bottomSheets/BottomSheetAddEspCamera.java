@@ -34,6 +34,12 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+// get list of devices in the same network - https://stackoverflow.com/questions/3345857/how-to-get-a-list-of-ip-connected-in-same-network-subnet-using-java
+// get names of the devices in the same network - https://stackoverflow.com/questions/40266930/how-to-get-host-name-of-ip-address-in-android
+// get handy ipAddress - https://stackoverflow.com/questions/16730711/get-my-wifi-ip-address-android
+// circle progressBar - https://www.youtube.com/watch?v=YsHHXg1vbcc
+// textView blinking - https://stackoverflow.com/questions/9294112/how-to-make-the-textview-blinking
+
 public class BottomSheetAddEspCamera extends BottomSheetDialog {
     private final Context context;
     private final View bottomSheetView;

@@ -20,6 +20,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+// videoView handle example - https://abhiandroid.com/ui/videoview
+
 public class ViewPagerAdapter extends PagerAdapter {
     private MainPresenter mainPresenter;
     private List<String> galleryItems;

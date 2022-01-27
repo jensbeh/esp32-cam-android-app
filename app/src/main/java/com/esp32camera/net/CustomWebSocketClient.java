@@ -15,6 +15,9 @@ import org.java_websocket.handshake.ServerHandshake;
 import java.net.URI;
 import java.nio.ByteBuffer;
 
+// WebSocketLibrary https://github.com/TooTallNate/Java-WebSocket
+// WebSocket basics - https://stackoverflow.com/questions/26452903/javax-websocket-client-simple-example
+
 public class CustomWebSocketClient extends WebSocketClient {
     private WebSocketForegroundService.Callbacks webSocketService;
     private WebSocketForegroundService webSocketForegroundService;
