@@ -52,7 +52,7 @@ However, if the ESP detects movement, a WebSocket message is sent to all clients
 * Flashlight (On/Off)
 
 # Download and install
-Download the latest version of the app [here]() and install it.<br/>
+Download the latest version of the app [here](https://github.com/jensbeh/esp32-cam-android-app/releases) and install it.<br/>
 This must first be allowed in the Android settings, as Android by default does not allow apps to be installed that are not from the Play Store.<br/>
 To do this, simply go to Settings -> Security -> Activate Install unknown apps.
 
