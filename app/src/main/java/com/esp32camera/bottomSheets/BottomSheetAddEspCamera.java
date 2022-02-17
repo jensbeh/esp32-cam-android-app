@@ -200,10 +200,9 @@ public class BottomSheetAddEspCamera extends BottomSheetDialog {
             String ipAddress = Formatter.formatIpAddress(ip);
 
             // ping all ipAddresses in network from 1 to 255
-            // TODO change ipAddressMaxCount to 255
             String currentSubIpAddress = ipAddress.substring(0, ipAddress.lastIndexOf("."));
             int timeout = 100;
-            int ipAddressMaxCount = 46;
+            int ipAddressMaxCount = 255;
             for (int i = 1; i < ipAddressMaxCount; i++) {
                 String host = currentSubIpAddress + "." + i;
                 try {

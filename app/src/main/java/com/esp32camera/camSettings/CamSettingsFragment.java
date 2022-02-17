@@ -25,6 +25,7 @@ import static com.esp32camera.util.Constants.WB_MODE_PATH;
 import static com.esp32camera.util.Constants.WHITEBALANCE_STATE_PATH;
 import static com.esp32camera.util.Constants.WPC_PATH;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -318,11 +319,13 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
         // set quality
         sliderQuality.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
 
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int intValue = (int) slider.getValue();
@@ -332,11 +335,13 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
         // set brightness
         sliderBrightness.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
 
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int intValue = (int) slider.getValue();
@@ -346,11 +351,13 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
         // set contrast
         sliderContrast.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
 
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int intValue = (int) slider.getValue();
@@ -360,11 +367,13 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
         // set saturation
         sliderSaturation.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
 
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int intValue = (int) slider.getValue();
@@ -460,11 +469,13 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
         // set aecValue
         sliderAecValue.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
 
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int intValue = (int) slider.getValue();
@@ -483,11 +494,13 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
         // set aeLevel
         sliderAeLevel.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
 
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int intValue = (int) slider.getValue();
@@ -510,11 +523,13 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
         // set agcGain
         sliderAgcGain.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
 
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int intValue = (int) slider.getValue();
@@ -524,11 +539,13 @@ public class CamSettingsFragment extends Fragment implements CamSettingsContract
 
         // set gainCeiling
         sliderGainCeiling.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
 
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int intValue = (int) slider.getValue();

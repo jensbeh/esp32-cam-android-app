@@ -97,7 +97,6 @@ public class WebSocketForegroundService extends Service {
         webSocketClient.connect();
 
         webSocketClientMap.put(espCamera.getIpAddress(), webSocketClient);
-
     }
 
     /**

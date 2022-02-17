@@ -20,7 +20,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * TODO put the author and link
+ * https://stackoverflow.com/questions/17096726/how-to-encode-bitmaps-into-a-video-using-mediacodec
+ * https://stackoverflow.com/a/51278232 -> Username: OldSchool4664
  */
 public class BitmapToVideoEncoder {
     private static final String TAG = BitmapToVideoEncoder.class.getSimpleName();

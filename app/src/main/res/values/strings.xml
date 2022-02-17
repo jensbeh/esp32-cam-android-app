@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ESP32 Camera</string>
+    <string name="app_name">ESP32-CAM Controller</string>
 
     <!-- Bottom Navigation View Strings -->
     <string name="nav_home">Home</string>
@@ -54,6 +54,7 @@
     <string name="wbMode_cloudy">Cloudy</string>
     <string name="wbMode_office">Office</string>
     <string name="wbMode_home">Home</string>
+    <string name="onBoarding_welcome_to_the_app">Welcome to the\nESP32-CAM Controller!</string>
     <string-array name="wbMode_array">
         <item>@string/wbMode_auto</item>
         <item>@string/wbMode_sunny</item>

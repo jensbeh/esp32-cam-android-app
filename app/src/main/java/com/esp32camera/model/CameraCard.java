@@ -271,8 +271,8 @@ public class CameraCard {
     private void setupCameraStreamWebView() {
         loadingLayout.setVisibility(View.VISIBLE);
 
-        webViewStream.getSettings().setLoadWithOverviewMode(true);
-        webViewStream.getSettings().setUseWideViewPort(true);
+        webViewStream.getSettings().setLoadWithOverviewMode(true); // loads the WebView completely zoomed out
+        webViewStream.getSettings().setUseWideViewPort(true); // it scales the webpage as defined in the html
 
         webViewStream.setWebViewClient(new WebViewClient() {
             @Override
